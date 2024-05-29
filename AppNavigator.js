@@ -139,6 +139,13 @@ export default function RootAppNavigator() {
         })}
       >
         <Stack.Screen
+          name="UsageScreen"
+          component={UsageScreen}
+          options={({ navigation }) => ({
+            title: 'Usage',
+          })}
+        />
+        <Stack.Screen
           name="ModelScreen"
           component={ModelScreen}
           options={({ navigation }) => ({
@@ -178,13 +185,6 @@ export default function RootAppNavigator() {
           component={NSCRegistrationGuestScreen}
           options={({ navigation }) => ({
             title: 'NSC Registration Guest',
-          })}
-        />
-        <Stack.Screen
-          name="UsageScreen"
-          component={UsageScreen}
-          options={({ navigation }) => ({
-            title: 'Usage',
           })}
         />
         <Stack.Screen
