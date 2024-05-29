@@ -139,17 +139,17 @@ export default function RootAppNavigator() {
         })}
       >
         <Stack.Screen
+          name="PaymentsScreen"
+          component={PaymentsScreen}
+          options={({ navigation }) => ({
+            title: 'Payments',
+          })}
+        />
+        <Stack.Screen
           name="UsageScreen"
           component={UsageScreen}
           options={({ navigation }) => ({
             title: 'Usage',
-          })}
-        />
-        <Stack.Screen
-          name="ModelScreen"
-          component={ModelScreen}
-          options={({ navigation }) => ({
-            title: 'Model',
           })}
         />
         <Stack.Screen
@@ -160,10 +160,31 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="PaymentsScreen"
-          component={PaymentsScreen}
+          name="DashboardScreen"
+          component={DashboardScreen}
           options={({ navigation }) => ({
-            title: 'Payments',
+            title: 'Dashboard',
+          })}
+        />
+        <Stack.Screen
+          name="QuickPayScreen"
+          component={QuickPayScreen}
+          options={({ navigation }) => ({
+            title: 'Quick Pay',
+          })}
+        />
+        <Stack.Screen
+          name="WelcomeScreen"
+          component={WelcomeScreen}
+          options={({ navigation }) => ({
+            title: 'Welcome',
+          })}
+        />
+        <Stack.Screen
+          name="ModelScreen"
+          component={ModelScreen}
+          options={({ navigation }) => ({
+            title: 'Model',
           })}
         />
         <Stack.Screen
@@ -185,13 +206,6 @@ export default function RootAppNavigator() {
           component={NSCRegistrationGuestScreen}
           options={({ navigation }) => ({
             title: 'NSC Registration Guest',
-          })}
-        />
-        <Stack.Screen
-          name="DashboardScreen"
-          component={DashboardScreen}
-          options={({ navigation }) => ({
-            title: 'Dashboard',
           })}
         />
         <Stack.Screen
@@ -433,13 +447,6 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="QuickPayScreen"
-          component={QuickPayScreen}
-          options={({ navigation }) => ({
-            title: 'Quick Pay',
-          })}
-        />
-        <Stack.Screen
           name="DeleteServiceConnectionScreen"
           component={DeleteServiceConnectionScreen}
           options={({ navigation }) => ({
@@ -472,13 +479,6 @@ export default function RootAppNavigator() {
           component={LoadQualityScreen}
           options={({ navigation }) => ({
             title: 'Load & Quality',
-          })}
-        />
-        <Stack.Screen
-          name="WelcomeScreen"
-          component={WelcomeScreen}
-          options={({ navigation }) => ({
-            title: 'Welcome',
           })}
         />
         <Stack.Screen

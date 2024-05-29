@@ -80,7 +80,7 @@
     },
     "android": {
       "versionCode": 1,
-      "package": "com.fluentgrid.nbpdcl.mss2",
+      "package": "com.fluentgrid.nashik.mss2",
       "permissions": [],
       "adaptiveIcon": {}
     },
