@@ -35,11 +35,14 @@ const PaymentsScreen = props => {
   const [availableBalance, setAvailableBalance] = React.useState('');
   const [consumerName, setConsumerName] = React.useState('');
   const [consumerScNo, setConsumerScNo] = React.useState('');
+  const [createDate, setCreateDate] = React.useState('');
   const [hiddenHindi, setHiddenHindi] = React.useState(true);
   const [meterNumber, setMeterNumber] = React.useState('');
+  const [meterStatus, setMeterStatus] = React.useState('');
   const [pickerValue, setPickerValue] = React.useState('');
   const [pickerValue2, setPickerValue2] = React.useState('');
   const [prepaidFlag, setPrepaidFlag] = React.useState('');
+  const [rechargeAmount, setRechargeAmount] = React.useState('');
   const [serviceConNumber, setServiceConNumber] = React.useState('');
   const [showNav, setShowNav] = React.useState(false);
   const [textInputValue, setTextInputValue] = React.useState('');
@@ -47,6 +50,34 @@ const PaymentsScreen = props => {
   const [viewPaymentDetails, setViewPaymentDetails] = React.useState({});
   const [viewRechargeDetails, setViewRechargeDetails] = React.useState({});
   const [visibleHindi, setVisibleHindi] = React.useState(false);
+  const valueFix = val => {
+    return val.toFixed(2);
+  };
+
+  const buildString = Scno => {
+    // Type the code for the body of your function or hook here.
+    // Functions can be triggered via Button/Touchable actions.
+    // Hooks are run per ReactJS rules.
+
+    /* String line breaks are accomplished with backticks ( example: `line one
+line two` ) and will not work with special characters inside of quotes ( example: "line one line two" ) */
+
+    console.log(`billing/rest/getBillDataWss/${Scno}`);
+    return `billing/rest/getBillDataWss/${Scno}`;
+  };
+
+  const buildConsumerString = Scno => {
+    // Type the code for the body of your function or hook here.
+    // Functions can be triggered via Button/Touchable actions.
+    // Hooks are run per ReactJS rules.
+
+    /* String line breaks are accomplished with backticks ( example: `line one
+line two` ) and will not work with special characters inside of quotes ( example: "line one line two" ) */
+
+    console.log(`billing/rest/AccountInfo/${Scno}`);
+    return `billing/rest/AccountInfo/${Scno}`;
+  };
+
   const converDateTimeToDate = dateTime => {
     const date = dateTime.split(' ');
     console.log('date' + date);
@@ -102,28 +133,9 @@ line two` ) and will not work with special characters inside of quotes ( example
     });
   };
 
-  const buildString = Scno => {
-    // Type the code for the body of your function or hook here.
-    // Functions can be triggered via Button/Touchable actions.
-    // Hooks are run per ReactJS rules.
-
-    /* String line breaks are accomplished with backticks ( example: `line one
-line two` ) and will not work with special characters inside of quotes ( example: "line one line two" ) */
-
-    console.log(`billing/rest/getBillDataWss/${Scno}`);
-    return `billing/rest/getBillDataWss/${Scno}`;
-  };
-
-  const buildConsumerString = Scno => {
-    // Type the code for the body of your function or hook here.
-    // Functions can be triggered via Button/Touchable actions.
-    // Hooks are run per ReactJS rules.
-
-    /* String line breaks are accomplished with backticks ( example: `line one
-line two` ) and will not work with special characters inside of quotes ( example: "line one line two" ) */
-
-    console.log(`billing/rest/AccountInfo/${Scno}`);
-    return `billing/rest/AccountInfo/${Scno}`;
+  const prepaidmeterstatus = metetno => {
+    console.log(`/SPM/getCurrentBalance?meterNumberOrAccountNo=${metetno}`);
+    return `/SPM/getCurrentBalance?meterNumberOrAccountNo=${metetno}`;
   };
   const isFocused = useIsFocused();
   React.useEffect(() => {
@@ -205,21 +217,21 @@ line two` ) and will not work with special characters inside of quotes ( example
         buildString(Constants['name']);
         console.log('Complete ON_SCREEN_FOCUS:14 CUSTOM_FUNCTION');
         console.log('Start ON_SCREEN_FOCUS:15 SET_VARIABLE');
-        const valueYaiQv1bf =
+        const valuescLoJkaV =
           Billdetailsjson && Billdetailsjson[0].data.BillDataJson[0];
-        setViewBillDetails(valueYaiQv1bf);
-        const Billdetailslog = valueYaiQv1bf;
+        setViewBillDetails(valuescLoJkaV);
+        const Billdetailslog = valuescLoJkaV;
         console.log('Complete ON_SCREEN_FOCUS:15 SET_VARIABLE');
-        const paymenthistoryjson = await (async () => {
+        const prepaiddetailsJson = await (async () => {
           console.log('Start ON_SCREEN_FOCUS:16 FETCH_REQUEST');
-          if (prepaidFlag === 'N') {
+          if (prepaidFlag === 'Y') {
             const __result = (
-              await CISAPPApi.paymentHistoryPOST(Constants, {
-                action: paymentBuildString(Constants['name']),
+              await CISAPPApi.prepaidMeterStatuesPOST(Constants, {
+                action: prepaidmeterstatus(meterNo),
               })
             )?.json;
             console.log('Complete ON_SCREEN_FOCUS:16 FETCH_REQUEST', {
-              paymenthistoryjson,
+              prepaiddetailsJson,
             });
             return __result;
           } else {
@@ -228,46 +240,84 @@ line two` ) and will not work with special characters inside of quotes ( example
             );
           }
         })();
-        console.log('Start ON_SCREEN_FOCUS:17 CUSTOM_FUNCTION');
-        paymentBuildString(Constants['name']);
-        console.log('Complete ON_SCREEN_FOCUS:17 CUSTOM_FUNCTION');
-        console.log('Start ON_SCREEN_FOCUS:18 SET_VARIABLE');
-        const valuetuMnIEVq = paymenthistoryjson && paymenthistoryjson[0].data;
-        setViewPaymentDetails(valuetuMnIEVq);
-        const paymentdetailslog = valuetuMnIEVq;
-        console.log('Complete ON_SCREEN_FOCUS:18 SET_VARIABLE');
-        const prepaidJson = await (async () => {
-          console.log('Start ON_SCREEN_FOCUS:19 FETCH_REQUEST');
-          if (prepaidFlag === 'Y') {
-            const __result = (
-              await CISAPPApi.prepaidApiPOST(Constants, { mtrno: meterNo })
-            )?.json;
-            console.log('Complete ON_SCREEN_FOCUS:19 FETCH_REQUEST', {
-              prepaidJson,
-            });
-            return __result;
-          } else {
-            console.log(
-              'Skipped ON_SCREEN_FOCUS:19 FETCH_REQUEST: condition not met'
-            );
-          }
-        })();
-        console.log('Start ON_SCREEN_FOCUS:20 CONSOLE_LOG');
-        console.log(prepaidJson);
-        console.log('Complete ON_SCREEN_FOCUS:20 CONSOLE_LOG');
-        console.log('Start ON_SCREEN_FOCUS:21 EXTRACT_KEY');
-        const availableBalance = (prepaidJson && prepaidJson[0])?.data[0]
-          ?.avail_balance;
-        console.log('Complete ON_SCREEN_FOCUS:21 EXTRACT_KEY', {
-          availableBalance,
+        console.log('Start ON_SCREEN_FOCUS:17 EXTRACT_KEY');
+        const availableBalance2 = (prepaiddetailsJson && prepaiddetailsJson[0])
+          ?.data?.data[0]?.availBalance;
+        console.log('Complete ON_SCREEN_FOCUS:17 EXTRACT_KEY', {
+          availableBalance2,
         });
-        console.log('Start ON_SCREEN_FOCUS:22 CONSOLE_LOG');
-        console.log(availableBalance);
-        console.log('Complete ON_SCREEN_FOCUS:22 CONSOLE_LOG');
+        console.log('Start ON_SCREEN_FOCUS:18 CUSTOM_FUNCTION');
+        const avb = valueFix(availableBalance2);
+        console.log('Complete ON_SCREEN_FOCUS:18 CUSTOM_FUNCTION', { avb });
+        console.log('Start ON_SCREEN_FOCUS:19 SET_VARIABLE');
+        setAvailableBalance(avb);
+        console.log('Complete ON_SCREEN_FOCUS:19 SET_VARIABLE');
+        console.log('Start ON_SCREEN_FOCUS:20 EXTRACT_KEY');
+        const rechargeAmountResult = (
+          prepaiddetailsJson && prepaiddetailsJson[0]
+        )?.data?.data[0]?.rechargeAmount;
+        console.log('Complete ON_SCREEN_FOCUS:20 EXTRACT_KEY', {
+          rechargeAmountResult,
+        });
+        console.log('Start ON_SCREEN_FOCUS:21 SET_VARIABLE');
+        setRechargeAmount(rechargeAmountResult);
+        console.log('Complete ON_SCREEN_FOCUS:21 SET_VARIABLE');
+        console.log('Start ON_SCREEN_FOCUS:22 EXTRACT_KEY');
+        const createDateResult = (prepaiddetailsJson && prepaiddetailsJson[0])
+          ?.data?.data[0]?.createDate;
+        console.log('Complete ON_SCREEN_FOCUS:22 EXTRACT_KEY', {
+          createDateResult,
+        });
         console.log('Start ON_SCREEN_FOCUS:23 SET_VARIABLE');
-        setAvailableBalance(availableBalance);
+        setCreateDate(createDateResult);
         console.log('Complete ON_SCREEN_FOCUS:23 SET_VARIABLE');
-        console.log('Start ON_SCREEN_FOCUS:24 FETCH_REQUEST');
+        console.log('Start ON_SCREEN_FOCUS:24 EXTRACT_KEY');
+        const meterStatusResult = (prepaiddetailsJson && prepaiddetailsJson[0])
+          ?.data?.data[0]?.meterStatus;
+        console.log('Complete ON_SCREEN_FOCUS:24 EXTRACT_KEY', {
+          meterStatusResult,
+        });
+        console.log('Start ON_SCREEN_FOCUS:25 SET_VARIABLE');
+        setMeterStatus(meterStatusResult);
+        console.log('Complete ON_SCREEN_FOCUS:25 SET_VARIABLE');
+        console.log('Start ON_SCREEN_FOCUS:26 FETCH_REQUEST');
+        const paymenthistoryjson = (
+          await CISAPPApi.paymentHistoryPOST(Constants, {
+            action: paymentBuildString(Constants['name']),
+          })
+        )?.json;
+        console.log('Complete ON_SCREEN_FOCUS:26 FETCH_REQUEST', {
+          paymenthistoryjson,
+        });
+        console.log('Start ON_SCREEN_FOCUS:27 CUSTOM_FUNCTION');
+        paymentBuildString(Constants['name']);
+        console.log('Complete ON_SCREEN_FOCUS:27 CUSTOM_FUNCTION');
+        console.log('Start ON_SCREEN_FOCUS:28 SET_VARIABLE');
+        const valueZ4uoYggj = paymenthistoryjson && paymenthistoryjson[0].data;
+        setViewPaymentDetails(valueZ4uoYggj);
+        const paymentdetailslog = valueZ4uoYggj;
+        console.log('Complete ON_SCREEN_FOCUS:28 SET_VARIABLE');
+        console.log('Start ON_SCREEN_FOCUS:29 FETCH_REQUEST');
+        /* hidden 'API Request' action */ console.log(
+          'Complete ON_SCREEN_FOCUS:29 FETCH_REQUEST'
+        );
+        console.log('Start ON_SCREEN_FOCUS:30 CONSOLE_LOG');
+        /* hidden 'Log to Console' action */ console.log(
+          'Complete ON_SCREEN_FOCUS:30 CONSOLE_LOG'
+        );
+        console.log('Start ON_SCREEN_FOCUS:31 EXTRACT_KEY');
+        /* hidden 'Extract Key' action */ console.log(
+          'Complete ON_SCREEN_FOCUS:31 EXTRACT_KEY'
+        );
+        console.log('Start ON_SCREEN_FOCUS:32 CONSOLE_LOG');
+        /* hidden 'Log to Console' action */ console.log(
+          'Complete ON_SCREEN_FOCUS:32 CONSOLE_LOG'
+        );
+        console.log('Start ON_SCREEN_FOCUS:33 SET_VARIABLE');
+        /* hidden 'Set Variable' action */ console.log(
+          'Complete ON_SCREEN_FOCUS:33 SET_VARIABLE'
+        );
+        console.log('Start ON_SCREEN_FOCUS:34 FETCH_REQUEST');
         const RechargeHistoryJson = (
           await CISAPPApi.rechargeHistoryDetailsPOST(Constants, {
             action: (() => {
@@ -277,22 +327,22 @@ line two` ) and will not work with special characters inside of quotes ( example
             })(),
           })
         )?.json;
-        console.log('Complete ON_SCREEN_FOCUS:24 FETCH_REQUEST', {
+        console.log('Complete ON_SCREEN_FOCUS:34 FETCH_REQUEST', {
           RechargeHistoryJson,
         });
-        console.log('Start ON_SCREEN_FOCUS:25 CUSTOM_FUNCTION');
+        console.log('Start ON_SCREEN_FOCUS:35 CUSTOM_FUNCTION');
         rechargeHistoryBuildString(meterNo);
-        console.log('Complete ON_SCREEN_FOCUS:25 CUSTOM_FUNCTION');
-        console.log('Start ON_SCREEN_FOCUS:26 CONSOLE_LOG');
+        console.log('Complete ON_SCREEN_FOCUS:35 CUSTOM_FUNCTION');
+        console.log('Start ON_SCREEN_FOCUS:36 CONSOLE_LOG');
         console.log(RechargeHistoryJson);
-        console.log('Complete ON_SCREEN_FOCUS:26 CONSOLE_LOG');
-        console.log('Start ON_SCREEN_FOCUS:27 EXTRACT_KEY');
+        console.log('Complete ON_SCREEN_FOCUS:36 CONSOLE_LOG');
+        console.log('Start ON_SCREEN_FOCUS:37 EXTRACT_KEY');
         const rechargeData =
           RechargeHistoryJson && RechargeHistoryJson[0].data.data;
-        console.log('Complete ON_SCREEN_FOCUS:27 EXTRACT_KEY', {
+        console.log('Complete ON_SCREEN_FOCUS:37 EXTRACT_KEY', {
           rechargeData,
         });
-        console.log('Start ON_SCREEN_FOCUS:28 SET_VARIABLE');
+        console.log('Start ON_SCREEN_FOCUS:38 SET_VARIABLE');
         setViewRechargeDetails(
           (() => {
             const e = rechargeData;
@@ -300,33 +350,33 @@ line two` ) and will not work with special characters inside of quotes ( example
             return e;
           })()
         );
-        console.log('Complete ON_SCREEN_FOCUS:28 SET_VARIABLE');
-        console.log('Start ON_SCREEN_FOCUS:29 FETCH_REQUEST');
+        console.log('Complete ON_SCREEN_FOCUS:38 SET_VARIABLE');
+        console.log('Start ON_SCREEN_FOCUS:39 FETCH_REQUEST');
         const ManageAccountDetails = (
           await CISAPPApi.manageAccountsPOST(Constants, {
             accountNumber: Constants['name'],
           })
         )?.json;
-        console.log('Complete ON_SCREEN_FOCUS:29 FETCH_REQUEST', {
+        console.log('Complete ON_SCREEN_FOCUS:39 FETCH_REQUEST', {
           ManageAccountDetails,
         });
-        console.log('Start ON_SCREEN_FOCUS:30 CONSOLE_LOG');
+        console.log('Start ON_SCREEN_FOCUS:40 CONSOLE_LOG');
         console.log(ManageAccountDetails);
-        console.log('Complete ON_SCREEN_FOCUS:30 CONSOLE_LOG');
-        console.log('Start ON_SCREEN_FOCUS:31 SET_VARIABLE');
+        console.log('Complete ON_SCREEN_FOCUS:40 CONSOLE_LOG');
+        console.log('Start ON_SCREEN_FOCUS:41 SET_VARIABLE');
         const result = setGlobalVariableValue({
           key: 'manageaccount_picker',
           value: manageAccountFun(
             ManageAccountDetails && ManageAccountDetails[0].data[0].data
           ),
         });
-        console.log('Complete ON_SCREEN_FOCUS:31 SET_VARIABLE', { result });
-        console.log('Start ON_SCREEN_FOCUS:32 CONSOLE_LOG');
+        console.log('Complete ON_SCREEN_FOCUS:41 SET_VARIABLE', { result });
+        console.log('Start ON_SCREEN_FOCUS:42 CONSOLE_LOG');
         console.log(result);
-        console.log('Complete ON_SCREEN_FOCUS:32 CONSOLE_LOG');
-        console.log('Start ON_SCREEN_FOCUS:33 SET_VARIABLE');
+        console.log('Complete ON_SCREEN_FOCUS:42 CONSOLE_LOG');
+        console.log('Start ON_SCREEN_FOCUS:43 SET_VARIABLE');
         setTextInputValue(Constants['name']);
-        console.log('Complete ON_SCREEN_FOCUS:33 SET_VARIABLE');
+        console.log('Complete ON_SCREEN_FOCUS:43 SET_VARIABLE');
       } catch (err) {
         console.error(err);
         error = err.message ?? err;
@@ -570,7 +620,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                           try {
                             /* hidden 'Navigate' action */
                             await WebBrowser.openBrowserAsync(
-                              `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/cportal/#/bltLec/${Constants['name']}`
+                              `https://nccprodcp.quantumtechnologiesltd.com/cportal/#/bltLec/${Constants['name']}`
                             );
                           } catch (err) {
                             console.error(err);
@@ -623,7 +673,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                           try {
                             /* hidden 'Navigate' action */
                             await WebBrowser.openBrowserAsync(
-                              `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/cportal/#/bltLrc/${Constants['name']}`
+                              `https://nccprodcp.quantumtechnologiesltd.com/cportal/#/bltLrc/${Constants['name']}`
                             );
                           } catch (err) {
                             console.error(err);
@@ -1027,6 +1077,7 @@ line two` ) and will not work with special characters inside of quotes ( example
             options={[
               { label: 'English', value: 'en' },
               { label: 'Hindi', value: 'hi' },
+              { label: 'Marathi', value: 'ma' },
             ]}
             placeholder={''}
             style={StyleSheet.applyWidth(
@@ -1170,11 +1221,11 @@ line two` ) and will not work with special characters inside of quotes ( example
                       console.log(Billdetailsjson);
                       buildString(newPickerValue);
 
-                      const value2jHkX3WF =
+                      const value3RUqHhab =
                         Billdetailsjson &&
                         Billdetailsjson[0].data.BillDataJson[0];
-                      setViewBillDetails(value2jHkX3WF);
-                      const Billdetailslog = value2jHkX3WF;
+                      setViewBillDetails(value3RUqHhab);
+                      const Billdetailslog = value3RUqHhab;
                       const paymenthistoryjson = (
                         await CISAPPApi.paymentHistoryPOST(Constants, {
                           action: paymentBuildString(newPickerValue),
@@ -1182,24 +1233,38 @@ line two` ) and will not work with special characters inside of quotes ( example
                       )?.json;
                       paymentBuildString(newPickerValue);
 
-                      const valueWbNtJhdh =
+                      const valueWsq9aara =
                         paymenthistoryjson && paymenthistoryjson[0].data;
-                      setViewPaymentDetails(valueWbNtJhdh);
-                      const paymentdetailslog = valueWbNtJhdh;
-                      const prepaidJson = await (async () => {
+                      setViewPaymentDetails(valueWsq9aara);
+                      const paymentdetailslog = valueWsq9aara;
+                      const prepaiddetailsJson = await (async () => {
                         if (prepaidFlag === 'Y') {
                           return (
-                            await CISAPPApi.prepaidApiPOST(Constants, {
-                              mtrno: meterNo,
+                            await CISAPPApi.prepaidMeterStatuesPOST(Constants, {
+                              action: prepaidmeterstatus(meterNo),
                             })
                           )?.json;
                         }
                       })();
-                      console.log(prepaidJson);
-                      const availableBalance = (prepaidJson && prepaidJson[0])
-                        ?.data[0]?.avail_balance;
-                      console.log(availableBalance);
-                      setAvailableBalance(availableBalance);
+                      console.log(prepaiddetailsJson);
+                      const availableBalance2 = (
+                        prepaiddetailsJson && prepaiddetailsJson[0]
+                      )?.data?.data[0]?.availBalance;
+                      const avb = valueFix(availableBalance2);
+                      console.log(availableBalance2);
+                      setAvailableBalance(avb);
+                      const rechargeAmountResult = (
+                        prepaiddetailsJson && prepaiddetailsJson[0]
+                      )?.data?.data[0]?.rechargeAmount;
+                      setRechargeAmount(rechargeAmountResult);
+                      const createDateResult = (
+                        prepaiddetailsJson && prepaiddetailsJson[0]
+                      )?.data?.data[0]?.createDate;
+                      setCreateDate(createDateResult);
+                      const meterStatusResult = (
+                        prepaiddetailsJson && prepaiddetailsJson[0]
+                      )?.data?.data[0]?.meterStatus;
+                      setMeterStatus(meterStatusResult);
                       const RechargeHistoryJson = await (async () => {
                         if (prepaidFlag === 'Y') {
                           return (
@@ -1376,6 +1441,9 @@ line two` ) and will not work with special characters inside of quotes ( example
                     onPress={() => {
                       try {
                         navigation.navigate('ViewBillScreen', {
+                          billYear: viewBillDetails?.BillYear,
+                          BillIssueDate: viewBillDetails?.BillIssueDate,
+                          netcurrbill: viewBillDetails?.netcurrbill,
                           ledgerAmt: viewBillDetails?.LEDGERAMT,
                           BillDame: viewBillDetails?.BillIssueDate,
                           BillMonth: viewBillDetails?.BillMonth,
@@ -1386,9 +1454,6 @@ line two` ) and will not work with special characters inside of quotes ( example
                           BillAmount: viewBillDetails?.BillAmount,
                           BillDueDate: viewBillDetails?.BillDueDate,
                           BillNo: viewBillDetails?.BillNo,
-                          billYear: viewBillDetails?.BillYear,
-                          BillIssueDate: viewBillDetails?.BillIssueDate,
-                          netcurrbill: viewBillDetails?.netcurrbill,
                         });
                       } catch (err) {
                         console.error(err);
@@ -1415,14 +1480,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                     onPress={() => {
                       try {
                         navigation.navigate('MakePaymentScreen', {
-                          accno: viewBillDetails?.AccNo,
                           BillDame: viewBillDetails?.BillIssueDate,
-                          ledgerAmt: viewBillDetails?.LEDGERAMT,
-                          billYear: viewBillDetails?.BillYear,
-                          Name: viewBillDetails?.Name,
-                          Scno: viewBillDetails?.Scno,
-                          BillMonth: viewBillDetails?.BillMonth,
-                          BillNo: viewBillDetails?.BillNo,
                           BillDueDate: viewBillDetails?.BillDueDate,
                           BillAmount: viewBillDetails?.BillAmount,
                           Arrear: viewBillDetails?.Arrear,
@@ -1430,6 +1488,13 @@ line two` ) and will not work with special characters inside of quotes ( example
                           netcurrbill: viewBillDetails?.netcurrbill,
                           BillIssueDate: viewBillDetails?.BillIssueDate,
                           Billid: viewBillDetails?.BillDetailsId,
+                          accno: viewBillDetails?.AccNo,
+                          BillNo: viewBillDetails?.BillNo,
+                          ledgerAmt: viewBillDetails?.LEDGERAMT,
+                          billYear: viewBillDetails?.BillYear,
+                          Name: viewBillDetails?.Name,
+                          Scno: viewBillDetails?.Scno,
+                          BillMonth: viewBillDetails?.BillMonth,
                         });
                       } catch (err) {
                         console.error(err);
@@ -1466,9 +1531,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                         borderColor: theme.colors['Community_Divider'],
                         borderRadius: 8,
                         borderWidth: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginBottom: 15,
+                        justifyContent: 'space-evenly',
                         marginTop: 5,
                         paddingBottom: 10,
                         paddingLeft: 20,
@@ -1478,53 +1541,159 @@ line two` ) and will not work with special characters inside of quotes ( example
                     dimensions.width
                   )}
                 >
-                  {/* Name */}
-                  <Text
-                    accessible={true}
+                  <View
                     style={StyleSheet.applyWidth(
-                      {
-                        color: theme.colors.strong,
-                        fontFamily: 'Roboto_400Regular',
-                        fontSize: 14,
-                        opacity: 1,
-                        paddingTop: 12,
-                      },
+                      { flexDirection: 'row', justifyContent: 'space-around' },
                       dimensions.width
                     )}
                   >
-                    {transalate(Variables, 'Available balance')}
-                    {'  ₹'}
-                    {availableBalance}
-                  </Text>
-                  {/* Recharge Now */}
-                  <Button
-                    iconPosition={'left'}
-                    onPress={() => {
-                      try {
-                        /* hidden 'Open Browser' action */
-                        /* hidden 'Navigate' action */
-                        navigation.navigate('RechargeScreen', {
-                          serviceConNo: Constants['consumerScNo'],
-                          Name: consumerName,
-                        });
-                      } catch (err) {
-                        console.error(err);
-                      }
-                    }}
+                    {/* Current Balance */}
+                    <View>
+                      <Text
+                        accessible={true}
+                        {...GlobalStyles.TextStyles(theme)['Text'].props}
+                        style={StyleSheet.applyWidth(
+                          StyleSheet.compose(
+                            GlobalStyles.TextStyles(theme)['Text'].style,
+                            { fontFamily: 'Roboto_400Regular' }
+                          ),
+                          dimensions.width
+                        )}
+                      >
+                        {' '}
+                        {transalate(Variables, 'Current Balance')}
+                      </Text>
+                      {/* Text 2 */}
+                      <Text
+                        accessible={true}
+                        {...GlobalStyles.TextStyles(theme)['Text'].props}
+                        style={StyleSheet.applyWidth(
+                          StyleSheet.compose(
+                            GlobalStyles.TextStyles(theme)['Text'].style,
+                            {
+                              fontFamily: 'Roboto_700Bold',
+                              fontSize: 25,
+                              marginTop: 10,
+                            }
+                          ),
+                          dimensions.width
+                        )}
+                      >
+                        {' ₹'}
+                        {availableBalance}
+                      </Text>
+                    </View>
+                    {/* Meter Connected */}
+                    <View>
+                      <View
+                        style={StyleSheet.applyWidth(
+                          {
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          },
+                          dimensions.width
+                        )}
+                      >
+                        <Text
+                          accessible={true}
+                          {...GlobalStyles.TextStyles(theme)['Text'].props}
+                          style={StyleSheet.applyWidth(
+                            StyleSheet.compose(
+                              GlobalStyles.TextStyles(theme)['Text'].style,
+                              { fontFamily: 'Roboto_400Regular' }
+                            ),
+                            dimensions.width
+                          )}
+                        >
+                          {transalate(Variables, 'Meter Connected')}
+                        </Text>
+
+                        <View
+                          style={StyleSheet.applyWidth(
+                            { marginLeft: 5 },
+                            dimensions.width
+                          )}
+                        >
+                          <>
+                            {!(meterStatus === 'CONNECTED') ? null : (
+                              <Touchable>
+                                <Icon
+                                  color={theme.colors['NFT_Time_Green']}
+                                  name={'FontAwesome/check-circle'}
+                                  size={20}
+                                />
+                              </Touchable>
+                            )}
+                          </>
+                          {/* Touchable 2 */}
+                          <>
+                            {!(meterStatus !== 'CONNECTED') ? null : (
+                              <Touchable>
+                                <Icon
+                                  color={theme.colors['NFT_TIME_Red']}
+                                  name={'FontAwesome/minus-circle'}
+                                  size={20}
+                                />
+                              </Touchable>
+                            )}
+                          </>
+                        </View>
+                      </View>
+                      {/* Recharge Now */}
+                      <Button
+                        iconPosition={'left'}
+                        onPress={() => {
+                          try {
+                            /* hidden 'Open Browser' action */
+                            /* hidden 'Navigate' action */
+                            navigation.navigate('RechargeScreen', {
+                              serviceConNo: Constants['consumerScNo'],
+                              Name: consumerName,
+                            });
+                          } catch (err) {
+                            console.error(err);
+                          }
+                        }}
+                        style={StyleSheet.applyWidth(
+                          {
+                            backgroundColor: theme.colors['NFT_Time_Green'],
+                            borderRadius: 16,
+                            fontFamily: 'Roboto_400Regular',
+                            fontSize: 14,
+                            height: 36,
+                            marginTop: 10,
+                            textAlign: 'center',
+                          },
+                          dimensions.width
+                        )}
+                        title={`${transalate(Variables, 'Recharge')}`}
+                      />
+                    </View>
+                  </View>
+                  {/* Updated Time View  */}
+                  <View
                     style={StyleSheet.applyWidth(
-                      {
-                        backgroundColor: theme.colors.primary,
-                        borderRadius: 14,
-                        fontFamily: 'Roboto_400Regular',
-                        fontSize: 16,
-                        height: 36,
-                        textAlign: 'center',
-                        width: '45%',
-                      },
+                      { alignItems: 'center', marginTop: 15 },
                       dimensions.width
                     )}
-                    title={`${transalate(Variables, 'Recharge')}`}
-                  />
+                  >
+                    <Text
+                      accessible={true}
+                      {...GlobalStyles.TextStyles(theme)['Text'].props}
+                      style={StyleSheet.applyWidth(
+                        StyleSheet.compose(
+                          GlobalStyles.TextStyles(theme)['Text'].style,
+                          { fontFamily: 'Roboto_400Regular' }
+                        ),
+                        dimensions.width
+                      )}
+                    >
+                      {transalate(Variables, 'Last recharge of')}
+                      {' ₹'}
+                      {rechargeAmount} {transalate(Variables, 'on')}{' '}
+                      {createDate}
+                    </Text>
+                  </View>
                 </View>
               )}
             </>
@@ -1728,7 +1897,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                       listData?.id ?? listData?.uuid ?? index.toString()
                     }
                     keyboardShouldPersistTaps={'never'}
-                    listKey={'InEN2abu'}
+                    listKey={'BQmbXYxg'}
                     nestedScrollEnabled={false}
                     numColumns={1}
                     onEndReachedThreshold={0.5}
@@ -1829,7 +1998,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                                   const handler = async () => {
                                     try {
                                       await WebBrowser.openBrowserAsync(
-                                        `https://nccmsedcl08-cpfghespuat.quantumtechnologiesltd.com/fgweb/web/json/plugin/com.fluentgrid.cp.plugin.DynamicServiceReportGenerator/service?name=BILL_PAYMENT_RECEIPT&prno=${(() => {
+                                        `https://nccprodcp.quantumtechnologiesltd.com/fgweb/web/json/plugin/com.fluentgrid.cp.plugin.DynamicServiceReportGenerator/service?name=BILL_PAYMENT_RECEIPT&prno=${(() => {
                                           const e = listData?.prno;
                                           console.log(e);
                                           return e;
@@ -2057,7 +2226,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                       listData?.id ?? listData?.uuid ?? index.toString()
                     }
                     keyboardShouldPersistTaps={'never'}
-                    listKey={'hOzUxfQm'}
+                    listKey={'OVcgEsRX'}
                     nestedScrollEnabled={false}
                     numColumns={1}
                     onEndReachedThreshold={0.5}
@@ -2141,7 +2310,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                                 )}
                               >
                                 {'₹'}
-                                {listData?.rechargeAmt}
+                                {valueFix(listData?.rechargeAmt)}
                               </Text>
                             </View>
                             {/* View 3 */}
@@ -2163,7 +2332,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                                 )}
                               >
                                 {'₹'}
-                                {listData?.finalAmt}
+                                {valueFix(listData?.finalAmt)}
                               </Text>
                             </View>
                           </View>

@@ -360,6 +360,7 @@ const RechargeGuestScreen = props => {
                       StyleSheet.compose(
                         GlobalStyles.ButtonStyles(theme)['Submit 2'].style,
                         {
+                          backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                           paddingBottom: 8,
                           paddingLeft: 8,
                           paddingRight: 8,
@@ -399,6 +400,7 @@ const RechargeGuestScreen = props => {
                       StyleSheet.compose(
                         GlobalStyles.ButtonStyles(theme)['Submit 2'].style,
                         {
+                          backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                           paddingBottom: 8,
                           paddingLeft: 8,
                           paddingRight: 8,
@@ -438,6 +440,7 @@ const RechargeGuestScreen = props => {
                       StyleSheet.compose(
                         GlobalStyles.ButtonStyles(theme)['Submit 2'].style,
                         {
+                          backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                           paddingBottom: 8,
                           paddingLeft: 8,
                           paddingRight: 8,
@@ -521,7 +524,7 @@ const RechargeGuestScreen = props => {
                           keyExtractor={(flashListData, index) =>
                             flashListData?.id
                           }
-                          listKey={'qNtlvvXP'}
+                          listKey={'MwUGbb5q'}
                           numColumns={1}
                           onEndReachedThreshold={0.5}
                           renderItem={({ item, index }) => {

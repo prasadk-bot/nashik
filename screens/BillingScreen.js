@@ -57,40 +57,8 @@ const BillingScreen = props => {
   const [textInputValue, setTextInputValue] = React.useState('');
   const [viewBillDetails, setViewBillDetails] = React.useState({});
   const [visibleHindi, setVisibleHindi] = React.useState(false);
-  const buildConsumerString = Scno => {
-    // Type the code for the body of your function or hook here.
-    // Functions can be triggered via Button/Touchable actions.
-    // Hooks are run per ReactJS rules.
-
-    /* String line breaks are accomplished with backticks ( example: `line one
-line two` ) and will not work with special characters inside of quotes ( example: "line one line two" ) */
-
-    console.log(`billing/rest/AccountInfo/${Scno}`);
-    return `billing/rest/AccountInfo/${Scno}`;
-  };
-
-  const manageAccountFun = ManageAccountDetails => {
-    return ManageAccountDetails.map(team => {
-      return { label: team.new_added_account, value: team.new_added_account };
-    });
-  };
-
-  const convertDateTimeToDate = dateTime => {
-    const date = dateTime.split(' ');
-    console.log('date' + date);
-
-    const str = date[0];
-
-    return str;
-  };
-
-  const converDateTimeToDate = dateTime => {
-    const date = dateTime.split(' ');
-    console.log('date' + date);
-
-    const str = date[0];
-
-    return str;
+  const valueFix = val => {
+    return val.toFixed(2);
   };
 
   const dailybillHistoryBuildString = meterNo => {
@@ -100,7 +68,19 @@ line two` ) and will not work with special characters inside of quotes ( example
     //return `/SPM/getAllSpmRechargeHistoryDetailsByMeterNumberOrAccountNo?meterNumberOrAccountNo=${meterNo}`
   };
 
-  const converDateTimeToDate2 = dateTime => {
+  const buildString = Scno => {
+    // Type the code for the body of your function or hook here.
+    // Functions can be triggered via Button/Touchable actions.
+    // Hooks are run per ReactJS rules.
+
+    /* String line breaks are accomplished with backticks ( example: `line one
+line two` ) and will not work with special characters inside of quotes ( example: "line one line two" ) */
+
+    console.log(`billing/rest/getBillDataWss/${Scno}`);
+    return `billing/rest/getBillDataWss/${Scno}`;
+  };
+
+  const convertDateTimeToDate = dateTime => {
     const date = dateTime.split(' ');
     console.log('date' + date);
 
@@ -129,7 +109,21 @@ line two` ) and will not work with special characters inside of quotes ( example
     return monthName;
   };
 
-  const buildString = Scno => {
+  const converDateTimeToDate2 = dateTime => {
+    const date = dateTime.split(' ');
+    console.log('date' + date);
+
+    const str = date[0];
+
+    return str;
+  };
+
+  const prepaidmeterstatus = metetno => {
+    console.log(`/SPM/getCurrentBalance?meterNumberOrAccountNo=${metetno}`);
+    return `/SPM/getCurrentBalance?meterNumberOrAccountNo=${metetno}`;
+  };
+
+  const buildConsumerString = Scno => {
     // Type the code for the body of your function or hook here.
     // Functions can be triggered via Button/Touchable actions.
     // Hooks are run per ReactJS rules.
@@ -137,8 +131,14 @@ line two` ) and will not work with special characters inside of quotes ( example
     /* String line breaks are accomplished with backticks ( example: `line one
 line two` ) and will not work with special characters inside of quotes ( example: "line one line two" ) */
 
-    console.log(`billing/rest/getBillDataWss/${Scno}`);
-    return `billing/rest/getBillDataWss/${Scno}`;
+    console.log(`billing/rest/AccountInfo/${Scno}`);
+    return `billing/rest/AccountInfo/${Scno}`;
+  };
+
+  const manageAccountFun = ManageAccountDetails => {
+    return ManageAccountDetails.map(team => {
+      return { label: team.new_added_account, value: team.new_added_account };
+    });
   };
 
   const buildBillingString = Scno => {
@@ -158,6 +158,15 @@ line two` ) and will not work with special characters inside of quotes ( example
       `/SPM/getAllSpmMonthlyBillDetailsTByAccountNoOrMeterNumber?accountNoOrMeterNumber=${meterNo}`
     );
     return `/SPM/getAllSpmMonthlyBillDetailsTByAccountNoOrMeterNumber?accountNoOrMeterNumber=${meterNo}`;
+  };
+
+  const converDateTimeToDate = dateTime => {
+    const date = dateTime.split(' ');
+    console.log('date' + date);
+
+    const str = date[0];
+
+    return str;
   };
   const isFocused = useIsFocused();
   React.useEffect(() => {
@@ -194,10 +203,10 @@ line two` ) and will not work with special characters inside of quotes ( example
         buildString(Constants['name']);
         console.log(Billdetailsjson);
 
-        const valuelEeWCPaC =
+        const valuetilKYuer =
           Billdetailsjson && Billdetailsjson[0].data.BillDataJson[0];
-        setViewBillDetails(valuelEeWCPaC);
-        const Billdetailslog = valuelEeWCPaC;
+        setViewBillDetails(valuetilKYuer);
+        const Billdetailslog = valuetilKYuer;
         const BillingHistoryJson = await (async () => {
           if (prepaidFlag === 'N') {
             return (
@@ -210,22 +219,25 @@ line two` ) and will not work with special characters inside of quotes ( example
         buildBillingString(Constants['name']);
         console.log(BillingHistoryJson);
 
-        const valueMivussO5 =
+        const value69TWmUdq =
           BillingHistoryJson && BillingHistoryJson[0].data.BillDataJson;
-        setBillingHistoryScreen(valueMivussO5);
-        const billHistory = valueMivussO5;
-        const prepaidJson = await (async () => {
+        setBillingHistoryScreen(value69TWmUdq);
+        const billHistory = value69TWmUdq;
+        const prepaiddetailsJson = await (async () => {
           if (prepaidFlag === 'Y') {
             return (
-              await CISAPPApi.prepaidApiPOST(Constants, { mtrno: meterNo })
+              await CISAPPApi.prepaidMeterStatuesPOST(Constants, {
+                action: prepaidmeterstatus(meterNo),
+              })
             )?.json;
           }
         })();
-        console.log(prepaidJson);
-        const availableBalance = (prepaidJson && prepaidJson[0])?.data[0]
-          ?.avail_balance;
-        console.log(availableBalance);
-        setAvailableBalance(availableBalance);
+        console.log(prepaiddetailsJson);
+        const availableBalance2 = (prepaiddetailsJson && prepaiddetailsJson[0])
+          ?.data?.data[0]?.availBalance;
+        const avb = valueFix(availableBalance2);
+        console.log(availableBalance2);
+        setAvailableBalance(avb);
         const prepaidBillingHistoryJson = await (async () => {
           if (prepaidFlag === 'Y') {
             return (
@@ -261,10 +273,10 @@ line two` ) and will not work with special characters inside of quotes ( example
         )?.json;
         console.log(ManageAccountDetails);
 
-        const valueJKD9CHaM =
+        const valueUMVyajzU =
           ManageAccountDetails && ManageAccountDetails[0].data[0].data;
-        setManageAccount(valueJKD9CHaM);
-        const result = valueJKD9CHaM;
+        setManageAccount(valueUMVyajzU);
+        const result = valueUMVyajzU;
         console.log(result);
         setTextInputValue(Constants['name']);
       } catch (err) {
@@ -504,7 +516,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                           try {
                             /* hidden 'Navigate' action */
                             await WebBrowser.openBrowserAsync(
-                              `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/cportal/#/bltLec/${Constants['name']}`
+                              `https://nccprodcp.quantumtechnologiesltd.com/cportal/#/bltLec/${Constants['name']}`
                             );
                           } catch (err) {
                             console.error(err);
@@ -557,7 +569,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                           try {
                             /* hidden 'Navigate' action */
                             await WebBrowser.openBrowserAsync(
-                              `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/cportal/#/bltLrc/${Constants['name']}`
+                              `https://nccprodcp.quantumtechnologiesltd.com/cportal/#/bltLrc/${Constants['name']}`
                             );
                           } catch (err) {
                             console.error(err);
@@ -968,6 +980,7 @@ line two` ) and will not work with special characters inside of quotes ( example
               options={[
                 { label: 'English', value: 'en' },
                 { label: 'Hindi', value: 'hi' },
+                { label: 'Marathi', value: 'ma' },
               ]}
               placeholder={''}
               style={StyleSheet.applyWidth(
@@ -1101,11 +1114,11 @@ line two` ) and will not work with special characters inside of quotes ( example
                         buildString(newPickerValue);
                         console.log(Billdetailsjson);
 
-                        const valueT9ahCqbr =
+                        const valueD9YeYajU =
                           Billdetailsjson &&
                           Billdetailsjson[0].data.BillDataJson[0];
-                        setViewBillDetails(valueT9ahCqbr);
-                        const Billdetailslog = valueT9ahCqbr;
+                        setViewBillDetails(valueD9YeYajU);
+                        const Billdetailslog = valueD9YeYajU;
                         const BillingHistoryJson = (
                           await CISAPPApi.billingHistoryPOST(Constants, {
                             action: buildBillingString(newPickerValue),
@@ -1114,11 +1127,11 @@ line two` ) and will not work with special characters inside of quotes ( example
                         buildBillingString(newPickerValue);
                         console.log(BillingHistoryJson);
 
-                        const valuenW5Txbki =
+                        const valueRz5QjLS9 =
                           BillingHistoryJson &&
                           BillingHistoryJson[0].data.BillDataJson;
-                        setBillingHistoryScreen(valuenW5Txbki);
-                        const billHistory = valuenW5Txbki;
+                        setBillingHistoryScreen(valueRz5QjLS9);
+                        const billHistory = valueRz5QjLS9;
                         const prepaidJson = await (async () => {
                           if (prepaidFlag === 'Y') {
                             return (
@@ -1328,6 +1341,9 @@ line two` ) and will not work with special characters inside of quotes ( example
                       onPress={() => {
                         try {
                           navigation.navigate('ViewBillScreen', {
+                            billYear: viewBillDetails?.BillYear,
+                            BillIssueDate: viewBillDetails?.BillIssueDate,
+                            netcurrbill: viewBillDetails?.netcurrbill,
                             ledgerAmt: viewBillDetails?.LEDGERAMT,
                             BillDame: viewBillDetails?.BillIssueDate,
                             BillMonth: viewBillDetails?.BillMonth,
@@ -1338,9 +1354,6 @@ line two` ) and will not work with special characters inside of quotes ( example
                             BillAmount: viewBillDetails?.BillAmount,
                             BillDueDate: viewBillDetails?.BillDueDate,
                             BillNo: viewBillDetails?.BillNo,
-                            billYear: viewBillDetails?.BillYear,
-                            BillIssueDate: viewBillDetails?.BillIssueDate,
-                            netcurrbill: viewBillDetails?.netcurrbill,
                           });
                         } catch (err) {
                           console.error(err);
@@ -1367,14 +1380,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                       onPress={() => {
                         try {
                           navigation.navigate('MakePaymentScreen', {
-                            accno: viewBillDetails?.AccNo,
                             BillDame: viewBillDetails?.BillIssueDate,
-                            ledgerAmt: viewBillDetails?.LEDGERAMT,
-                            billYear: viewBillDetails?.BillYear,
-                            Name: viewBillDetails?.Name,
-                            Scno: viewBillDetails?.Scno,
-                            BillMonth: viewBillDetails?.BillMonth,
-                            BillNo: viewBillDetails?.BillNo,
                             BillDueDate: viewBillDetails?.BillDueDate,
                             BillAmount: viewBillDetails?.BillAmount,
                             Arrear: viewBillDetails?.Arrear,
@@ -1382,6 +1388,13 @@ line two` ) and will not work with special characters inside of quotes ( example
                             netcurrbill: viewBillDetails?.netcurrbill,
                             BillIssueDate: viewBillDetails?.BillIssueDate,
                             Billid: viewBillDetails?.BillDetailsId,
+                            accno: viewBillDetails?.AccNo,
+                            BillNo: viewBillDetails?.BillNo,
+                            ledgerAmt: viewBillDetails?.LEDGERAMT,
+                            billYear: viewBillDetails?.BillYear,
+                            Name: viewBillDetails?.Name,
+                            Scno: viewBillDetails?.Scno,
+                            BillMonth: viewBillDetails?.BillMonth,
                           });
                         } catch (err) {
                           console.error(err);
@@ -1401,87 +1414,6 @@ line two` ) and will not work with special characters inside of quotes ( example
                         dimensions.width
                       )}
                       title={`${transalate(Variables, 'Pay Now')}`}
-                    />
-                  </View>
-                )}
-              </>
-              {/* prepaid */}
-              <>
-                {!(prepaidFlag === 'Y') ? null : (
-                  <View
-                    {...GlobalStyles.ViewStyles(theme)['card'].props}
-                    style={StyleSheet.applyWidth(
-                      StyleSheet.compose(
-                        GlobalStyles.ViewStyles(theme)['card'].style,
-                        {
-                          borderColor: theme.colors['Community_Border'],
-                          borderRadius: 8,
-                          borderWidth: 1,
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          marginBottom: 15,
-                          marginTop: 5,
-                          paddingBottom: 10,
-                          paddingLeft: 20,
-                          paddingTop: 10,
-                        }
-                      ),
-                      dimensions.width
-                    )}
-                  >
-                    <View
-                      style={StyleSheet.applyWidth(
-                        { alignSelf: 'auto' },
-                        dimensions.width
-                      )}
-                    >
-                      {/* Amount  */}
-                      <Text
-                        accessible={true}
-                        style={StyleSheet.applyWidth(
-                          {
-                            color: theme.colors.strong,
-                            fontFamily: 'Roboto_700Bold',
-                            fontSize: 14,
-                            opacity: 1,
-                            paddingTop: 12,
-                          },
-                          dimensions.width
-                        )}
-                      >
-                        {transalate(Variables, 'Available balance')}
-                        {': ₹'}
-                        {availableBalance}
-                      </Text>
-                    </View>
-                    {/* Recharge Now */}
-                    <Button
-                      iconPosition={'left'}
-                      onPress={() => {
-                        try {
-                          /* hidden 'Open Browser' action */
-                          /* hidden 'Navigate' action */
-                          navigation.navigate('RechargeScreen', {
-                            serviceConNo: Constants['consumerScNo'],
-                            Name: consumerName,
-                          });
-                        } catch (err) {
-                          console.error(err);
-                        }
-                      }}
-                      style={StyleSheet.applyWidth(
-                        {
-                          backgroundColor: theme.colors['Primary'],
-                          borderRadius: 14,
-                          fontFamily: 'Roboto_400Regular',
-                          fontSize: 16,
-                          height: 36,
-                          textAlign: 'center',
-                          width: '45%',
-                        },
-                        dimensions.width
-                      )}
-                      title={`${transalate(Variables, 'Recharge')}`}
                     />
                   </View>
                 )}
@@ -2255,7 +2187,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                         index.toString()
                       }
                       keyboardShouldPersistTaps={'never'}
-                      listKey={'TgOrqYRU'}
+                      listKey={'M78KbN6n'}
                       nestedScrollEnabled={false}
                       numColumns={1}
                       onEndReachedThreshold={0.5}
@@ -2327,11 +2259,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                                       )}
                                     >
                                       {'₹'}
-                                      {(() => {
-                                        const e = prepaidListData?.totalChgD;
-                                        console.log(e);
-                                        return e;
-                                      })()}
+                                      {valueFix(prepaidListData?.totalChgD)}
                                     </Text>
                                   </View>
                                 </View>
@@ -2794,7 +2722,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                         index.toString()
                       }
                       keyboardShouldPersistTaps={'never'}
-                      listKey={'BUQNr8Bc'}
+                      listKey={'azguFmfL'}
                       nestedScrollEnabled={false}
                       numColumns={1}
                       onEndReachedThreshold={0.5}
@@ -2868,11 +2796,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                                       )}
                                     >
                                       {'₹'}
-                                      {(() => {
-                                        const e = prepaidListData?.totalCharge;
-                                        console.log(e);
-                                        return e;
-                                      })()}
+                                      {valueFix(prepaidListData?.totalCharge)}
                                     </Text>
                                   </View>
                                   {/* download */}
@@ -2890,7 +2814,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                                         const handler = async () => {
                                           try {
                                             await WebBrowser.openBrowserAsync(
-                                              `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/fgweb/web/json/plugin/com.fluentgrid.cp.plugin.DynamicServiceReportGenerator/service?name=JBVNL_PREPAID_BILL&month=${(() => {
+                                              `https://nccprodcp.quantumtechnologiesltd.com/fgweb/web/json/plugin/com.fluentgrid.cp.plugin.DynamicServiceReportGenerator/service?name=JBVNL_PREPAID_BILL&month=${(() => {
                                                 const e =
                                                   prepaidListData?.billmonth;
                                                 console.log(e);
@@ -3360,7 +3284,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                         index.toString()
                       }
                       keyboardShouldPersistTaps={'never'}
-                      listKey={'mKOdwFJs'}
+                      listKey={'l4D1WnkI'}
                       nestedScrollEnabled={false}
                       numColumns={1}
                       onEndReachedThreshold={0.5}
@@ -3456,7 +3380,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                                         const handler = async () => {
                                           try {
                                             await WebBrowser.openBrowserAsync(
-                                              `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/fgweb/web/json/plugin/com.fluentgrid.cp.plugin.DynamicServiceReportGenerator/service?name=POSTPAID_BILL&month=${postpaidListData?.BillMonth}&year=${postpaidListData?.BillYear}&scno=${Constants['name']}`
+                                              `https://nccprodcp.quantumtechnologiesltd.com/fgweb/web/json/plugin/com.fluentgrid.cp.plugin.DynamicServiceReportGenerator/service?name=POSTPAID_BILL&month=${postpaidListData?.BillMonth}&year=${postpaidListData?.BillYear}&scno=${Constants['name']}`
                                             );
                                           } catch (err) {
                                             console.error(err);

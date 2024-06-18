@@ -49,11 +49,6 @@ const MakePaymentScreen = props => {
   const [radioButtonGroupValue2, setRadioButtonGroupValue2] =
     React.useState('');
   const [ucode, setUcode] = React.useState('');
-  const buildConsumerString = Scno => {
-    console.log(`billing/rest/AccountInfo/${Scno}`);
-    return `billing/rest/AccountInfo/${Scno}`;
-  };
-
   const validateAmount = amount => {
     var errorMessage = null;
     var amountValue = null;
@@ -85,6 +80,24 @@ const MakePaymentScreen = props => {
     return monthName;
   };
 
+  const buildConsumerString = Scno => {
+    console.log(`billing/rest/AccountInfo/${Scno}`);
+    return `billing/rest/AccountInfo/${Scno}`;
+  };
+
+  const validateEmail = email => {
+    var errorMessage = null;
+    if (!email.trim()) {
+      errorMessage = 'Email is required';
+    } else {
+      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+      if (!emailRegex.test(email)) {
+        errorMessage = 'Invalid email';
+      }
+    }
+    return errorMessage;
+  };
+
   const validateMobileNo = mobileNo => {
     var errorMessage = null;
     var mobileNumber = null;
@@ -102,19 +115,6 @@ const MakePaymentScreen = props => {
     } else if (mobileNumber.length < 10) {
       console.log('less' + mobileNumber.length);
       errorMessage = 'Enter 10 digit mobile number';
-    }
-    return errorMessage;
-  };
-
-  const validateEmail = email => {
-    var errorMessage = null;
-    if (!email.trim()) {
-      errorMessage = 'Email is required';
-    } else {
-      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-      if (!emailRegex.test(email)) {
-        errorMessage = 'Invalid email';
-      }
     }
     return errorMessage;
   };
@@ -1104,7 +1104,7 @@ const MakePaymentScreen = props => {
                             keyExtractor={(flashListData, index) =>
                               flashListData?.id
                             }
-                            listKey={'3WMq5R3j'}
+                            listKey={'5HU0evHC'}
                             numColumns={1}
                             onEndReachedThreshold={0.5}
                             renderItem={({ item, index }) => {

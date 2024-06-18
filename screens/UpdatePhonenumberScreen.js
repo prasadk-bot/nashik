@@ -61,6 +61,16 @@ const UpdatePhonenumberScreen = props => {
     return errorMessage;
   };
 
+  const passwordUpdate = (newPhn, oldPhn) => {
+    console.log('Password' + oldPhn);
+    console.log('confirmPassword' + newPhn);
+    let customErrorMessage = null;
+    if (oldPhn == newPhn) {
+      customErrorMessage = 'Old Phone Number and New Phnone Number not same';
+      return customErrorMessage;
+    }
+  };
+
   const processErrorMessage = msg => {
     const scheme = {
       msg1: 'Password Changed Successfully',
@@ -105,16 +115,6 @@ const UpdatePhonenumberScreen = props => {
     };
 
     return scheme[msg];
-  };
-
-  const passwordUpdate = (newPhn, oldPhn) => {
-    console.log('Password' + oldPhn);
-    console.log('confirmPassword' + newPhn);
-    let customErrorMessage = null;
-    if (oldPhn == newPhn) {
-      customErrorMessage = 'Old Phone Number and New Phnone Number not same';
-      return customErrorMessage;
-    }
   };
 
   return (
@@ -816,7 +816,11 @@ const UpdatePhonenumberScreen = props => {
             style={StyleSheet.applyWidth(
               StyleSheet.compose(
                 GlobalStyles.ButtonStyles(theme)['Submit'].style,
-                { borderRadius: 14, fontSize: 16 }
+                {
+                  backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
+                  borderRadius: 14,
+                  fontSize: 16,
+                }
               ),
               dimensions.width
             )}

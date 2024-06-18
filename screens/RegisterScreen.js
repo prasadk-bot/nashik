@@ -51,14 +51,6 @@ const RegisterScreen = props => {
   const [textInputValue, setTextInputValue] = React.useState('');
   const [visiblePassword, setVisiblePassword] = React.useState(false);
   const [visiblePassword2, setVisiblePassword2] = React.useState(false);
-  const validateScno = scNo => {
-    var errorMessage = null;
-    if (!scNo.trim()) {
-      errorMessage = 'Service connection number is required';
-    }
-    return errorMessage;
-  };
-
   const validateEmail = email => {
     var errorMessage = null;
     if (!email.trim()) {
@@ -91,24 +83,6 @@ const RegisterScreen = props => {
       errorMessage = 'Enter 10 digit mobile number';
     }
     return errorMessage;
-  };
-
-  const validateConfirmPassword = confirmPassword => {
-    var errorMessage = null;
-    if (!confirmPassword.trim()) {
-      errorMessage = 'Confirm password is required';
-    }
-    return errorMessage;
-  };
-
-  const passwordUpdate = (pwd, confirmPwd) => {
-    console.log('Password' + pwd);
-    console.log('confirmPassword' + confirmPwd);
-    let customErrorMessage = null;
-    if (pwd != confirmPwd) {
-      customErrorMessage = 'Password and Confirm Password did not match';
-      return customErrorMessage;
-    }
   };
 
   const validatePassword = password => {
@@ -177,7 +151,7 @@ const RegisterScreen = props => {
       msg3: 'OTP send SuccessFully TO the existing Mobile',
       msg4: 'Input password details not same as in DB !',
       msg5: 'The user is already registered',
-      // "msg6" : "Consumer already registered",
+      msg6: 'Consumer already registered',
       msg6: 'You are not smart meter consumer',
       msg7: 'Invalid OTP',
       msg8: 'Problem while creating an user',
@@ -217,6 +191,32 @@ const RegisterScreen = props => {
     };
 
     return scheme[msg];
+  };
+
+  const validateScno = scNo => {
+    var errorMessage = null;
+    if (!scNo.trim()) {
+      errorMessage = 'Service connection number is required';
+    }
+    return errorMessage;
+  };
+
+  const validateConfirmPassword = confirmPassword => {
+    var errorMessage = null;
+    if (!confirmPassword.trim()) {
+      errorMessage = 'Confirm password is required';
+    }
+    return errorMessage;
+  };
+
+  const passwordUpdate = (pwd, confirmPwd) => {
+    console.log('Password' + pwd);
+    console.log('confirmPassword' + confirmPwd);
+    let customErrorMessage = null;
+    if (pwd != confirmPwd) {
+      customErrorMessage = 'Password and Confirm Password did not match';
+      return customErrorMessage;
+    }
   };
 
   return (
@@ -313,7 +313,7 @@ const RegisterScreen = props => {
             resizeMode={'cover'}
             source={Images.Nashik}
             style={StyleSheet.applyWidth(
-              { height: 76, marginBottom: 10, marginTop: 10, width: 234 },
+              { height: 76, marginBottom: 10, marginTop: 10, width: 236 },
               dimensions.width
             )}
           />
@@ -931,10 +931,10 @@ const RegisterScreen = props => {
                     return;
                   }
                   navigation.navigate('RegistrationOTPSubmitScreen', {
-                    userenterscno: serviceconnectionnumber,
                     userenterpassword: password,
                     Userentermobile: Mobileno,
                     userenteremail: email,
+                    userenterscno: serviceconnectionnumber,
                   });
                 } catch (err) {
                   console.error(err);
@@ -944,6 +944,7 @@ const RegisterScreen = props => {
             }}
             style={StyleSheet.applyWidth(
               {
+                backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                 borderRadius: 14,
                 fontFamily: 'Roboto_400Regular',
                 fontSize: 15,

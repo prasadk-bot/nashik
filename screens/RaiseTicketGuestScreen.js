@@ -50,17 +50,6 @@ const RaiseTicketGuestScreen = props => {
   const [textAreaValue, setTextAreaValue] = React.useState('');
   const [textInputValue, setTextInputValue] = React.useState('');
   const [textareacomplints, setTextareacomplints] = React.useState('');
-  const complaintSubCategoryOptions = subCategoryJson => {
-    return subCategoryJson.map(team => {
-      return { label: team.RequestNature, value: team.id };
-    });
-  };
-
-  const buildSubCategory = categoryValue => {
-    console.log(`csc/rest/RequestMWhr/${categoryValue}`);
-    return `csc/rest/RequestMWhr/${categoryValue}`;
-  };
-
   const subCategoryOptions = subCatFun => {
     return subCatFun.map(team => {
       return { label: team.RequestNature, value: team.id };
@@ -88,6 +77,17 @@ const RaiseTicketGuestScreen = props => {
 
     /* String line breaks are accomplished with backticks ( example: `line one
 line two` ) and will not work with special characters inside of quotes ( example: "line one line two" ) */
+  };
+
+  const complaintSubCategoryOptions = subCategoryJson => {
+    return subCategoryJson.map(team => {
+      return { label: team.RequestNature, value: team.id };
+    });
+  };
+
+  const buildSubCategory = categoryValue => {
+    console.log(`csc/rest/RequestMWhr/${categoryValue}`);
+    return `csc/rest/RequestMWhr/${categoryValue}`;
   };
   const isFocused = useIsFocused();
   React.useEffect(() => {
@@ -551,6 +551,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                 }}
                 style={StyleSheet.applyWidth(
                   {
+                    backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                     borderRadius: 14,
                     fontFamily: 'Roboto_400Regular',
                     fontSize: 16,

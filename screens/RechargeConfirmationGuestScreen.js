@@ -149,7 +149,7 @@ const RechargeConfirmationGuestScreen = props => {
             disabledOpacity={0.8}
             style={StyleSheet.applyWidth(
               {
-                backgroundColor: theme.colors.primary,
+                backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                 borderRadius: 14,
                 fontFamily: 'Roboto_400Regular',
                 fontSize: 16,

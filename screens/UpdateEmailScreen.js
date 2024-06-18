@@ -453,7 +453,11 @@ const UpdateEmailScreen = props => {
             style={StyleSheet.applyWidth(
               StyleSheet.compose(
                 GlobalStyles.ButtonStyles(theme)['Submit'].style,
-                { borderRadius: 14, fontSize: 16 }
+                {
+                  backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
+                  borderRadius: 14,
+                  fontSize: 16,
+                }
               ),
               dimensions.width
             )}

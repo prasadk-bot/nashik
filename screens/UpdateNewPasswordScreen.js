@@ -38,16 +38,6 @@ const UpdateNewPasswordScreen = props => {
   const [updatePasswordErrorMgs, setUpdatePasswordErrorMgs] =
     React.useState('');
   const [visiblePassword, setVisiblePassword] = React.useState(false);
-  const passwordUpdate = (newPwd, confirmPwd) => {
-    console.log('newPassword' + newPwd);
-    console.log('confirmPassword' + confirmPwd);
-    let customErrorMessage = null;
-    if (newPwd != confirmPwd) {
-      customErrorMessage = 'Password and Confirm Password did not match';
-      return customErrorMessage;
-    }
-  };
-
   const processErrorMessage = msg => {
     const scheme = {
       msg1: 'Password Changed Successfully',
@@ -94,6 +84,24 @@ const UpdateNewPasswordScreen = props => {
     };
 
     return scheme[msg];
+  };
+
+  const passwordUpdate = (newPwd, confirmPwd) => {
+    console.log('newPassword' + newPwd);
+    console.log('confirmPassword' + confirmPwd);
+    let customErrorMessage = null;
+    if (newPwd != confirmPwd) {
+      customErrorMessage = 'Password and Confirm Password did not match';
+      return customErrorMessage;
+    }
+  };
+
+  const validateConfirmpassword = password => {
+    var errorMessage = null;
+    if (!password.trim()) {
+      errorMessage = 'Confirm password is required';
+    }
+    return errorMessage;
   };
 
   const validateUpdatepassword = password => {
@@ -153,14 +161,6 @@ const UpdateNewPasswordScreen = props => {
       //return "Password is valid.";
     }
     //return "Password is required";
-  };
-
-  const validateConfirmpassword = password => {
-    var errorMessage = null;
-    if (!password.trim()) {
-      errorMessage = 'Confirm password is required';
-    }
-    return errorMessage;
   };
 
   return (
@@ -583,6 +583,7 @@ const UpdateNewPasswordScreen = props => {
           }}
           style={StyleSheet.applyWidth(
             {
+              backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
               borderRadius: 14,
               fontFamily: 'Roboto_400Regular',
               fontSize: 16,

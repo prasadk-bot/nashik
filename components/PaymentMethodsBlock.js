@@ -60,7 +60,7 @@ const PaymentMethodsBlock = props => {
                   keyExtractor={(flashListData, index) =>
                     flashListData?.id ?? flashListData?.uuid ?? index.toString()
                   }
-                  listKey={'ru7PbRZJ'}
+                  listKey={'rV1QrXJn'}
                   numColumns={1}
                   onEndReachedThreshold={0.5}
                   renderItem={({ item, index }) => {

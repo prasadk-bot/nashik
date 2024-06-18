@@ -52,7 +52,32 @@ const CheckTicketStatusScreen = props => {
   const [remarks, setRemarks] = React.useState('');
   const [tableData, setTableData] = React.useState([]);
   const [textInputValue, setTextInputValue] = React.useState('');
-  const [refreshingYLRjWfHk, setRefreshingYLRjWfHk] = React.useState(false);
+  const [refreshinglN4JWk1q, setRefreshinglN4JWk1q] = React.useState(false);
+  const checkticketColorChange = requestStatus => {
+    let color = 'black';
+    let textStatus = null;
+    if (requestStatus === 'Rectified' || requestStatus === 'Verification') {
+      textStatus = requestStatus;
+      color = 'orange';
+    } else if (
+      requestStatus === 'Inspection Pending' ||
+      requestStatus === 'Pending For Approval AAO' ||
+      requestStatus === 'Pending'
+    ) {
+      textStatus = requestStatus;
+      color = 'red';
+    } else if (requestStatus === 'Closed') {
+      textStatus = requestStatus;
+      color = 'green';
+    }
+    return color;
+  };
+
+  const getticketstatusGuestFun = regNo => {
+    console.log(`csc/rest/RequestTWhr/${regNo}`);
+    return `csc/rest/RequestTWhr/${regNo}`;
+  };
+
   const getticketdeatils = consId => {
     console.log(`${consId}`);
     return `${consId}`;
@@ -78,31 +103,6 @@ const CheckTicketStatusScreen = props => {
   const buildConsumerString = Scno => {
     console.log(`billing/rest/AccountInfo/${Scno}`);
     return `billing/rest/AccountInfo/${Scno}`;
-  };
-
-  const checkticketColorChange = requestStatus => {
-    let color = 'black';
-    let textStatus = null;
-    if (requestStatus === 'Rectified' || requestStatus === 'Verification') {
-      textStatus = requestStatus;
-      color = 'orange';
-    } else if (
-      requestStatus === 'Inspection Pending' ||
-      requestStatus === 'Pending For Approval AAO' ||
-      requestStatus === 'Pending'
-    ) {
-      textStatus = requestStatus;
-      color = 'red';
-    } else if (requestStatus === 'Closed') {
-      textStatus = requestStatus;
-      color = 'green';
-    }
-    return color;
-  };
-
-  const getticketstatusGuestFun = regNo => {
-    console.log(`csc/rest/RequestTWhr/${regNo}`);
-    return `csc/rest/RequestTWhr/${regNo}`;
   };
   const isFocused = useIsFocused();
   React.useEffect(() => {
@@ -617,7 +617,7 @@ const CheckTicketStatusScreen = props => {
                       listData?.id ?? listData?.uuid ?? index.toString()
                     }
                     keyboardShouldPersistTaps={'never'}
-                    listKey={'tbfg5hN7'}
+                    listKey={'sKL7prLw'}
                     nestedScrollEnabled={false}
                     numColumns={1}
                     onEndReachedThreshold={0.5}
@@ -778,13 +778,13 @@ const CheckTicketStatusScreen = props => {
                                             onPress={() => {
                                               const handler = async () => {
                                                 try {
-                                                  const valuegnf5KycH =
+                                                  const valuee2azirdY =
                                                     listData?.RegistrationNo;
                                                   setCheckticketRegisterNo(
-                                                    valuegnf5KycH
+                                                    valuee2azirdY
                                                   );
                                                   const registerNo =
-                                                    valuegnf5KycH;
+                                                    valuee2azirdY;
                                                   const getTicketstatusJson = (
                                                     await CISAPPApi.getticketstatusPOST(
                                                       Constants,
@@ -876,21 +876,21 @@ const CheckTicketStatusScreen = props => {
                       listData?.id ?? listData?.uuid ?? index.toString()
                     }
                     keyboardShouldPersistTaps={'never'}
-                    listKey={'YLRjWfHk'}
+                    listKey={'lN4JWk1q'}
                     nestedScrollEnabled={false}
                     numColumns={1}
                     onEndReachedThreshold={0.5}
                     refreshControl={
                       <RefreshControl
-                        refreshing={refreshingYLRjWfHk}
+                        refreshing={refreshinglN4JWk1q}
                         onRefresh={() => {
                           try {
-                            setRefreshingYLRjWfHk(true);
+                            setRefreshinglN4JWk1q(true);
                             console.log();
-                            setRefreshingYLRjWfHk(false);
+                            setRefreshinglN4JWk1q(false);
                           } catch (err) {
                             console.error(err);
-                            setRefreshingYLRjWfHk(false);
+                            setRefreshinglN4JWk1q(false);
                           }
                         }}
                       />
@@ -1038,12 +1038,12 @@ const CheckTicketStatusScreen = props => {
                                         onPress={() => {
                                           const handler = async () => {
                                             try {
-                                              const valueH3qREM2J =
+                                              const valuelDr2Wiab =
                                                 listData?.RegistrationNo;
                                               setCheckticketRegisterNo(
-                                                valueH3qREM2J
+                                                valuelDr2Wiab
                                               );
-                                              const registerNo = valueH3qREM2J;
+                                              const registerNo = valuelDr2Wiab;
                                               const getTicketstatusJson = (
                                                 await CISAPPApi.getticketstatusPOST(
                                                   Constants,

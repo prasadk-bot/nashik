@@ -120,7 +120,7 @@ const DownloadsScreen = props => {
                   listData?.id ?? listData?.uuid ?? index.toString()
                 }
                 keyboardShouldPersistTaps={'never'}
-                listKey={'mYn6vaOk'}
+                listKey={'V39BGbtX'}
                 nestedScrollEnabled={false}
                 numColumns={1}
                 onEndReachedThreshold={0.5}
@@ -184,10 +184,10 @@ const DownloadsScreen = props => {
                                 onPress={() => {
                                   const handler = async () => {
                                     try {
-                                      const valueMdqAJAAb =
+                                      const valuelOhiNDpf =
                                         listData?.attachment;
-                                      setDownloadLink(valueMdqAJAAb);
-                                      const attachment = valueMdqAJAAb;
+                                      setDownloadLink(valuelOhiNDpf);
+                                      const attachment = valuelOhiNDpf;
                                       console.log(attachment);
                                       await WebBrowser.openBrowserAsync(
                                         `${listData?.attachment}`

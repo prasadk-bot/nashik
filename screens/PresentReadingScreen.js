@@ -74,9 +74,9 @@ const PresentReadingScreen = props => {
         )?.responseData;
         /* hidden 'Log to Console' action */
 
-        const valueOXpcwkaj = ptest;
-        setOnprereads(valueOXpcwkaj);
-        const kk = valueOXpcwkaj;
+        const valueCH4MspgX = ptest;
+        setOnprereads(valueCH4MspgX);
+        const kk = valueCH4MspgX;
         console.log(kk);
       } catch (err) {
         console.error(err);

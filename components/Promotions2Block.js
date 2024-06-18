@@ -44,7 +44,7 @@ const Promotions2Block = props => {
               keyExtractor={(swiperData, index) =>
                 swiperData?.id ?? swiperData?.uuid ?? index.toString()
               }
-              listKey={'LXhraOkg'}
+              listKey={'PkuXDE24'}
               loop={false}
               minDistanceForAction={0.2}
               minDistanceToCapture={5}

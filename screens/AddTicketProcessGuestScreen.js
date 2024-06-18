@@ -28,12 +28,6 @@ const AddTicketProcessGuestScreen = props => {
   const [serviceconnectionnumber, setServiceconnectionnumber] =
     React.useState('');
   const [textInputValue, setTextInputValue] = React.useState('');
-  const myFunctionName = async a => {
-    console.log(a);
-    let t = await JSON.parse(a);
-    console.log(t);
-  };
-
   const validateScno = scNo => {
     var errorMessage = null;
     if (!scNo.trim()) {
@@ -79,6 +73,12 @@ const AddTicketProcessGuestScreen = props => {
     };
 
     return scheme[msg];
+  };
+
+  const myFunctionName = async a => {
+    console.log(a);
+    let t = await JSON.parse(a);
+    console.log(t);
   };
 
   return (
@@ -294,7 +294,12 @@ const AddTicketProcessGuestScreen = props => {
             handler();
           }}
           style={StyleSheet.applyWidth(
-            { borderRadius: 14, fontSize: 16, marginTop: 35 },
+            {
+              backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
+              borderRadius: 14,
+              fontSize: 16,
+              marginTop: 35,
+            },
             dimensions.width
           )}
           title={`${transalate(Variables, 'Submit')}`}

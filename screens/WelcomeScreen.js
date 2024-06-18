@@ -24,7 +24,14 @@ import {
 } from '@draftbit/ui';
 import { useIsFocused } from '@react-navigation/native';
 import * as WebBrowser from 'expo-web-browser';
-import { ActivityIndicator, Image, ScrollView, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  Modal,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import { Fetch } from 'react-request';
 
 const WelcomeScreen = props => {
@@ -33,6 +40,7 @@ const WelcomeScreen = props => {
   const Constants = GlobalVariables.useValues();
   const Variables = Constants;
   const setGlobalVariableValue = GlobalVariables.useSetValue();
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [pickerValue, setPickerValue] = React.useState('');
   const [showNav, setShowNav] = React.useState(false);
 
@@ -166,7 +174,7 @@ const WelcomeScreen = props => {
                         dimensions.width
                       )}
                     >
-                      {transalate(Variables, 'Quick Pay')}
+                      {transalate(Variables, 'Bill Pay / Quick Recharge')}
                     </Text>
                   </View>
                 </Touchable>
@@ -560,6 +568,7 @@ const WelcomeScreen = props => {
             options={[
               { label: 'English', value: 'en' },
               { label: 'Hindi', value: 'hi' },
+              { label: 'Marathi', value: 'ma' },
             ]}
             placeholder={''}
             style={StyleSheet.applyWidth(
@@ -590,7 +599,7 @@ const WelcomeScreen = props => {
               style={StyleSheet.applyWidth(
                 StyleSheet.compose(
                   GlobalStyles.ImageStyles(theme)['banner 3'].style,
-                  { height: 76, width: 234 }
+                  { height: 76, width: 243 }
                 ),
                 dimensions.width
               )}
@@ -639,6 +648,7 @@ const WelcomeScreen = props => {
               }}
               style={StyleSheet.applyWidth(
                 {
+                  backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                   borderRadius: 14,
                   fontFamily: 'Roboto_400Regular',
                   fontSize: 16,
@@ -672,7 +682,7 @@ const WelcomeScreen = props => {
                 },
                 dimensions.width
               )}
-              title={`${transalate(Variables, 'Quick Pay')}`}
+              title={`${transalate(Variables, 'Bill Pay / Quick Recharge')}`}
               type={'solid'}
             >
               {'Sign up'}
@@ -709,7 +719,7 @@ const WelcomeScreen = props => {
                     keyExtractor={(swiperData, index) =>
                       swiperData?.id ?? swiperData?.uuid ?? index.toString()
                     }
-                    listKey={'RMHsBFbw'}
+                    listKey={'dHj5sb2d'}
                     loop={false}
                     minDistanceForAction={0.2}
                     minDistanceToCapture={5}

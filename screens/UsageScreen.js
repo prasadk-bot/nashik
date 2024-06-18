@@ -4,8 +4,11 @@ import * as CISAPPApi from '../apis/CISAPPApi.js';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 import Images from '../config/Images';
 import * as CustomCode from '../custom-files/CustomCode';
-import * as PrepaidUsage from '../custom-files/PrepaidUsage';
+import * as PrepaidMonthlyUsage from '../custom-files/PrepaidMonthlyUsage';
 import * as Usage from '../custom-files/Usage';
+import * as prepaidDailyUsage from '../custom-files/prepaidDailyUsage';
+import * as prepaidHourlyUsage from '../custom-files/prepaidHourlyUsage';
+import * as prepaidRangeUsage from '../custom-files/prepaidRangeUsage';
 import transalate from '../global-functions/transalate';
 import * as Utils from '../utils';
 import Breakpoints from '../utils/Breakpoints';
@@ -15,9 +18,11 @@ import {
   Checkbox,
   Circle,
   CircleImage,
+  DatePicker,
   Icon,
   Picker,
   ScreenContainer,
+  SimpleStyleFlatList,
   Surface,
   TextInput,
   Touchable,
@@ -38,17 +43,43 @@ const UsageScreen = props => {
   const [ShowNav, setShowNav] = React.useState(false);
   const [availableBalance, setAvailableBalance] = React.useState('');
   const [billingHistoryScreen, setBillingHistoryScreen] = React.useState({});
+  const [currentYear, setCurrentYear] = React.useState('');
+  const [datePicker2Value, setDatePicker2Value] = React.useState(new Date());
+  const [datePickerValue, setDatePickerValue] = React.useState(new Date());
+  const [datePickerValue2, setDatePickerValue2] = React.useState(new Date());
+  const [datePickerValue3, setDatePickerValue3] = React.useState(new Date());
+  const [datesplit, setDatesplit] = React.useState('');
+  const [finalFormate, setFinalFormate] = React.useState('');
+  const [finalformate1, setFinalformate1] = React.useState('');
+  const [finalformate2, setFinalformate2] = React.useState('');
   const [hiddenHindi, setHiddenHindi] = React.useState(true);
+  const [mainselectedTab, setMainselectedTab] = React.useState('Prepaid Daily');
   const [meterNumber, setMeterNumber] = React.useState('');
   const [pickerValue, setPickerValue] = React.useState('');
   const [pickerValue2, setPickerValue2] = React.useState('');
   const [prepaidBillingHistory, setPrepaidBillingHistory] = React.useState({});
+  const [prepaidDailyConsumption, setPrepaidDailyConsumption] = React.useState(
+    {}
+  );
   const [prepaidFlag, setPrepaidFlag] = React.useState('');
+  const [prepaidHourlyConsumption, setPrepaidHourlyConsumption] =
+    React.useState({});
+  const [prepaidRangeConsumption, setPrepaidRangeConsumption] = React.useState(
+    {}
+  );
   const [selectedTab, setSelectedTab] = React.useState('Dashboard');
   const [selectedTab2, setSelectedTab2] = React.useState('prepaidchart');
+  const [selecteddailyTab, setSelecteddailyTab] =
+    React.useState('prepaiddailychart');
+  const [selectedhourlyTab, setSelectedhourlyTab] =
+    React.useState('prepaidhourlychart');
+  const [selectedrangeTab, setSelectedrangeTab] =
+    React.useState('prepaidrangechart');
   const [serviceConNumber, setServiceConNumber] = React.useState('');
   const [textInputValue, setTextInputValue] = React.useState('');
   const [visibleHindi, setVisibleHindi] = React.useState(false);
+  const [year, setYear] = React.useState('');
+  const [date, setDate] = React.useState(new Date());
   const buildConsumerString = Scno => {
     console.log(`billing/rest/AccountInfo/${Scno}`);
     return `billing/rest/AccountInfo/${Scno}`;
@@ -100,6 +131,42 @@ const UsageScreen = props => {
 
     return str;
   };
+
+  const valueFix = val => {
+    return val.toFixed(2);
+  };
+
+  const CurrentYear = () => {
+    return new Date().getFullYear();
+  };
+
+  const convertDateTimeSplit = dateTime => {
+    var date = new Date(dateTime);
+    const monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    console.log('date' + dateTime);
+    let monthIndex = date.getMonth(); // Get the month index (0-11)
+    let day = ('0' + date.getDate()).slice(-2); // Get the day and pad it
+    let year = date.getFullYear(); // Get the year
+
+    console.log(monthNames[monthIndex]); // Log the month name
+    console.log(monthIndex + 1); // Log the month number (1-12)
+
+    return [day, monthNames[monthIndex], year].join('-');
+  };
   const isFocused = useIsFocused();
   React.useEffect(() => {
     const handler = async () => {
@@ -135,25 +202,68 @@ const UsageScreen = props => {
         console.log(BillingHistoryJson);
         buildBillingString(Constants['name']);
 
-        const valueEx11EF04 =
+        const valuekXSe5qlZ =
           BillingHistoryJson && BillingHistoryJson[0].data.BillDataJson;
-        setBillingHistoryScreen(valueEx11EF04);
-        const billHistory = valueEx11EF04;
+        setBillingHistoryScreen(valuekXSe5qlZ);
+        const billHistory = valuekXSe5qlZ;
         const prepaidBillingHistoryJson = await (async () => {
           if (prepaidFlag === 'Y') {
             return (
-              await CISAPPApi.billingHistoryPrepaidPOST(Constants, {
-                action: prepaidBillingString(meterNo),
+              await CISAPPApi.consumptionPatternMonthsPOST(Constants, {
+                accountno: (() => {
+                  const e = Constants['name'];
+                  console.log(e);
+                  return e;
+                })(),
+                days: (() => {
+                  const e = 12;
+                  console.log(e);
+                  return e;
+                })(),
+                mtrno: meterNo,
+                year: (() => {
+                  const e = CurrentYear(currentYear);
+                  console.log(e);
+                  return e;
+                })(),
               })
             )?.json;
           }
         })();
-        prepaidBillingString(meterNo);
-        console.log(prepaidBillingHistoryJson);
-        const prepaidBillingHistoryResult =
-          prepaidBillingHistoryJson && prepaidBillingHistoryJson[0].data.data;
+        /* hidden 'Run a Custom Function' action */
+        /* hidden 'Log to Console' action */
+        const prepaidBillingHistoryResult = (() => {
+          const e =
+            prepaidBillingHistoryJson && prepaidBillingHistoryJson[0].data;
+          console.log(e);
+          return e;
+        })();
         setPrepaidBillingHistory(prepaidBillingHistoryResult);
-        console.log(prepaidBillingHistoryResult);
+        /* hidden 'Log to Console' action */
+        const prepaidconsumptiondailyJson = await (async () => {
+          if (prepaidFlag === 'Y') {
+            return (
+              await CISAPPApi.consumptionPatternDaysPOST(Constants, {
+                accountno: Constants['name'],
+                action: 'consumptionPatternDays',
+                days: '30',
+                mtrno: (() => {
+                  const e = meterNo;
+                  console.log(e);
+                  return e;
+                })(),
+              })
+            )?.json;
+          }
+        })();
+        /* hidden 'Log to Console' action */
+        const prepaidconsumptionResult = JSON.parse(
+          prepaidconsumptiondailyJson &&
+            prepaidconsumptiondailyJson[0].data.data
+        );
+        /* hidden 'Log to Console' action */
+        setPrepaidDailyConsumption(prepaidconsumptionResult);
+        /* hidden 'Log to Console' action */
         const ManageAccountDetails = (
           await CISAPPApi.manageAccountsPOST(Constants, {
             accountNumber: Constants['name'],
@@ -168,6 +278,25 @@ const UsageScreen = props => {
         });
         console.log(result);
         setTextInputValue(Constants['name']);
+        const prepaidconsumptionrangeJson = await (async () => {
+          if (prepaidFlag === 'Y') {
+            return (
+              await CISAPPApi.consumptionPatternRangePOST(Constants, {
+                accountno: Constants['name'],
+                action: 'consumptionPatternDaysRange',
+                days: 'range',
+                fromdate: finalformate1,
+                mtrno: meterNo,
+                todate: finalformate2,
+              })
+            )?.json;
+          }
+        })();
+        const prepaidrangeconsumptionResult = JSON.parse(
+          prepaidconsumptionrangeJson &&
+            prepaidconsumptionrangeJson[0].data.data
+        );
+        setPrepaidRangeConsumption(prepaidrangeconsumptionResult);
       } catch (err) {
         console.error(err);
       }
@@ -405,7 +534,7 @@ const UsageScreen = props => {
                           try {
                             /* hidden 'Navigate' action */
                             await WebBrowser.openBrowserAsync(
-                              `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/cportal/#/bltLec/${Constants['name']}`
+                              `https://nccprodcp.quantumtechnologiesltd.com/cportal/#/bltLec/${Constants['name']}`
                             );
                           } catch (err) {
                             console.error(err);
@@ -458,7 +587,7 @@ const UsageScreen = props => {
                           try {
                             /* hidden 'Navigate' action */
                             await WebBrowser.openBrowserAsync(
-                              `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/cportal/#/bltLrc/${Constants['name']}`
+                              `https://nccprodcp.quantumtechnologiesltd.com/cportal/#/bltLrc/${Constants['name']}`
                             );
                           } catch (err) {
                             console.error(err);
@@ -862,6 +991,7 @@ const UsageScreen = props => {
             options={[
               { label: 'English', value: 'en' },
               { label: 'Hindi', value: 'hi' },
+              { label: 'Marathi', value: 'ma' },
             ]}
             placeholder={''}
             style={StyleSheet.applyWidth(
@@ -1002,28 +1132,70 @@ const UsageScreen = props => {
                         console.log(BillingHistoryJson);
                         buildBillingString(newPickerValue);
 
-                        const valueM2vX3wrZ =
+                        const valueGPtJRbkT =
                           BillingHistoryJson &&
                           BillingHistoryJson[0].data.BillDataJson;
-                        setBillingHistoryScreen(valueM2vX3wrZ);
-                        const billHistory = valueM2vX3wrZ;
+                        setBillingHistoryScreen(valueGPtJRbkT);
+                        const billHistory = valueGPtJRbkT;
                         const prepaidBillingHistoryJson = await (async () => {
                           if (prepaidFlag === 'Y') {
                             return (
-                              await CISAPPApi.billingHistoryPrepaidPOST(
+                              await CISAPPApi.consumptionPatternMonthsPOST(
                                 Constants,
-                                { action: prepaidBillingString(meterNo) }
+                                {
+                                  accountno: (() => {
+                                    const e = Constants['name'];
+                                    console.log(e);
+                                    return e;
+                                  })(),
+                                  days: (() => {
+                                    const e = 12;
+                                    console.log(e);
+                                    return e;
+                                  })(),
+                                  mtrno: meterNo,
+                                  year: (() => {
+                                    const e = CurrentYear(currentYear);
+                                    console.log(e);
+                                    return e;
+                                  })(),
+                                }
                               )
                             )?.json;
                           }
                         })();
-                        prepaidBillingString(meterNo);
+                        /* hidden 'Run a Custom Function' action */
                         console.log(prepaidBillingHistoryJson);
-                        const prepaidBillingHistoryResult =
-                          prepaidBillingHistoryJson &&
-                          prepaidBillingHistoryJson[0].data.data;
+                        const prepaidBillingHistoryResult = (() => {
+                          const e =
+                            prepaidBillingHistoryJson &&
+                            prepaidBillingHistoryJson[0].data;
+                          console.log(e);
+                          return e;
+                        })();
                         setPrepaidBillingHistory(prepaidBillingHistoryResult);
                         console.log(prepaidBillingHistoryResult);
+                        const prepaidconsumptiondailyJson = await (async () => {
+                          if (prepaidFlag === 'Y') {
+                            return (
+                              await CISAPPApi.consumptionPatternDaysPOST(
+                                Constants,
+                                {
+                                  accountno: Constants['name'],
+                                  action: 'consumptionPatternDays',
+                                  days: '30',
+                                  mtrno: meterNo,
+                                }
+                              )
+                            )?.json;
+                          }
+                        })();
+                        console.log(prepaidconsumptiondailyJson);
+                        const prepaidconsumptionResult = JSON.parse(
+                          prepaidconsumptiondailyJson &&
+                            prepaidconsumptiondailyJson[0].data.data
+                        );
+                        setPrepaidDailyConsumption(prepaidconsumptionResult);
                       } catch (err) {
                         console.error(err);
                       }
@@ -1104,9 +1276,668 @@ const UsageScreen = props => {
                   )}
                 </>
               </View>
-              {/* Prepaid View */}
+              {/* Main Tab View */}
               <>
                 {!(prepaidFlag === 'Y') ? null : (
+                  <View
+                    style={StyleSheet.applyWidth(
+                      {
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginTop: 15,
+                        paddingLeft: 12,
+                        paddingRight: 12,
+                      },
+                      dimensions.width
+                    )}
+                  >
+                    {/* Daily */}
+                    <View
+                      style={StyleSheet.applyWidth(
+                        {
+                          alignItems: 'center',
+                          flex: 1,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          paddingBottom: 12,
+                          paddingTop: 12,
+                        },
+                        dimensions.width
+                      )}
+                    >
+                      {/* PrepaidDaily */}
+                      <View
+                        style={StyleSheet.applyWidth(
+                          {
+                            backgroundColor:
+                              theme.colors['Community_Icon_BG_Color'],
+                            borderBottomLeftRadius: 64,
+                            borderTopLeftRadius: 64,
+                            flex: 1,
+                          },
+                          dimensions.width
+                        )}
+                      >
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              backgroundColor:
+                                theme.colors['Community_Icon_BG_Color'],
+                              borderBottomLeftRadius: 64,
+                              borderTopLeftRadius: 64,
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Selected */}
+                          <>
+                            {!(mainselectedTab === 'Prepaid Daily') ? null : (
+                              <Touchable>
+                                <View
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'center',
+                                      backgroundColor:
+                                        theme.colors['Community_True_Option'],
+                                      borderBottomWidth: 2,
+                                      borderColor:
+                                        theme.colors['Community_True_Option'],
+                                      borderLeftWidth: 2,
+                                      borderRadius: 64,
+                                      borderRightWidth: 2,
+                                      borderTopWidth: 2,
+                                      paddingBottom: 9,
+                                      paddingLeft: 9,
+                                      paddingRight: 9,
+                                      paddingTop: 9,
+                                    },
+                                    dimensions.width
+                                  )}
+                                >
+                                  <Text
+                                    accessible={true}
+                                    {...GlobalStyles.TextStyles(theme)['Text']
+                                      .props}
+                                    style={StyleSheet.applyWidth(
+                                      StyleSheet.compose(
+                                        GlobalStyles.TextStyles(theme)['Text']
+                                          .style,
+                                        {
+                                          color:
+                                            theme.colors[
+                                              'Community_Icon_BG_Color'
+                                            ],
+                                          fontFamily: 'Roboto_400Regular',
+                                        }
+                                      ),
+                                      dimensions.width
+                                    )}
+                                  >
+                                    {transalate(Variables, 'Daily')}
+                                  </Text>
+                                </View>
+                              </Touchable>
+                            )}
+                          </>
+                        </View>
+                        {/* View 2 */}
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              backgroundColor:
+                                theme.colors['Community_Icon_BG_Color'],
+                              borderBottomLeftRadius: 64,
+                              borderTopLeftRadius: 64,
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Unselected */}
+                          <>
+                            {!(mainselectedTab !== 'Prepaid Daily') ? null : (
+                              <Touchable
+                                onPress={() => {
+                                  try {
+                                    setMainselectedTab('Prepaid Daily');
+                                  } catch (err) {
+                                    console.error(err);
+                                  }
+                                }}
+                              >
+                                <View
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'center',
+                                      backgroundColor:
+                                        theme.colors['Community_Icon_BG_Color'],
+                                      borderBottomWidth: 2,
+                                      borderColor:
+                                        theme.colors['Community_Icon_BG_Color'],
+                                      borderLeftWidth: 2,
+                                      borderRadius: 64,
+                                      borderRightWidth: 2,
+                                      borderTopWidth: 2,
+                                      paddingBottom: 9,
+                                      paddingLeft: 9,
+                                      paddingRight: 9,
+                                      paddingTop: 9,
+                                    },
+                                    dimensions.width
+                                  )}
+                                >
+                                  <Text
+                                    accessible={true}
+                                    {...GlobalStyles.TextStyles(theme)['Text']
+                                      .props}
+                                    style={StyleSheet.applyWidth(
+                                      StyleSheet.compose(
+                                        GlobalStyles.TextStyles(theme)['Text']
+                                          .style,
+                                        {
+                                          color:
+                                            theme.colors['Community_Dark_UI'],
+                                          fontFamily: 'Roboto_400Regular',
+                                        }
+                                      ),
+                                      dimensions.width
+                                    )}
+                                  >
+                                    {transalate(Variables, 'Daily')}
+                                  </Text>
+                                </View>
+                              </Touchable>
+                            )}
+                          </>
+                        </View>
+                      </View>
+                    </View>
+                    {/* Hourly */}
+                    <View
+                      style={StyleSheet.applyWidth(
+                        {
+                          alignItems: 'center',
+                          flex: 1,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          paddingBottom: 12,
+                          paddingTop: 12,
+                        },
+                        dimensions.width
+                      )}
+                    >
+                      {/* PrepaidHourly */}
+                      <View
+                        style={StyleSheet.applyWidth(
+                          {
+                            backgroundColor:
+                              theme.colors['Community_Icon_BG_Color'],
+                            borderBottomLeftRadius: 64,
+                            borderTopLeftRadius: 64,
+                            flex: 1,
+                          },
+                          dimensions.width
+                        )}
+                      >
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              backgroundColor:
+                                theme.colors['Community_Icon_BG_Color'],
+                              borderBottomLeftRadius: 64,
+                              borderTopLeftRadius: 64,
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Selected */}
+                          <>
+                            {!(mainselectedTab === 'Prepaid Hourly') ? null : (
+                              <Touchable>
+                                <View
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'center',
+                                      backgroundColor:
+                                        theme.colors['Community_True_Option'],
+                                      borderBottomWidth: 2,
+                                      borderColor:
+                                        theme.colors['Community_True_Option'],
+                                      borderLeftWidth: 2,
+                                      borderRadius: 64,
+                                      borderRightWidth: 2,
+                                      borderTopWidth: 2,
+                                      paddingBottom: 9,
+                                      paddingLeft: 9,
+                                      paddingRight: 9,
+                                      paddingTop: 9,
+                                    },
+                                    dimensions.width
+                                  )}
+                                >
+                                  <Text
+                                    accessible={true}
+                                    {...GlobalStyles.TextStyles(theme)['Text']
+                                      .props}
+                                    style={StyleSheet.applyWidth(
+                                      StyleSheet.compose(
+                                        GlobalStyles.TextStyles(theme)['Text']
+                                          .style,
+                                        {
+                                          color:
+                                            theme.colors[
+                                              'Community_Icon_BG_Color'
+                                            ],
+                                          fontFamily: 'Roboto_400Regular',
+                                        }
+                                      ),
+                                      dimensions.width
+                                    )}
+                                  >
+                                    {transalate(Variables, 'Hourly')}
+                                  </Text>
+                                </View>
+                              </Touchable>
+                            )}
+                          </>
+                        </View>
+                        {/* View 2 */}
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              backgroundColor:
+                                theme.colors['Community_Icon_BG_Color'],
+                              borderBottomLeftRadius: 64,
+                              borderTopLeftRadius: 64,
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Unselected */}
+                          <>
+                            {!(mainselectedTab !== 'Prepaid Hourly') ? null : (
+                              <Touchable
+                                onPress={() => {
+                                  try {
+                                    setMainselectedTab('Prepaid Hourly');
+                                  } catch (err) {
+                                    console.error(err);
+                                  }
+                                }}
+                              >
+                                <View
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'center',
+                                      backgroundColor:
+                                        theme.colors['Community_Icon_BG_Color'],
+                                      borderBottomWidth: 2,
+                                      borderColor:
+                                        theme.colors['Community_Icon_BG_Color'],
+                                      borderLeftWidth: 2,
+                                      borderRadius: 64,
+                                      borderRightWidth: 2,
+                                      borderTopWidth: 2,
+                                      paddingBottom: 9,
+                                      paddingLeft: 9,
+                                      paddingRight: 9,
+                                      paddingTop: 9,
+                                    },
+                                    dimensions.width
+                                  )}
+                                >
+                                  <Text
+                                    accessible={true}
+                                    {...GlobalStyles.TextStyles(theme)['Text']
+                                      .props}
+                                    style={StyleSheet.applyWidth(
+                                      StyleSheet.compose(
+                                        GlobalStyles.TextStyles(theme)['Text']
+                                          .style,
+                                        {
+                                          color:
+                                            theme.colors['Community_Dark_UI'],
+                                          fontFamily: 'Roboto_400Regular',
+                                        }
+                                      ),
+                                      dimensions.width
+                                    )}
+                                  >
+                                    {transalate(Variables, 'Hourly')}
+                                  </Text>
+                                </View>
+                              </Touchable>
+                            )}
+                          </>
+                        </View>
+                      </View>
+                    </View>
+                    {/* Monthly */}
+                    <View
+                      style={StyleSheet.applyWidth(
+                        {
+                          alignItems: 'center',
+                          flex: 1,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          paddingBottom: 12,
+                          paddingTop: 12,
+                        },
+                        dimensions.width
+                      )}
+                    >
+                      {/* PrepaidMonthly */}
+                      <View
+                        style={StyleSheet.applyWidth(
+                          {
+                            backgroundColor:
+                              theme.colors['Community_Icon_BG_Color'],
+                            borderBottomLeftRadius: 64,
+                            borderTopLeftRadius: 64,
+                            flex: 1,
+                          },
+                          dimensions.width
+                        )}
+                      >
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              backgroundColor:
+                                theme.colors['Community_Icon_BG_Color'],
+                              borderBottomLeftRadius: 64,
+                              borderTopLeftRadius: 64,
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Selected */}
+                          <>
+                            {!(mainselectedTab === 'Prepaid View') ? null : (
+                              <Touchable>
+                                <View
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'center',
+                                      backgroundColor:
+                                        theme.colors['Community_True_Option'],
+                                      borderBottomWidth: 2,
+                                      borderColor:
+                                        theme.colors['Community_True_Option'],
+                                      borderLeftWidth: 2,
+                                      borderRadius: 64,
+                                      borderRightWidth: 2,
+                                      borderTopWidth: 2,
+                                      paddingBottom: 9,
+                                      paddingLeft: 9,
+                                      paddingRight: 9,
+                                      paddingTop: 9,
+                                    },
+                                    dimensions.width
+                                  )}
+                                >
+                                  <Text
+                                    accessible={true}
+                                    {...GlobalStyles.TextStyles(theme)['Text']
+                                      .props}
+                                    style={StyleSheet.applyWidth(
+                                      StyleSheet.compose(
+                                        GlobalStyles.TextStyles(theme)['Text']
+                                          .style,
+                                        {
+                                          color:
+                                            theme.colors[
+                                              'Community_Icon_BG_Color'
+                                            ],
+                                          fontFamily: 'Roboto_400Regular',
+                                        }
+                                      ),
+                                      dimensions.width
+                                    )}
+                                  >
+                                    {transalate(Variables, 'Monthly')}
+                                  </Text>
+                                </View>
+                              </Touchable>
+                            )}
+                          </>
+                        </View>
+                        {/* View 2 */}
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              backgroundColor:
+                                theme.colors['Community_Icon_BG_Color'],
+                              borderBottomLeftRadius: 64,
+                              borderTopLeftRadius: 64,
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Unselected */}
+                          <>
+                            {!(mainselectedTab !== 'Prepaid View') ? null : (
+                              <Touchable
+                                onPress={() => {
+                                  try {
+                                    setMainselectedTab('Prepaid View');
+                                  } catch (err) {
+                                    console.error(err);
+                                  }
+                                }}
+                              >
+                                <View
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'center',
+                                      backgroundColor:
+                                        theme.colors['Community_Icon_BG_Color'],
+                                      borderBottomWidth: 2,
+                                      borderColor:
+                                        theme.colors['Community_Icon_BG_Color'],
+                                      borderLeftWidth: 2,
+                                      borderRadius: 64,
+                                      borderRightWidth: 2,
+                                      borderTopWidth: 2,
+                                      paddingBottom: 9,
+                                      paddingLeft: 9,
+                                      paddingRight: 9,
+                                      paddingTop: 9,
+                                    },
+                                    dimensions.width
+                                  )}
+                                >
+                                  <Text
+                                    accessible={true}
+                                    {...GlobalStyles.TextStyles(theme)['Text']
+                                      .props}
+                                    style={StyleSheet.applyWidth(
+                                      StyleSheet.compose(
+                                        GlobalStyles.TextStyles(theme)['Text']
+                                          .style,
+                                        {
+                                          color:
+                                            theme.colors['Community_Dark_UI'],
+                                          fontFamily: 'Roboto_400Regular',
+                                        }
+                                      ),
+                                      dimensions.width
+                                    )}
+                                  >
+                                    {transalate(Variables, 'Monthly')}
+                                  </Text>
+                                </View>
+                              </Touchable>
+                            )}
+                          </>
+                        </View>
+                      </View>
+                    </View>
+                    {/* Range */}
+                    <View
+                      style={StyleSheet.applyWidth(
+                        {
+                          alignItems: 'center',
+                          flex: 1,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          paddingBottom: 12,
+                          paddingTop: 12,
+                        },
+                        dimensions.width
+                      )}
+                    >
+                      {/* Prepaidrange */}
+                      <View
+                        style={StyleSheet.applyWidth(
+                          {
+                            backgroundColor:
+                              theme.colors['Community_Icon_BG_Color'],
+                            borderBottomLeftRadius: 64,
+                            borderTopLeftRadius: 64,
+                            flex: 1,
+                          },
+                          dimensions.width
+                        )}
+                      >
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              backgroundColor:
+                                theme.colors['Community_Icon_BG_Color'],
+                              borderBottomLeftRadius: 64,
+                              borderTopLeftRadius: 64,
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Selected */}
+                          <>
+                            {!(mainselectedTab === 'Range View') ? null : (
+                              <Touchable>
+                                <View
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'center',
+                                      backgroundColor:
+                                        theme.colors['Community_True_Option'],
+                                      borderBottomWidth: 2,
+                                      borderColor:
+                                        theme.colors['Community_True_Option'],
+                                      borderLeftWidth: 2,
+                                      borderRadius: 64,
+                                      borderRightWidth: 2,
+                                      borderTopWidth: 2,
+                                      paddingBottom: 9,
+                                      paddingLeft: 9,
+                                      paddingRight: 9,
+                                      paddingTop: 9,
+                                    },
+                                    dimensions.width
+                                  )}
+                                >
+                                  <Text
+                                    accessible={true}
+                                    {...GlobalStyles.TextStyles(theme)['Text']
+                                      .props}
+                                    style={StyleSheet.applyWidth(
+                                      StyleSheet.compose(
+                                        GlobalStyles.TextStyles(theme)['Text']
+                                          .style,
+                                        {
+                                          color:
+                                            theme.colors[
+                                              'Community_Icon_BG_Color'
+                                            ],
+                                          fontFamily: 'Roboto_400Regular',
+                                        }
+                                      ),
+                                      dimensions.width
+                                    )}
+                                  >
+                                    {transalate(Variables, 'Range')}
+                                  </Text>
+                                </View>
+                              </Touchable>
+                            )}
+                          </>
+                        </View>
+                        {/* View 2 */}
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              backgroundColor:
+                                theme.colors['Community_Icon_BG_Color'],
+                              borderBottomLeftRadius: 64,
+                              borderTopLeftRadius: 64,
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Unselected */}
+                          <>
+                            {!(mainselectedTab !== 'Range View') ? null : (
+                              <Touchable
+                                onPress={() => {
+                                  try {
+                                    setMainselectedTab('Range View');
+                                  } catch (err) {
+                                    console.error(err);
+                                  }
+                                }}
+                              >
+                                <View
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'center',
+                                      backgroundColor:
+                                        theme.colors['Community_Icon_BG_Color'],
+                                      borderBottomWidth: 2,
+                                      borderColor:
+                                        theme.colors['Community_Icon_BG_Color'],
+                                      borderLeftWidth: 2,
+                                      borderRadius: 64,
+                                      borderRightWidth: 2,
+                                      borderTopWidth: 2,
+                                      paddingBottom: 9,
+                                      paddingLeft: 9,
+                                      paddingRight: 9,
+                                      paddingTop: 9,
+                                    },
+                                    dimensions.width
+                                  )}
+                                >
+                                  <Text
+                                    accessible={true}
+                                    {...GlobalStyles.TextStyles(theme)['Text']
+                                      .props}
+                                    style={StyleSheet.applyWidth(
+                                      StyleSheet.compose(
+                                        GlobalStyles.TextStyles(theme)['Text']
+                                          .style,
+                                        {
+                                          color:
+                                            theme.colors['Community_Dark_UI'],
+                                          fontFamily: 'Roboto_400Regular',
+                                        }
+                                      ),
+                                      dimensions.width
+                                    )}
+                                  >
+                                    {transalate(Variables, 'Range')}
+                                  </Text>
+                                </View>
+                              </Touchable>
+                            )}
+                          </>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                )}
+              </>
+              {/* Prepaid Daily */}
+              <>
+                {!(mainselectedTab === 'Prepaid Daily') ? null : (
                   <View>
                     {/* Prepaid Section header */}
                     <>
@@ -1141,7 +1972,1142 @@ const UsageScreen = props => {
                               dimensions.width
                             )}
                           >
-                            {transalate(Variables, 'Usage')}
+                            {transalate(Variables, 'Daily Usage')}
+                          </Text>
+                        </View>
+                      )}
+                    </>
+                    {/* prepaiddailytabs */}
+                    <>
+                      {!(prepaidFlag === 'Y') ? null : (
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              alignItems: 'center',
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* chart */}
+                          <View
+                            style={StyleSheet.applyWidth(
+                              {
+                                alignItems: 'center',
+                                flex: 1,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                              },
+                              dimensions.width
+                            )}
+                          >
+                            {/* prepaiddailychart */}
+                            <View
+                              style={StyleSheet.applyWidth(
+                                { flex: 1 },
+                                dimensions.width
+                              )}
+                            >
+                              {/* selected */}
+                              <>
+                                {!(
+                                  selecteddailyTab === 'prepaiddailychart'
+                                ) ? null : (
+                                  <Touchable>
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          borderBottomWidth: 3,
+                                          borderColor: theme.colors['Primary'],
+                                          height: 25,
+                                          justifyContent: 'center',
+                                        },
+                                        dimensions.width
+                                      )}
+                                    >
+                                      <Text
+                                        accessible={true}
+                                        {...GlobalStyles.TextStyles(theme)[
+                                          'Text'
+                                        ].props}
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(
+                                            GlobalStyles.TextStyles(theme)[
+                                              'Text'
+                                            ].style,
+                                            {
+                                              color:
+                                                theme.colors['Custom Color'],
+                                              fontFamily: 'Roboto_400Regular',
+                                            }
+                                          ),
+                                          dimensions.width
+                                        )}
+                                      >
+                                        {transalate(Variables, 'Chart')}
+                                      </Text>
+                                    </View>
+                                  </Touchable>
+                                )}
+                              </>
+                              {/* unselected */}
+                              <>
+                                {!(
+                                  selecteddailyTab !== 'prepaiddailychart'
+                                ) ? null : (
+                                  <Touchable
+                                    onPress={() => {
+                                      try {
+                                        setSelecteddailyTab(
+                                          'prepaiddailychart'
+                                        );
+                                      } catch (err) {
+                                        console.error(err);
+                                      }
+                                    }}
+                                  >
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          borderBottomWidth: 2,
+                                          borderColor: theme.colors['Light'],
+                                          height: 25,
+                                        },
+                                        dimensions.width
+                                      )}
+                                    >
+                                      <Text
+                                        accessible={true}
+                                        {...GlobalStyles.TextStyles(theme)[
+                                          'Text'
+                                        ].props}
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(
+                                            GlobalStyles.TextStyles(theme)[
+                                              'Text'
+                                            ].style,
+                                            {
+                                              color: theme.colors['Light'],
+                                              fontFamily: 'Roboto_400Regular',
+                                            }
+                                          ),
+                                          dimensions.width
+                                        )}
+                                      >
+                                        {transalate(Variables, 'Chart')}
+                                      </Text>
+                                    </View>
+                                  </Touchable>
+                                )}
+                              </>
+                            </View>
+                          </View>
+                          {/* table */}
+                          <View
+                            style={StyleSheet.applyWidth(
+                              {
+                                alignItems: 'center',
+                                flex: 1,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                              },
+                              dimensions.width
+                            )}
+                          >
+                            {/* prepaiddailytable */}
+                            <View
+                              style={StyleSheet.applyWidth(
+                                { flex: 1 },
+                                dimensions.width
+                              )}
+                            >
+                              {/* selected */}
+                              <>
+                                {!(
+                                  selecteddailyTab === 'prepaiddailytable'
+                                ) ? null : (
+                                  <Touchable>
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          borderBottomWidth: 3,
+                                          borderColor: theme.colors['Primary'],
+                                          height: 25,
+                                        },
+                                        dimensions.width
+                                      )}
+                                    >
+                                      <Text
+                                        accessible={true}
+                                        {...GlobalStyles.TextStyles(theme)[
+                                          'Text'
+                                        ].props}
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(
+                                            GlobalStyles.TextStyles(theme)[
+                                              'Text'
+                                            ].style,
+                                            {
+                                              color:
+                                                theme.colors['Custom Color'],
+                                              fontFamily: 'Roboto_400Regular',
+                                            }
+                                          ),
+                                          dimensions.width
+                                        )}
+                                      >
+                                        {transalate(Variables, 'Table')}
+                                      </Text>
+                                    </View>
+                                  </Touchable>
+                                )}
+                              </>
+                              {/* unselected */}
+                              <>
+                                {!(
+                                  selecteddailyTab !== 'prepaiddailytable'
+                                ) ? null : (
+                                  <Touchable
+                                    onPress={() => {
+                                      try {
+                                        setSelecteddailyTab(
+                                          'prepaiddailytable'
+                                        );
+                                      } catch (err) {
+                                        console.error(err);
+                                      }
+                                    }}
+                                  >
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          borderBottomWidth: 2,
+                                          borderColor: theme.colors['Light'],
+                                          height: 25,
+                                        },
+                                        dimensions.width
+                                      )}
+                                    >
+                                      <Text
+                                        accessible={true}
+                                        {...GlobalStyles.TextStyles(theme)[
+                                          'Text'
+                                        ].props}
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(
+                                            GlobalStyles.TextStyles(theme)[
+                                              'Text'
+                                            ].style,
+                                            {
+                                              color: theme.colors['Light'],
+                                              fontFamily: 'Roboto_400Regular',
+                                            }
+                                          ),
+                                          dimensions.width
+                                        )}
+                                      >
+                                        {transalate(Variables, 'Table')}
+                                      </Text>
+                                    </View>
+                                  </Touchable>
+                                )}
+                              </>
+                            </View>
+                          </View>
+                        </View>
+                      )}
+                    </>
+                    {/* prepaiddailychart */}
+                    <>
+                      {!(selecteddailyTab === 'prepaiddailychart') ? null : (
+                        <View
+                          style={StyleSheet.applyWidth(
+                            { flex: 1 },
+                            dimensions.width
+                          )}
+                        >
+                          <>
+                            {!prepaidDailyConsumption?.length ? null : (
+                              <View
+                                style={StyleSheet.applyWidth(
+                                  {
+                                    alignItems: 'center',
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    paddingRight: 10,
+                                    width: '100%',
+                                  },
+                                  dimensions.width
+                                )}
+                              >
+                                <>
+                                  {!(prepaidFlag === 'Y') ? null : (
+                                    <Utils.CustomCodeErrorBoundary>
+                                      <prepaidDailyUsage.LineChartComponent
+                                        prepaidDailyConsumption={
+                                          prepaidDailyConsumption
+                                        }
+                                      />
+                                    </Utils.CustomCodeErrorBoundary>
+                                  )}
+                                </>
+                              </View>
+                            )}
+                          </>
+                        </View>
+                      )}
+                    </>
+                    {/* prepaiddailytable */}
+                    <>
+                      {!(selecteddailyTab === 'prepaiddailytable') ? null : (
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              backgroundColor: 'rgb(211, 211, 211)',
+                              borderBottomWidth: 1,
+                              borderColor: 'rgb(211, 211, 211)',
+                              borderLeftWidth: 1,
+                              borderRightWidth: 1,
+                              borderTopLeftRadius: 5,
+                              borderTopRightRadius: 5,
+                              borderTopWidth: 1,
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              width: '100%',
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Bill Month */}
+                          <View
+                            style={StyleSheet.applyWidth(
+                              {
+                                borderColor: theme.colors['White'],
+                                borderRightWidth: 1,
+                                flex: 1,
+                              },
+                              dimensions.width
+                            )}
+                          >
+                            <View
+                              style={StyleSheet.applyWidth(
+                                {
+                                  backgroundColor: theme.colors['ViewBG'],
+                                  height: 40,
+                                  justifyContent: 'center',
+                                },
+                                dimensions.width
+                              )}
+                            >
+                              <Text
+                                accessible={true}
+                                {...GlobalStyles.TextStyles(theme)['Text']
+                                  .props}
+                                style={StyleSheet.applyWidth(
+                                  StyleSheet.compose(
+                                    GlobalStyles.TextStyles(theme)['Text']
+                                      .style,
+                                    {
+                                      color: 'rgb(42, 42, 42)',
+                                      fontFamily: 'Roboto_700Bold',
+                                      textAlign: 'center',
+                                      textTransform: 'capitalize',
+                                    }
+                                  ),
+                                  dimensions.width
+                                )}
+                              >
+                                {transalate(Variables, 'Date')}
+                              </Text>
+                            </View>
+                          </View>
+                          {/* Units */}
+                          <View
+                            style={StyleSheet.applyWidth(
+                              {
+                                borderColor: theme.colors['White'],
+                                borderRightWidth: 1,
+                                flex: 1,
+                              },
+                              dimensions.width
+                            )}
+                          >
+                            <View
+                              style={StyleSheet.applyWidth(
+                                {
+                                  backgroundColor: theme.colors['ViewBG'],
+                                  height: 40,
+                                  justifyContent: 'center',
+                                },
+                                dimensions.width
+                              )}
+                            >
+                              <Text
+                                accessible={true}
+                                {...GlobalStyles.TextStyles(theme)['Text']
+                                  .props}
+                                style={StyleSheet.applyWidth(
+                                  StyleSheet.compose(
+                                    GlobalStyles.TextStyles(theme)['Text']
+                                      .style,
+                                    {
+                                      color: 'rgb(42, 42, 42)',
+                                      fontFamily: 'Roboto_700Bold',
+                                      textAlign: 'center',
+                                      textTransform: 'capitalize',
+                                    }
+                                  ),
+                                  dimensions.width
+                                )}
+                              >
+                                {transalate(Variables, 'Units(Kwh)')}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                      )}
+                    </>
+                    {/* prepaid list */}
+                    <FlatList
+                      data={prepaidDailyConsumption}
+                      horizontal={false}
+                      inverted={false}
+                      keyExtractor={(prepaidListData, index) =>
+                        prepaidListData?.id ??
+                        prepaidListData?.uuid ??
+                        index.toString()
+                      }
+                      keyboardShouldPersistTaps={'never'}
+                      listKey={'VUb74fw4'}
+                      nestedScrollEnabled={false}
+                      numColumns={1}
+                      onEndReachedThreshold={0.5}
+                      renderItem={({ item, index }) => {
+                        const prepaidListData = item;
+                        return (
+                          <>
+                            {/* prepaiddailytable */}
+                            <>
+                              {!(
+                                selecteddailyTab === 'prepaiddailytable'
+                              ) ? null : (
+                                <View
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'center',
+                                      borderBottomWidth: 1,
+                                      borderColor: 'rgb(211, 211, 211)',
+                                      flexDirection: 'row',
+                                      justifyContent: 'space-between',
+                                      paddingBottom: 10,
+                                      paddingLeft: 20,
+                                      paddingRight: 20,
+                                      paddingTop: 10,
+                                    },
+                                    dimensions.width
+                                  )}
+                                >
+                                  {/* Bill Month */}
+                                  <View>
+                                    {/* text */}
+                                    <Text
+                                      accessible={true}
+                                      {...GlobalStyles.TextStyles(theme)['Text']
+                                        .props}
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(
+                                          GlobalStyles.TextStyles(theme)['Text']
+                                            .style,
+                                          {
+                                            color: 'rgb(42, 42, 42)',
+                                            fontFamily: 'Roboto_400Regular',
+                                            fontSize: 16,
+                                          }
+                                        ),
+                                        dimensions.width
+                                      )}
+                                    >
+                                      {prepaidListData?.lpDate}{' '}
+                                    </Text>
+                                  </View>
+                                  {/* Units */}
+                                  <View>
+                                    <Text
+                                      accessible={true}
+                                      {...GlobalStyles.TextStyles(theme)['Text']
+                                        .props}
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(
+                                          GlobalStyles.TextStyles(theme)['Text']
+                                            .style,
+                                          {
+                                            color: 'rgb(42, 42, 42)',
+                                            fontFamily: 'Roboto_400Regular',
+                                            fontSize: 16,
+                                          }
+                                        ),
+                                        dimensions.width
+                                      )}
+                                    >
+                                      {prepaidListData?.kWImp}
+                                    </Text>
+                                  </View>
+                                </View>
+                              )}
+                            </>
+                          </>
+                        );
+                      }}
+                      showsHorizontalScrollIndicator={true}
+                      showsVerticalScrollIndicator={true}
+                    />
+                  </View>
+                )}
+              </>
+              {/* Prepaid Hourly */}
+              <>
+                {!(mainselectedTab === 'Prepaid Hourly') ? null : (
+                  <View>
+                    <View>
+                      <Text
+                        accessible={true}
+                        {...GlobalStyles.TextStyles(theme)['Text'].props}
+                        style={StyleSheet.applyWidth(
+                          StyleSheet.compose(
+                            GlobalStyles.TextStyles(theme)['Text'].style,
+                            { fontFamily: 'Roboto_400Regular', marginTop: 2 }
+                          ),
+                          dimensions.width
+                        )}
+                      >
+                        {transalate(Variables, 'Select the Date')}
+                      </Text>
+                      <DatePicker
+                        autoDismissKeyboard={true}
+                        disabled={false}
+                        hideLabel={false}
+                        label={'Date'}
+                        leftIconMode={'inset'}
+                        mode={'date'}
+                        onDateChange={newDatePickerValue => {
+                          const handler = async () => {
+                            const date = newDatePickerValue;
+                            try {
+                              const valuesHUkrVnt = newDatePickerValue;
+                              setDatePickerValue(valuesHUkrVnt);
+                              const DateResult = valuesHUkrVnt;
+                              const finalformate =
+                                convertDateTimeSplit(DateResult);
+                              setFinalFormate(finalformate);
+                              /* hidden 'Log to Console' action */
+                              const prepaidconsumptionhourlyJson = (
+                                await CISAPPApi.consumptioPatternHoursPOST(
+                                  Constants,
+                                  {
+                                    accountno: Constants['name'],
+                                    action: 'consumptionPatternInnerDrilldown',
+                                    date: finalformate,
+                                    mtrno: meterNumber,
+                                  }
+                                )
+                              )?.json;
+                              /* hidden 'Log to Console' action */
+                              const prepaidhourlyconsumptionResult = JSON.parse(
+                                prepaidconsumptionhourlyJson &&
+                                  prepaidconsumptionhourlyJson[0].data.data
+                              );
+                              setPrepaidHourlyConsumption(
+                                prepaidhourlyconsumptionResult
+                              );
+                            } catch (err) {
+                              console.error(err);
+                            }
+                          };
+                          handler();
+                        }}
+                        type={'solid'}
+                        date={datePickerValue}
+                        leftIconName={'MaterialIcons/date-range'}
+                        style={StyleSheet.applyWidth(
+                          { marginTop: 5 },
+                          dimensions.width
+                        )}
+                      />
+                    </View>
+                    {/* Prepaid Section header */}
+                    <>
+                      {!(prepaidFlag === 'Y') ? null : (
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              flexDirection: 'row',
+                              justifyContent: 'center',
+                              marginTop: 10,
+                              paddingBottom: 12,
+                              paddingLeft: 20,
+                              paddingRight: 20,
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Heading */}
+                          <Text
+                            accessible={true}
+                            {...GlobalStyles.TextStyles(theme)['Text'].props}
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(
+                                GlobalStyles.TextStyles(theme)['Text'].style,
+                                {
+                                  alignSelf: 'center',
+                                  color: theme.colors['ShopAppBlue'],
+                                  fontFamily: 'Roboto_400Regular',
+                                  fontSize: 16,
+                                  textAlign: 'center',
+                                }
+                              ),
+                              dimensions.width
+                            )}
+                          >
+                            {transalate(Variables, 'Hourly Usage')}
+                          </Text>
+                        </View>
+                      )}
+                    </>
+                    {/* prepaidhourlytabs */}
+                    <>
+                      {!(prepaidFlag === 'Y') ? null : (
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              alignItems: 'center',
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* chart */}
+                          <View
+                            style={StyleSheet.applyWidth(
+                              {
+                                alignItems: 'center',
+                                flex: 1,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                              },
+                              dimensions.width
+                            )}
+                          >
+                            {/* prepaidhourlychart */}
+                            <View
+                              style={StyleSheet.applyWidth(
+                                { flex: 1 },
+                                dimensions.width
+                              )}
+                            >
+                              {/* selected */}
+                              <>
+                                {!(
+                                  selectedhourlyTab === 'prepaidhourlychart'
+                                ) ? null : (
+                                  <Touchable>
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          borderBottomWidth: 3,
+                                          borderColor: theme.colors['Primary'],
+                                          height: 25,
+                                          justifyContent: 'center',
+                                        },
+                                        dimensions.width
+                                      )}
+                                    >
+                                      <Text
+                                        accessible={true}
+                                        {...GlobalStyles.TextStyles(theme)[
+                                          'Text'
+                                        ].props}
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(
+                                            GlobalStyles.TextStyles(theme)[
+                                              'Text'
+                                            ].style,
+                                            {
+                                              color:
+                                                theme.colors['Custom Color'],
+                                              fontFamily: 'Roboto_400Regular',
+                                            }
+                                          ),
+                                          dimensions.width
+                                        )}
+                                      >
+                                        {transalate(Variables, 'Chart')}
+                                      </Text>
+                                    </View>
+                                  </Touchable>
+                                )}
+                              </>
+                              {/* unselected */}
+                              <>
+                                {!(
+                                  selectedhourlyTab !== 'prepaidhourlychart'
+                                ) ? null : (
+                                  <Touchable
+                                    onPress={() => {
+                                      try {
+                                        setSelectedhourlyTab(
+                                          'prepaidhourlychart'
+                                        );
+                                      } catch (err) {
+                                        console.error(err);
+                                      }
+                                    }}
+                                  >
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          borderBottomWidth: 2,
+                                          borderColor: theme.colors['Light'],
+                                          height: 25,
+                                        },
+                                        dimensions.width
+                                      )}
+                                    >
+                                      <Text
+                                        accessible={true}
+                                        {...GlobalStyles.TextStyles(theme)[
+                                          'Text'
+                                        ].props}
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(
+                                            GlobalStyles.TextStyles(theme)[
+                                              'Text'
+                                            ].style,
+                                            {
+                                              color: theme.colors['Light'],
+                                              fontFamily: 'Roboto_400Regular',
+                                            }
+                                          ),
+                                          dimensions.width
+                                        )}
+                                      >
+                                        {transalate(Variables, 'Chart')}
+                                      </Text>
+                                    </View>
+                                  </Touchable>
+                                )}
+                              </>
+                            </View>
+                          </View>
+                          {/* table */}
+                          <View
+                            style={StyleSheet.applyWidth(
+                              {
+                                alignItems: 'center',
+                                flex: 1,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                              },
+                              dimensions.width
+                            )}
+                          >
+                            {/* prepaidhourlytable */}
+                            <View
+                              style={StyleSheet.applyWidth(
+                                { flex: 1 },
+                                dimensions.width
+                              )}
+                            >
+                              {/* selected */}
+                              <>
+                                {!(
+                                  selectedhourlyTab === 'prepaidhourlytable'
+                                ) ? null : (
+                                  <Touchable>
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          borderBottomWidth: 3,
+                                          borderColor: theme.colors['Primary'],
+                                          height: 25,
+                                        },
+                                        dimensions.width
+                                      )}
+                                    >
+                                      <Text
+                                        accessible={true}
+                                        {...GlobalStyles.TextStyles(theme)[
+                                          'Text'
+                                        ].props}
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(
+                                            GlobalStyles.TextStyles(theme)[
+                                              'Text'
+                                            ].style,
+                                            {
+                                              color:
+                                                theme.colors['Custom Color'],
+                                              fontFamily: 'Roboto_400Regular',
+                                            }
+                                          ),
+                                          dimensions.width
+                                        )}
+                                      >
+                                        {transalate(Variables, 'Table')}
+                                      </Text>
+                                    </View>
+                                  </Touchable>
+                                )}
+                              </>
+                              {/* unselected */}
+                              <>
+                                {!(
+                                  selectedhourlyTab !== 'prepaidhourlytable'
+                                ) ? null : (
+                                  <Touchable
+                                    onPress={() => {
+                                      try {
+                                        setSelectedhourlyTab(
+                                          'prepaidhourlytable'
+                                        );
+                                      } catch (err) {
+                                        console.error(err);
+                                      }
+                                    }}
+                                  >
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          borderBottomWidth: 2,
+                                          borderColor: theme.colors['Light'],
+                                          height: 25,
+                                        },
+                                        dimensions.width
+                                      )}
+                                    >
+                                      <Text
+                                        accessible={true}
+                                        {...GlobalStyles.TextStyles(theme)[
+                                          'Text'
+                                        ].props}
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(
+                                            GlobalStyles.TextStyles(theme)[
+                                              'Text'
+                                            ].style,
+                                            {
+                                              color: theme.colors['Light'],
+                                              fontFamily: 'Roboto_400Regular',
+                                            }
+                                          ),
+                                          dimensions.width
+                                        )}
+                                      >
+                                        {transalate(Variables, 'Table')}
+                                      </Text>
+                                    </View>
+                                  </Touchable>
+                                )}
+                              </>
+                            </View>
+                          </View>
+                        </View>
+                      )}
+                    </>
+                    {/* prepaidhourlychart */}
+                    <>
+                      {!(selectedhourlyTab === 'prepaidhourlychart') ? null : (
+                        <View
+                          style={StyleSheet.applyWidth(
+                            { flex: 1 },
+                            dimensions.width
+                          )}
+                        >
+                          <>
+                            {!prepaidHourlyConsumption?.length ? null : (
+                              <View
+                                style={StyleSheet.applyWidth(
+                                  {
+                                    alignItems: 'center',
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    paddingRight: 10,
+                                    width: '100%',
+                                  },
+                                  dimensions.width
+                                )}
+                              >
+                                <>
+                                  {!(prepaidFlag === 'Y') ? null : (
+                                    <Utils.CustomCodeErrorBoundary>
+                                      <prepaidHourlyUsage.LineChartComponent
+                                        prepaidHourlyConsumption={
+                                          prepaidHourlyConsumption
+                                        }
+                                      />
+                                    </Utils.CustomCodeErrorBoundary>
+                                  )}
+                                </>
+                              </View>
+                            )}
+                          </>
+                        </View>
+                      )}
+                    </>
+                    {/* prepaidhourlytable */}
+                    <>
+                      {!(selectedhourlyTab === 'prepaidhourlytable') ? null : (
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              backgroundColor: 'rgb(211, 211, 211)',
+                              borderBottomWidth: 1,
+                              borderColor: 'rgb(211, 211, 211)',
+                              borderLeftWidth: 1,
+                              borderRightWidth: 1,
+                              borderTopLeftRadius: 5,
+                              borderTopRightRadius: 5,
+                              borderTopWidth: 1,
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              width: '100%',
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Bill Month */}
+                          <View
+                            style={StyleSheet.applyWidth(
+                              {
+                                borderColor: theme.colors['White'],
+                                borderRightWidth: 1,
+                                flex: 1,
+                              },
+                              dimensions.width
+                            )}
+                          >
+                            <View
+                              style={StyleSheet.applyWidth(
+                                {
+                                  backgroundColor: theme.colors['ViewBG'],
+                                  height: 40,
+                                  justifyContent: 'center',
+                                },
+                                dimensions.width
+                              )}
+                            >
+                              <Text
+                                accessible={true}
+                                {...GlobalStyles.TextStyles(theme)['Text']
+                                  .props}
+                                style={StyleSheet.applyWidth(
+                                  StyleSheet.compose(
+                                    GlobalStyles.TextStyles(theme)['Text']
+                                      .style,
+                                    {
+                                      color: 'rgb(42, 42, 42)',
+                                      fontFamily: 'Roboto_700Bold',
+                                      textAlign: 'center',
+                                      textTransform: 'capitalize',
+                                    }
+                                  ),
+                                  dimensions.width
+                                )}
+                              >
+                                {transalate(Variables, 'Hour')}
+                              </Text>
+                            </View>
+                          </View>
+                          {/* Units */}
+                          <View
+                            style={StyleSheet.applyWidth(
+                              {
+                                borderColor: theme.colors['White'],
+                                borderRightWidth: 1,
+                                flex: 1,
+                              },
+                              dimensions.width
+                            )}
+                          >
+                            <View
+                              style={StyleSheet.applyWidth(
+                                {
+                                  backgroundColor: theme.colors['ViewBG'],
+                                  height: 40,
+                                  justifyContent: 'center',
+                                },
+                                dimensions.width
+                              )}
+                            >
+                              <Text
+                                accessible={true}
+                                {...GlobalStyles.TextStyles(theme)['Text']
+                                  .props}
+                                style={StyleSheet.applyWidth(
+                                  StyleSheet.compose(
+                                    GlobalStyles.TextStyles(theme)['Text']
+                                      .style,
+                                    {
+                                      color: 'rgb(42, 42, 42)',
+                                      fontFamily: 'Roboto_700Bold',
+                                      textAlign: 'center',
+                                      textTransform: 'capitalize',
+                                    }
+                                  ),
+                                  dimensions.width
+                                )}
+                              >
+                                {transalate(Variables, 'Units(Kwh)')}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                      )}
+                    </>
+                    {/* prepaid list */}
+                    <FlatList
+                      data={prepaidHourlyConsumption}
+                      horizontal={false}
+                      inverted={false}
+                      keyExtractor={(prepaidListData, index) =>
+                        prepaidListData?.id ??
+                        prepaidListData?.uuid ??
+                        index.toString()
+                      }
+                      keyboardShouldPersistTaps={'never'}
+                      listKey={'Wb081ntz'}
+                      nestedScrollEnabled={false}
+                      numColumns={1}
+                      onEndReachedThreshold={0.5}
+                      renderItem={({ item, index }) => {
+                        const prepaidListData = item;
+                        return (
+                          <>
+                            {/* prepaidhourlytable */}
+                            <>
+                              {!(
+                                selectedhourlyTab === 'prepaidhourlytable'
+                              ) ? null : (
+                                <View
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'center',
+                                      borderBottomWidth: 1,
+                                      borderColor: 'rgb(211, 211, 211)',
+                                      flexDirection: 'row',
+                                      justifyContent: 'space-between',
+                                      paddingBottom: 10,
+                                      paddingLeft: 20,
+                                      paddingRight: 20,
+                                      paddingTop: 10,
+                                    },
+                                    dimensions.width
+                                  )}
+                                >
+                                  {/* Bill Month */}
+                                  <View>
+                                    {/* text */}
+                                    <Text
+                                      accessible={true}
+                                      {...GlobalStyles.TextStyles(theme)['Text']
+                                        .props}
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(
+                                          GlobalStyles.TextStyles(theme)['Text']
+                                            .style,
+                                          {
+                                            color: 'rgb(42, 42, 42)',
+                                            fontFamily: 'Roboto_400Regular',
+                                            fontSize: 16,
+                                          }
+                                        ),
+                                        dimensions.width
+                                      )}
+                                    >
+                                      {prepaidListData?.time}{' '}
+                                    </Text>
+                                  </View>
+                                  {/* Units */}
+                                  <View>
+                                    <Text
+                                      accessible={true}
+                                      {...GlobalStyles.TextStyles(theme)['Text']
+                                        .props}
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(
+                                          GlobalStyles.TextStyles(theme)['Text']
+                                            .style,
+                                          {
+                                            color: 'rgb(42, 42, 42)',
+                                            fontFamily: 'Roboto_400Regular',
+                                            fontSize: 16,
+                                          }
+                                        ),
+                                        dimensions.width
+                                      )}
+                                    >
+                                      {prepaidListData?.kWImp}
+                                    </Text>
+                                  </View>
+                                </View>
+                              )}
+                            </>
+                          </>
+                        );
+                      }}
+                      showsHorizontalScrollIndicator={true}
+                      showsVerticalScrollIndicator={true}
+                    />
+                  </View>
+                )}
+              </>
+              {/* Prepaid View */}
+              <>
+                {!(mainselectedTab === 'Prepaid View') ? null : (
+                  <View>
+                    {/* Prepaid Section header */}
+                    <>
+                      {!(prepaidFlag === 'Y') ? null : (
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              flexDirection: 'row',
+                              justifyContent: 'center',
+                              paddingBottom: 12,
+                              paddingLeft: 20,
+                              paddingRight: 20,
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Heading */}
+                          <Text
+                            accessible={true}
+                            {...GlobalStyles.TextStyles(theme)['Text'].props}
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(
+                                GlobalStyles.TextStyles(theme)['Text'].style,
+                                {
+                                  alignSelf: 'center',
+                                  color: theme.colors['ShopAppBlue'],
+                                  fontFamily: 'Roboto_400Regular',
+                                  fontSize: 16,
+                                  textAlign: 'center',
+                                }
+                              ),
+                              dimensions.width
+                            )}
+                          >
+                            {transalate(Variables, 'Monthly Usage')}
                           </Text>
                         </View>
                       )}
@@ -1389,7 +3355,7 @@ const UsageScreen = props => {
                           )}
                         >
                           <>
-                            {!prepaidBillingHistory?.length ? null : (
+                            {!prepaidBillingHistory ? null : (
                               <View
                                 style={StyleSheet.applyWidth(
                                   {
@@ -1405,7 +3371,7 @@ const UsageScreen = props => {
                                 <>
                                   {!(prepaidFlag === 'Y') ? null : (
                                     <Utils.CustomCodeErrorBoundary>
-                                      <PrepaidUsage.LineChartComponent
+                                      <PrepaidMonthlyUsage.LineChartComponent
                                         prepaidBillingHistory={
                                           prepaidBillingHistory
                                         }
@@ -1526,45 +3492,6 @@ const UsageScreen = props => {
                               </Text>
                             </View>
                           </View>
-                          {/* Amount */}
-                          <View
-                            style={StyleSheet.applyWidth(
-                              { borderColor: theme.colors['White'], flex: 1 },
-                              dimensions.width
-                            )}
-                          >
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
-                                  backgroundColor: theme.colors['ViewBG'],
-                                  height: 40,
-                                  justifyContent: 'center',
-                                },
-                                dimensions.width
-                              )}
-                            >
-                              <Text
-                                accessible={true}
-                                {...GlobalStyles.TextStyles(theme)['Text']
-                                  .props}
-                                style={StyleSheet.applyWidth(
-                                  StyleSheet.compose(
-                                    GlobalStyles.TextStyles(theme)['Text']
-                                      .style,
-                                    {
-                                      color: 'rgb(42, 42, 42)',
-                                      fontFamily: 'Roboto_700Bold',
-                                      textAlign: 'center',
-                                      textTransform: 'capitalize',
-                                    }
-                                  ),
-                                  dimensions.width
-                                )}
-                              >
-                                {transalate(Variables, 'Bill Amount')}
-                              </Text>
-                            </View>
-                          </View>
                         </View>
                       )}
                     </>
@@ -1579,7 +3506,7 @@ const UsageScreen = props => {
                         index.toString()
                       }
                       keyboardShouldPersistTaps={'never'}
-                      listKey={'NkWJtWom'}
+                      listKey={'XhsxSbaz'}
                       nestedScrollEnabled={false}
                       numColumns={1}
                       onEndReachedThreshold={0.5}
@@ -1626,11 +3553,7 @@ const UsageScreen = props => {
                                         dimensions.width
                                       )}
                                     >
-                                      {convertMonthNoToMonthName(
-                                        prepaidListData?.billmonth
-                                      )}
-                                      {' - '}
-                                      {prepaidListData?.billyear}
+                                      {prepaidListData?.lp_date}
                                     </Text>
                                   </View>
                                   {/* Units */}
@@ -1652,14 +3575,647 @@ const UsageScreen = props => {
                                         dimensions.width
                                       )}
                                     >
-                                      {(() => {
-                                        const e = prepaidListData?.billUnits;
-                                        console.log(e);
-                                        return e;
-                                      })()}
+                                      {valueFix(prepaidListData?.kwh)}
                                     </Text>
                                   </View>
-                                  {/* Amount */}
+                                </View>
+                              )}
+                            </>
+                          </>
+                        );
+                      }}
+                      showsHorizontalScrollIndicator={true}
+                      showsVerticalScrollIndicator={true}
+                    />
+                  </View>
+                )}
+              </>
+              {/* Range View */}
+              <>
+                {!(mainselectedTab === 'Range View') ? null : (
+                  <View>
+                    <View
+                      style={StyleSheet.applyWidth(
+                        {
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        },
+                        dimensions.width
+                      )}
+                    >
+                      {/* From date */}
+                      <View>
+                        <Text
+                          accessible={true}
+                          {...GlobalStyles.TextStyles(theme)['Text'].props}
+                          style={StyleSheet.applyWidth(
+                            StyleSheet.compose(
+                              GlobalStyles.TextStyles(theme)['Text'].style,
+                              { fontFamily: 'Roboto_400Regular' }
+                            ),
+                            dimensions.width
+                          )}
+                        >
+                          {transalate(Variables, 'Select From Date')}
+                        </Text>
+                        <DatePicker
+                          autoDismissKeyboard={true}
+                          disabled={false}
+                          hideLabel={false}
+                          label={'Date'}
+                          leftIconMode={'inset'}
+                          onDateChange={newDatePickerValue => {
+                            const handler = async () => {
+                              const date = newDatePickerValue;
+                              try {
+                                const valueuR9ljjY5 = newDatePickerValue;
+                                setDatePickerValue2(valueuR9ljjY5);
+                                const DateResult1 = valueuR9ljjY5;
+                                const finalformate1 =
+                                  convertDateTimeSplit(DateResult1);
+                                setFinalformate1(finalformate1);
+                                /* hidden 'Log to Console' action */
+                                const prepaidconsumptionrangeJson =
+                                  await (async () => {
+                                    if (prepaidFlag === 'Y') {
+                                      return (
+                                        await CISAPPApi.consumptionPatternRangePOST(
+                                          Constants,
+                                          {
+                                            accountno: Constants['name'],
+                                            action:
+                                              'consumptionPatternDaysRange',
+                                            days: 'range',
+                                            fromdate: finalformate1,
+                                            mtrno: meterNumber,
+                                            todate: finalformate2,
+                                          }
+                                        )
+                                      )?.json;
+                                    }
+                                  })();
+                                const prepaidrangeconsumptionResult =
+                                  JSON.parse(
+                                    prepaidconsumptionrangeJson &&
+                                      prepaidconsumptionrangeJson[0].data.data
+                                  );
+                                setPrepaidRangeConsumption(
+                                  prepaidrangeconsumptionResult
+                                );
+                              } catch (err) {
+                                console.error(err);
+                              }
+                            };
+                            handler();
+                          }}
+                          type={'solid'}
+                          date={datePickerValue2}
+                          leftIconName={'MaterialIcons/date-range'}
+                          mode={'date'}
+                        />
+                      </View>
+                      {/* To date */}
+                      <View>
+                        {/* Text 2 */}
+                        <Text
+                          accessible={true}
+                          {...GlobalStyles.TextStyles(theme)['Text'].props}
+                          style={StyleSheet.applyWidth(
+                            GlobalStyles.TextStyles(theme)['Text'].style,
+                            dimensions.width
+                          )}
+                        >
+                          {transalate(Variables, 'Select To Date')}
+                        </Text>
+                        {/* Date Picker 2 */}
+                        <DatePicker
+                          autoDismissKeyboard={true}
+                          disabled={false}
+                          hideLabel={false}
+                          label={'Date'}
+                          leftIconMode={'inset'}
+                          mode={'date'}
+                          onDateChange={newDatePicker2Value => {
+                            const handler = async () => {
+                              const date = newDatePicker2Value;
+                              try {
+                                const valueNqd9wnxV = newDatePicker2Value;
+                                setDatePicker2Value(valueNqd9wnxV);
+                                const DateResult2 = valueNqd9wnxV;
+                                const finalformate2 =
+                                  convertDateTimeSplit(DateResult2);
+                                setFinalformate2(finalformate2);
+                                console.log(finalformate2);
+                                const prepaidconsumptionrangeJson =
+                                  await (async () => {
+                                    if (prepaidFlag === 'Y') {
+                                      return (
+                                        await CISAPPApi.consumptionPatternRangePOST(
+                                          Constants,
+                                          {
+                                            accountno: Constants['name'],
+                                            action:
+                                              'consumptionPatternDaysRange',
+                                            days: 'range',
+                                            fromdate: finalformate1,
+                                            mtrno: meterNumber,
+                                            todate: finalformate2,
+                                          }
+                                        )
+                                      )?.json;
+                                    }
+                                  })();
+                                const prepaidrangeconsumptionResult =
+                                  JSON.parse(
+                                    prepaidconsumptionrangeJson &&
+                                      prepaidconsumptionrangeJson[0].data.data
+                                  );
+                                setPrepaidRangeConsumption(
+                                  prepaidrangeconsumptionResult
+                                );
+                              } catch (err) {
+                                console.error(err);
+                              }
+                            };
+                            handler();
+                          }}
+                          type={'solid'}
+                          date={datePicker2Value}
+                          leftIconName={'MaterialIcons/date-range'}
+                        />
+                      </View>
+                    </View>
+                    {/* Prepaid Section header */}
+                    <>
+                      {!(prepaidFlag === 'Y') ? null : (
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              flexDirection: 'row',
+                              justifyContent: 'center',
+                              marginTop: 10,
+                              paddingBottom: 12,
+                              paddingLeft: 20,
+                              paddingRight: 20,
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Heading */}
+                          <Text
+                            accessible={true}
+                            {...GlobalStyles.TextStyles(theme)['Text'].props}
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(
+                                GlobalStyles.TextStyles(theme)['Text'].style,
+                                {
+                                  alignSelf: 'center',
+                                  color: theme.colors['ShopAppBlue'],
+                                  fontFamily: 'Roboto_400Regular',
+                                  fontSize: 16,
+                                  textAlign: 'center',
+                                }
+                              ),
+                              dimensions.width
+                            )}
+                          >
+                            {transalate(Variables, 'Range Usage')}
+                          </Text>
+                        </View>
+                      )}
+                    </>
+                    {/* prepaidtabs */}
+                    <>
+                      {!(prepaidFlag === 'Y') ? null : (
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              alignItems: 'center',
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* chart */}
+                          <View
+                            style={StyleSheet.applyWidth(
+                              {
+                                alignItems: 'center',
+                                flex: 1,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                              },
+                              dimensions.width
+                            )}
+                          >
+                            {/* prepaidrangechart */}
+                            <View
+                              style={StyleSheet.applyWidth(
+                                { flex: 1 },
+                                dimensions.width
+                              )}
+                            >
+                              {/* selected */}
+                              <>
+                                {!(
+                                  selectedrangeTab === 'prepaidrangechart'
+                                ) ? null : (
+                                  <Touchable>
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          borderBottomWidth: 3,
+                                          borderColor: theme.colors['Primary'],
+                                          height: 25,
+                                          justifyContent: 'center',
+                                        },
+                                        dimensions.width
+                                      )}
+                                    >
+                                      <Text
+                                        accessible={true}
+                                        {...GlobalStyles.TextStyles(theme)[
+                                          'Text'
+                                        ].props}
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(
+                                            GlobalStyles.TextStyles(theme)[
+                                              'Text'
+                                            ].style,
+                                            {
+                                              color:
+                                                theme.colors['Custom Color'],
+                                              fontFamily: 'Roboto_400Regular',
+                                            }
+                                          ),
+                                          dimensions.width
+                                        )}
+                                      >
+                                        {transalate(Variables, 'Chart')}
+                                      </Text>
+                                    </View>
+                                  </Touchable>
+                                )}
+                              </>
+                              {/* unselected */}
+                              <>
+                                {!(
+                                  selectedrangeTab !== 'prepaidrangechart'
+                                ) ? null : (
+                                  <Touchable
+                                    onPress={() => {
+                                      try {
+                                        setSelectedrangeTab(
+                                          'prepaidrangechart'
+                                        );
+                                      } catch (err) {
+                                        console.error(err);
+                                      }
+                                    }}
+                                  >
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          borderBottomWidth: 2,
+                                          borderColor: theme.colors['Light'],
+                                          height: 25,
+                                        },
+                                        dimensions.width
+                                      )}
+                                    >
+                                      <Text
+                                        accessible={true}
+                                        {...GlobalStyles.TextStyles(theme)[
+                                          'Text'
+                                        ].props}
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(
+                                            GlobalStyles.TextStyles(theme)[
+                                              'Text'
+                                            ].style,
+                                            {
+                                              color: theme.colors['Light'],
+                                              fontFamily: 'Roboto_400Regular',
+                                            }
+                                          ),
+                                          dimensions.width
+                                        )}
+                                      >
+                                        {transalate(Variables, 'Chart')}
+                                      </Text>
+                                    </View>
+                                  </Touchable>
+                                )}
+                              </>
+                            </View>
+                          </View>
+                          {/* table */}
+                          <View
+                            style={StyleSheet.applyWidth(
+                              {
+                                alignItems: 'center',
+                                flex: 1,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                              },
+                              dimensions.width
+                            )}
+                          >
+                            {/* prepaidrangetable */}
+                            <View
+                              style={StyleSheet.applyWidth(
+                                { flex: 1 },
+                                dimensions.width
+                              )}
+                            >
+                              {/* selected */}
+                              <>
+                                {!(
+                                  selectedrangeTab === 'prepaidrangetable'
+                                ) ? null : (
+                                  <Touchable>
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          borderBottomWidth: 3,
+                                          borderColor: theme.colors['Primary'],
+                                          height: 25,
+                                        },
+                                        dimensions.width
+                                      )}
+                                    >
+                                      <Text
+                                        accessible={true}
+                                        {...GlobalStyles.TextStyles(theme)[
+                                          'Text'
+                                        ].props}
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(
+                                            GlobalStyles.TextStyles(theme)[
+                                              'Text'
+                                            ].style,
+                                            {
+                                              color:
+                                                theme.colors['Custom Color'],
+                                              fontFamily: 'Roboto_400Regular',
+                                            }
+                                          ),
+                                          dimensions.width
+                                        )}
+                                      >
+                                        {transalate(Variables, 'Table')}
+                                      </Text>
+                                    </View>
+                                  </Touchable>
+                                )}
+                              </>
+                              {/* unselected */}
+                              <>
+                                {!(
+                                  selectedrangeTab !== 'prepaidrangetable'
+                                ) ? null : (
+                                  <Touchable
+                                    onPress={() => {
+                                      try {
+                                        setSelectedrangeTab(
+                                          'prepaidrangetable'
+                                        );
+                                      } catch (err) {
+                                        console.error(err);
+                                      }
+                                    }}
+                                  >
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          borderBottomWidth: 2,
+                                          borderColor: theme.colors['Light'],
+                                          height: 25,
+                                        },
+                                        dimensions.width
+                                      )}
+                                    >
+                                      <Text
+                                        accessible={true}
+                                        {...GlobalStyles.TextStyles(theme)[
+                                          'Text'
+                                        ].props}
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(
+                                            GlobalStyles.TextStyles(theme)[
+                                              'Text'
+                                            ].style,
+                                            {
+                                              color: theme.colors['Light'],
+                                              fontFamily: 'Roboto_400Regular',
+                                            }
+                                          ),
+                                          dimensions.width
+                                        )}
+                                      >
+                                        {transalate(Variables, 'Table')}
+                                      </Text>
+                                    </View>
+                                  </Touchable>
+                                )}
+                              </>
+                            </View>
+                          </View>
+                        </View>
+                      )}
+                    </>
+                    {/* prepaidrangechart */}
+                    <>
+                      {!(selectedrangeTab === 'prepaidrangechart') ? null : (
+                        <View
+                          style={StyleSheet.applyWidth(
+                            { flex: 1 },
+                            dimensions.width
+                          )}
+                        >
+                          <>
+                            {!prepaidRangeConsumption?.length ? null : (
+                              <View
+                                style={StyleSheet.applyWidth(
+                                  {
+                                    alignItems: 'center',
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    paddingRight: 10,
+                                    width: '100%',
+                                  },
+                                  dimensions.width
+                                )}
+                              >
+                                <>
+                                  {!(prepaidFlag === 'Y') ? null : (
+                                    <Utils.CustomCodeErrorBoundary>
+                                      <prepaidRangeUsage.LineChartComponent
+                                        prepaidRangeConsumption={
+                                          prepaidRangeConsumption
+                                        }
+                                      />
+                                    </Utils.CustomCodeErrorBoundary>
+                                  )}
+                                </>
+                              </View>
+                            )}
+                          </>
+                        </View>
+                      )}
+                    </>
+                    {/* prepaidrangetable */}
+                    <>
+                      {!(selectedrangeTab === 'prepaidrangetable') ? null : (
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              backgroundColor: 'rgb(211, 211, 211)',
+                              borderBottomWidth: 1,
+                              borderColor: 'rgb(211, 211, 211)',
+                              borderLeftWidth: 1,
+                              borderRightWidth: 1,
+                              borderTopLeftRadius: 5,
+                              borderTopRightRadius: 5,
+                              borderTopWidth: 1,
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              width: '100%',
+                            },
+                            dimensions.width
+                          )}
+                        >
+                          {/* Bill Month */}
+                          <View
+                            style={StyleSheet.applyWidth(
+                              {
+                                borderColor: theme.colors['White'],
+                                borderRightWidth: 1,
+                                flex: 1,
+                              },
+                              dimensions.width
+                            )}
+                          >
+                            <View
+                              style={StyleSheet.applyWidth(
+                                {
+                                  backgroundColor: theme.colors['ViewBG'],
+                                  height: 40,
+                                  justifyContent: 'center',
+                                },
+                                dimensions.width
+                              )}
+                            >
+                              <Text
+                                accessible={true}
+                                {...GlobalStyles.TextStyles(theme)['Text']
+                                  .props}
+                                style={StyleSheet.applyWidth(
+                                  StyleSheet.compose(
+                                    GlobalStyles.TextStyles(theme)['Text']
+                                      .style,
+                                    {
+                                      color: 'rgb(42, 42, 42)',
+                                      fontFamily: 'Roboto_700Bold',
+                                      textAlign: 'center',
+                                      textTransform: 'capitalize',
+                                    }
+                                  ),
+                                  dimensions.width
+                                )}
+                              >
+                                {transalate(Variables, 'Date')}
+                              </Text>
+                            </View>
+                          </View>
+                          {/* Units */}
+                          <View
+                            style={StyleSheet.applyWidth(
+                              {
+                                borderColor: theme.colors['White'],
+                                borderRightWidth: 1,
+                                flex: 1,
+                              },
+                              dimensions.width
+                            )}
+                          >
+                            <View
+                              style={StyleSheet.applyWidth(
+                                {
+                                  backgroundColor: theme.colors['ViewBG'],
+                                  height: 40,
+                                  justifyContent: 'center',
+                                },
+                                dimensions.width
+                              )}
+                            >
+                              <Text
+                                accessible={true}
+                                {...GlobalStyles.TextStyles(theme)['Text']
+                                  .props}
+                                style={StyleSheet.applyWidth(
+                                  StyleSheet.compose(
+                                    GlobalStyles.TextStyles(theme)['Text']
+                                      .style,
+                                    {
+                                      color: 'rgb(42, 42, 42)',
+                                      fontFamily: 'Roboto_700Bold',
+                                      textAlign: 'center',
+                                      textTransform: 'capitalize',
+                                    }
+                                  ),
+                                  dimensions.width
+                                )}
+                              >
+                                {transalate(Variables, 'Units(Kwh)')}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                      )}
+                    </>
+                    <SimpleStyleFlatList
+                      data={prepaidRangeConsumption}
+                      horizontal={false}
+                      inverted={false}
+                      keyExtractor={(listData, index) =>
+                        listData?.id ?? listData?.uuid ?? index.toString()
+                      }
+                      keyboardShouldPersistTaps={'never'}
+                      listKey={'ES9TGbfq'}
+                      nestedScrollEnabled={false}
+                      numColumns={1}
+                      onEndReachedThreshold={0.5}
+                      renderItem={({ item, index }) => {
+                        const listData = item;
+                        return (
+                          <>
+                            {/* prepaidrangetable */}
+                            <>
+                              {!(
+                                selectedrangeTab === 'prepaidrangetable'
+                              ) ? null : (
+                                <View
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'center',
+                                      borderBottomWidth: 1,
+                                      borderColor: 'rgb(216, 211, 211)',
+                                      flexDirection: 'row',
+                                      justifyContent: 'space-between',
+                                      paddingBottom: 10,
+                                      paddingLeft: 20,
+                                      paddingRight: 20,
+                                      paddingTop: 10,
+                                    },
+                                    dimensions.width
+                                  )}
+                                >
                                   <View>
                                     <Text
                                       accessible={true}
@@ -1670,7 +4226,7 @@ const UsageScreen = props => {
                                           GlobalStyles.TextStyles(theme)['Text']
                                             .style,
                                           {
-                                            color: 'rgb(42, 42, 42)',
+                                            color: 'rgb(46, 45, 45)',
                                             fontFamily: 'Roboto_400Regular',
                                             fontSize: 16,
                                           }
@@ -1678,8 +4234,29 @@ const UsageScreen = props => {
                                         dimensions.width
                                       )}
                                     >
-                                      {'₹'}
-                                      {prepaidListData?.closingBalance}
+                                      {listData?.lpDate}
+                                    </Text>
+                                  </View>
+                                  {/* View 2 */}
+                                  <View>
+                                    <Text
+                                      accessible={true}
+                                      {...GlobalStyles.TextStyles(theme)['Text']
+                                        .props}
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(
+                                          GlobalStyles.TextStyles(theme)['Text']
+                                            .style,
+                                          {
+                                            color: 'rgb(46, 45, 45)',
+                                            fontFamily: 'Roboto_400Regular',
+                                            fontSize: 16,
+                                          }
+                                        ),
+                                        dimensions.width
+                                      )}
+                                    >
+                                      {listData?.kWImp}
                                     </Text>
                                   </View>
                                 </View>
@@ -1933,45 +4510,6 @@ const UsageScreen = props => {
                         </View>
                       )}
                     </>
-                    {/* Dashboard */}
-                    <>
-                      {!(selectedTab === 'Dashboard') ? null : (
-                        <View
-                          {...GlobalStyles.ViewStyles(theme)['Dashboard'].props}
-                          style={StyleSheet.applyWidth(
-                            GlobalStyles.ViewStyles(theme)['Dashboard'].style,
-                            dimensions.width
-                          )}
-                        >
-                          <>
-                            {!billingHistoryScreen?.length ? null : (
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'center',
-                                    flex: 1,
-                                    width: '100%',
-                                  },
-                                  dimensions.width
-                                )}
-                              >
-                                <>
-                                  {!(prepaidFlag === 'N') ? null : (
-                                    <Utils.CustomCodeErrorBoundary>
-                                      <Usage.LineChartComponent
-                                        billingHistoryScreen={
-                                          billingHistoryScreen
-                                        }
-                                      />
-                                    </Utils.CustomCodeErrorBoundary>
-                                  )}
-                                </>
-                              </View>
-                            )}
-                          </>
-                        </View>
-                      )}
-                    </>
                     {/* Details */}
                     <>
                       {!(selectedTab === 'content') ? null : (
@@ -2119,7 +4657,7 @@ const UsageScreen = props => {
                         index.toString()
                       }
                       keyboardShouldPersistTaps={'never'}
-                      listKey={'rQSxobcO'}
+                      listKey={'FLmDdNKZ'}
                       nestedScrollEnabled={false}
                       numColumns={1}
                       onEndReachedThreshold={0.5}
@@ -2167,10 +4705,8 @@ const UsageScreen = props => {
                                       )}
                                     >
                                       {convertMonthNoToMonthName(
-                                        postpaidListData?.BillMonth
-                                      )}
-                                      {' - '}
-                                      {postpaidListData?.BillYear}
+                                        postpaidListData?.billmonth
+                                      )}{' '}
                                     </Text>
                                   </View>
                                   {/* Units */}
@@ -2193,7 +4729,7 @@ const UsageScreen = props => {
                                         dimensions.width
                                       )}
                                     >
-                                      {postpaidListData?.BillUnits}
+                                      {postpaidListData?.BILLuNITS}
                                     </Text>
                                   </View>
                                   {/* Cost */}

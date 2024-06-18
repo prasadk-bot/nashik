@@ -34,7 +34,7 @@ const NotificationsBlock = props => {
             keyExtractor={(flashListData, index) =>
               flashListData?.id ?? flashListData?.uuid ?? index.toString()
             }
-            listKey={'b8iSXyEp'}
+            listKey={'j2D6F6SK'}
             numColumns={1}
             onEndReachedThreshold={0.5}
             renderItem={({ item, index }) => {

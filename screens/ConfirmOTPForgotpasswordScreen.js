@@ -36,41 +36,6 @@ const ConfirmOTPForgotpasswordScreen = props => {
   const [seconds, setSeconds] = React.useState(61);
   const [textInputValue, setTextInputValue] = React.useState(0);
   const [codeInputValue, setCodeInputValue] = React.useState(undefined);
-  const startTimer = () => {
-    const intervalId = setInterval(() => {
-      if (seconds) {
-        setSeconds(prev =>
-          prev > 0 ? prev - 1 : (setSeconds(61), clearInterval(intervalId))
-        );
-      }
-    }, 1000);
-
-    return seconds;
-  };
-
-  const otpValidation = otp => {
-    var errorMessage = null;
-    if (!otp.trim()) {
-      errorMessage = 'Otp is required';
-    }
-    return errorMessage;
-  };
-
-  const createOTP = () => {
-    return `${otpValue1}${otpValue2}${otpValue3}${otpValue4}`;
-  };
-
-  const otpVerify = (otpResult, otp) => {
-    if (otpResult === otp) {
-      // Navigate to the change password screen
-      //console.log('Navigating to change password screen...');
-      return otpVerify;
-      // Add your navigation logic here
-    } else {
-      console.log('Incorrect OTP. Please try again.');
-    }
-  };
-
   const processErrorMessage = msg => {
     const scheme = {
       msg1: 'Password Changed Successfully',
@@ -119,6 +84,18 @@ const ConfirmOTPForgotpasswordScreen = props => {
     return scheme[msg];
   };
 
+  const startTimer = () => {
+    const intervalId = setInterval(() => {
+      if (seconds) {
+        setSeconds(prev =>
+          prev > 0 ? prev - 1 : (setSeconds(61), clearInterval(intervalId))
+        );
+      }
+    }, 1000);
+
+    return seconds;
+  };
+
   const check_otp = otp => {
     const ChangePasswordScreen = () => {
       // Function to handle OTP verification
@@ -133,6 +110,29 @@ const ConfirmOTPForgotpasswordScreen = props => {
       };
     };
   };
+
+  const otpValidation = otp => {
+    var errorMessage = null;
+    if (!otp.trim()) {
+      errorMessage = 'Otp is required';
+    }
+    return errorMessage;
+  };
+
+  const createOTP = () => {
+    return `${otpValue1}${otpValue2}${otpValue3}${otpValue4}`;
+  };
+
+  const otpVerify = (otpResult, otp) => {
+    if (otpResult === otp) {
+      // Navigate to the change password screen
+      //console.log('Navigating to change password screen...');
+      return otpVerify;
+      // Add your navigation logic here
+    } else {
+      console.log('Incorrect OTP. Please try again.');
+    }
+  };
   const isFocused = useIsFocused();
   React.useEffect(() => {
     try {
@@ -144,9 +144,9 @@ const ConfirmOTPForgotpasswordScreen = props => {
       console.error(err);
     }
   }, [isFocused]);
-  const oTPInputgYNOCHNLRef = React.useRef();
-  const oTPInputaciBralqRef = React.useRef();
-  const oTPInputrNpeTaLkRef = React.useRef();
+  const oTPInputAwFSGg4GRef = React.useRef();
+  const oTPInputTaIkaqq2Ref = React.useRef();
+  const oTPInputgwbQCf7GRef = React.useRef();
 
   return (
     <ScreenContainer scrollable={false} hasSafeArea={true}>
@@ -456,6 +456,7 @@ const ConfirmOTPForgotpasswordScreen = props => {
           }}
           style={StyleSheet.applyWidth(
             {
+              backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
               borderRadius: 14,
               fontFamily: 'Roboto_400Regular',
               fontSize: 16,

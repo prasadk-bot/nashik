@@ -347,7 +347,12 @@ const ForgotpasswordScreen = props => {
             handler();
           }}
           style={StyleSheet.applyWidth(
-            { borderRadius: 14, fontSize: 16, marginTop: 35 },
+            {
+              backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
+              borderRadius: 14,
+              fontSize: 16,
+              marginTop: 35,
+            },
             dimensions.width
           )}
           title={`${transalate(Variables, 'Submit')}`}

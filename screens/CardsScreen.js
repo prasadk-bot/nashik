@@ -6,17 +6,21 @@ import useWindowDimensions from '../utils/useWindowDimensions';
 import {
   Button,
   Icon,
+  LinearProgress,
   Picker,
   ScreenContainer,
   Touchable,
   withTheme,
 } from '@draftbit/ui';
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 
 const CardsScreen = props => {
   const { theme } = props;
   const dimensions = useWindowDimensions();
+  const [icon1, setIcon1] = React.useState(false);
+  const [icon2, setIcon2] = React.useState(false);
   const [pickerValue, setPickerValue] = React.useState('');
+  const [upIcon3, setUpIcon3] = React.useState(true);
 
   return (
     <ScreenContainer hasSafeArea={false} scrollable={false}>
@@ -28,7 +32,6 @@ const CardsScreen = props => {
             borderRadius: 8,
             borderWidth: 1,
             justifyContent: 'space-evenly',
-            marginTop: '30%',
             paddingBottom: 10,
             paddingLeft: 20,
             paddingRight: 20,
@@ -114,7 +117,6 @@ const CardsScreen = props => {
             borderRadius: 8,
             borderWidth: 1,
             justifyContent: 'space-evenly',
-            marginTop: 20,
             paddingBottom: 10,
             paddingLeft: 20,
             paddingRight: 20,
@@ -239,6 +241,217 @@ const CardsScreen = props => {
             {'Last recharge of ₹ 5 on 2024-04-18'}
           </Text>
         </View>
+      </View>
+      {/* Main View */}
+      <View
+        style={StyleSheet.applyWidth(
+          {
+            backgroundColor: theme.colors['Custom Color_24'],
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: '20%',
+            paddingBottom: 10,
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          },
+          dimensions.width
+        )}
+      >
+        {/* Arrow View */}
+        <View
+          style={StyleSheet.applyWidth(
+            { justifyContent: 'space-between' },
+            dimensions.width
+          )}
+        >
+          {/* Up Touchable-1 */}
+          <>
+            {!icon1 ? null : (
+              <Touchable
+                onPress={() => {
+                  try {
+                    setIcon1(false);
+                    setIcon2(true);
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }}
+              >
+                <Icon size={24} name={'AntDesign/caretup'} />
+              </Touchable>
+            )}
+          </>
+          {/* Up Touchable-2 */}
+          <>
+            {!icon2 ? null : (
+              <Touchable
+                onPress={() => {
+                  try {
+                    setIcon2(false);
+                    setUpIcon3(true);
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }}
+              >
+                <Icon size={24} name={'AntDesign/caretup'} />
+              </Touchable>
+            )}
+          </>
+          {/* Up Touchable-3 */}
+          <>
+            {!upIcon3 ? null : (
+              <Touchable disabled={upIcon3}>
+                <Icon size={24} name={'AntDesign/caretup'} />
+              </Touchable>
+            )}
+          </>
+          {/* Down Touchable-1 */}
+          <>
+            {!icon1 ? null : (
+              <Touchable
+                onPress={() => {
+                  try {
+                    setIcon1(false);
+                    setIcon2(true);
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }}
+                disabled={icon1}
+              >
+                <Icon size={24} name={'AntDesign/caretdown'} />
+              </Touchable>
+            )}
+          </>
+          {/* Down Touchable-2 */}
+          <>
+            {!icon2 ? null : (
+              <Touchable
+                onPress={() => {
+                  try {
+                    setIcon2(false);
+                    setIcon1(true);
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }}
+              >
+                <Icon size={24} name={'AntDesign/caretdown'} />
+              </Touchable>
+            )}
+          </>
+          {/* Down Touchable-3 */}
+          <>
+            {!upIcon3 ? null : (
+              <Touchable
+                onPress={() => {
+                  try {
+                    setUpIcon3(false);
+                    setIcon2(true);
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }}
+              >
+                <Icon size={24} name={'AntDesign/caretdown'} />
+              </Touchable>
+            )}
+          </>
+        </View>
+        {/* Text View */}
+        <View
+          style={StyleSheet.applyWidth(
+            { alignContent: 'center' },
+            dimensions.width
+          )}
+        >
+          <>
+            {!icon1 ? null : (
+              <Text
+                accessible={true}
+                {...GlobalStyles.TextStyles(theme)['Text'].props}
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(
+                    GlobalStyles.TextStyles(theme)['Text'].style,
+                    { fontFamily: 'Roboto_700Bold', fontSize: 17 }
+                  ),
+                  dimensions.width
+                )}
+              >
+                {'1011 KVH'}
+              </Text>
+            )}
+          </>
+          {/* Text 2 */}
+          <>
+            {!icon2 ? null : (
+              <Text
+                accessible={true}
+                {...GlobalStyles.TextStyles(theme)['Text'].props}
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(
+                    GlobalStyles.TextStyles(theme)['Text'].style,
+                    { fontFamily: 'Roboto_700Bold', fontSize: 17 }
+                  ),
+                  dimensions.width
+                )}
+              >
+                {'1134 KWH'}
+              </Text>
+            )}
+          </>
+          {/* Text 3 */}
+          <>
+            {!upIcon3 ? null : (
+              <Text
+                accessible={true}
+                {...GlobalStyles.TextStyles(theme)['Text'].props}
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(
+                    GlobalStyles.TextStyles(theme)['Text'].style,
+                    { fontFamily: 'Roboto_700Bold', fontSize: 17 }
+                  ),
+                  dimensions.width
+                )}
+              >
+                {'2101KVAH'}
+              </Text>
+            )}
+          </>
+        </View>
+        <View />
+      </View>
+      {/* View 2 */}
+      <View
+        style={StyleSheet.applyWidth({ marginTop: '20%' }, dimensions.width)}
+      >
+        <LinearProgress
+          animationDuration={500}
+          color={theme.colors.primary}
+          indeterminate={false}
+          isAnimated={true}
+          showTrack={true}
+          thickness={10}
+          trackColor={theme.colors.divider}
+          trackLineCap={'round'}
+          lineCap={'round'}
+          maximumValue={50}
+          minimumValue={100}
+        />
+        <ActivityIndicator
+          hidesWhenStopped={true}
+          size={'small'}
+          {...GlobalStyles.ActivityIndicatorStyles(theme)['Activity Indicator']
+            .props}
+          animating={true}
+          style={StyleSheet.applyWidth(
+            GlobalStyles.ActivityIndicatorStyles(theme)['Activity Indicator']
+              .style,
+            dimensions.width
+          )}
+        />
       </View>
     </ScreenContainer>
   );

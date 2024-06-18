@@ -95,9 +95,9 @@ line two` ) and will not work with special characters inside of quotes ( example
         )?.json;
         console.log(loadpatternJson);
 
-        const valuesbUaalEF = loadpatternJson && loadpatternJson[0].data.data;
-        setLoadpatterndeatils(valuesbUaalEF);
-        const loadpattern = valuesbUaalEF;
+        const valuemIMdIbTG = loadpatternJson && loadpatternJson[0].data.data;
+        setLoadpatterndeatils(valuemIMdIbTG);
+        const loadpattern = valuemIMdIbTG;
         const voltageJson = (
           await CISAPPApi.powerQualityVoltagePOST(Constants, {
             accountno: Constants['name'],
@@ -107,9 +107,9 @@ line two` ) and will not work with special characters inside of quotes ( example
         )?.json;
         console.log(voltageJson);
 
-        const valueuWyc4j57 = voltageJson && voltageJson[0].data;
-        setVoltageScreen(valueuWyc4j57);
-        const voltage = valueuWyc4j57;
+        const valueEkFKI022 = voltageJson && voltageJson[0].data;
+        setVoltageScreen(valueEkFKI022);
+        const voltage = valueEkFKI022;
         const currentJson = (
           await CISAPPApi.powerQualityCurrentPOST(Constants, {
             accountno: Constants['name'],
@@ -119,9 +119,9 @@ line two` ) and will not work with special characters inside of quotes ( example
         )?.json;
         console.log(currentJson);
 
-        const valueGaXbY4az = currentJson && currentJson[0].data;
-        setCurrentScreen(valueGaXbY4az);
-        const current = valueGaXbY4az;
+        const valueVHsm2rhc = currentJson && currentJson[0].data;
+        setCurrentScreen(valueVHsm2rhc);
+        const current = valueVHsm2rhc;
         const powerfactorJson = (
           await CISAPPApi.powerQualityPowerFactorPOST(Constants, {
             accountno: Constants['name'],
@@ -131,9 +131,9 @@ line two` ) and will not work with special characters inside of quotes ( example
         )?.json;
         console.log(powerfactorJson);
 
-        const valuecLWevw5f = powerfactorJson && powerfactorJson[0].data;
-        setPowerfactorScreen(valuecLWevw5f);
-        const powerfactor = valuecLWevw5f;
+        const value4wk5T1ge = powerfactorJson && powerfactorJson[0].data;
+        setPowerfactorScreen(value4wk5T1ge);
+        const powerfactor = value4wk5T1ge;
       } catch (err) {
         console.error(err);
       }
@@ -295,9 +295,9 @@ line two` ) and will not work with special characters inside of quotes ( example
                         )?.json;
                         console.log(loadpatternJson);
 
-                        const valueZqU4mnpZ = newPickerValue;
-                        setTextInputValue(valueZqU4mnpZ);
-                        const loadpattern = valueZqU4mnpZ;
+                        const valuehQLdpaYq = newPickerValue;
+                        setTextInputValue(valuehQLdpaYq);
+                        const loadpattern = valuehQLdpaYq;
                         const voltageJson = (
                           await CISAPPApi.powerQualityVoltagePOST(Constants, {
                             accountno: newPickerValue,
@@ -307,10 +307,10 @@ line two` ) and will not work with special characters inside of quotes ( example
                         )?.json;
                         console.log(voltageJson);
 
-                        const valueCbC4ROme =
+                        const valueunbSDOZy =
                           voltageJson && voltageJson[0].data;
-                        setVoltageScreen(valueCbC4ROme);
-                        const voltage = valueCbC4ROme;
+                        setVoltageScreen(valueunbSDOZy);
+                        const voltage = valueunbSDOZy;
                         const currentJson = (
                           await CISAPPApi.powerQualityCurrentPOST(Constants, {
                             accountno: newPickerValue,
@@ -320,10 +320,10 @@ line two` ) and will not work with special characters inside of quotes ( example
                         )?.json;
                         console.log(currentJson);
 
-                        const valuejIx2uaBb =
+                        const valuewbTAEbl7 =
                           currentJson && currentJson[0].data;
-                        setCurrentScreen(valuejIx2uaBb);
-                        const current = valuejIx2uaBb;
+                        setCurrentScreen(valuewbTAEbl7);
+                        const current = valuewbTAEbl7;
                         const powerfactorJson = (
                           await CISAPPApi.powerQualityPowerFactorPOST(
                             Constants,
@@ -336,10 +336,10 @@ line two` ) and will not work with special characters inside of quotes ( example
                         )?.json;
                         console.log(powerfactorJson);
 
-                        const valueSfDLmhCt =
+                        const value6UIRAR7t =
                           powerfactorJson && powerfactorJson[0].data;
-                        setPowerfactorScreen(valueSfDLmhCt);
-                        const powerfactor = valueSfDLmhCt;
+                        setPowerfactorScreen(value6UIRAR7t);
+                        const powerfactor = value6UIRAR7t;
                         setServiceConNumber(newPickerValue);
                       } catch (err) {
                         console.error(err);
@@ -415,10 +415,10 @@ line two` ) and will not work with special characters inside of quotes ( example
                         )?.json;
                         console.log(voltageJson);
 
-                        const valuee0E991tK =
+                        const valueIkS6TjKE =
                           voltageJson && voltageJson[0].data;
-                        setVoltageScreen(valuee0E991tK);
-                        const voltage = valuee0E991tK;
+                        setVoltageScreen(valueIkS6TjKE);
+                        const voltage = valueIkS6TjKE;
                         console.log(voltageJson);
                         const currentJson = (
                           await CISAPPApi.powerQualityCurrentPOST(Constants, {
@@ -429,10 +429,10 @@ line two` ) and will not work with special characters inside of quotes ( example
                         )?.json;
                         console.log(currentJson);
 
-                        const valueRFhpmfOi =
+                        const valuebPYTLvY6 =
                           currentJson && currentJson[0].data;
-                        setCurrentScreen(valueRFhpmfOi);
-                        const current = valueRFhpmfOi;
+                        setCurrentScreen(valuebPYTLvY6);
+                        const current = valuebPYTLvY6;
                         const powerfactorJson = (
                           await CISAPPApi.powerQualityPowerFactorPOST(
                             Constants,
@@ -445,10 +445,10 @@ line two` ) and will not work with special characters inside of quotes ( example
                         )?.json;
                         console.log(powerfactorJson);
 
-                        const valueyfVo2UG7 =
+                        const valueMek7iIdW =
                           powerfactorJson && powerfactorJson[0].data;
-                        setPowerfactorScreen(valueyfVo2UG7);
-                        const powerfactor = valueyfVo2UG7;
+                        setPowerfactorScreen(valueMek7iIdW);
+                        const powerfactor = valueMek7iIdW;
                       } catch (err) {
                         console.error(err);
                       }
@@ -471,10 +471,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                       color={theme.colors.primary}
                       unselectedColor={theme.colors.primary}
                       direction={'row-reverse'}
-                      label={transalate(
-                        Variables,
-                        transalate(Variables, '7Days')
-                      )}
+                      label={transalate(Variables, '7Days')}
                       style={StyleSheet.applyWidth(
                         { fontFamily: 'Roboto_400Regular', fontSize: 14 },
                         dimensions.width

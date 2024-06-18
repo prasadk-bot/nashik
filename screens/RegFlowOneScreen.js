@@ -320,7 +320,11 @@ const RegFlowOneScreen = props => {
             style={StyleSheet.applyWidth(
               StyleSheet.compose(
                 GlobalStyles.ButtonStyles(theme)['Submit'].style,
-                { borderRadius: 14, fontSize: 16 }
+                {
+                  backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
+                  borderRadius: 14,
+                  fontSize: 16,
+                }
               ),
               dimensions.width
             )}
@@ -400,7 +404,7 @@ const RegFlowOneScreen = props => {
                   inverted={false}
                   keyExtractor={(listData, index) => listData}
                   keyboardShouldPersistTaps={'never'}
-                  listKey={'aURRCODG'}
+                  listKey={'zipqQxQW'}
                   nestedScrollEnabled={false}
                   numColumns={1}
                   onEndReachedThreshold={0.5}
@@ -420,9 +424,9 @@ const RegFlowOneScreen = props => {
                                 value: finalANo,
                               });
 
-                              const value4Z9ZZzB1 = listData?.billingStatus;
-                              setBillIssuee(value4Z9ZZzB1);
-                              const bs = value4Z9ZZzB1;
+                              const value3GKG2PFk = listData?.billingStatus;
+                              setBillIssuee(value3GKG2PFk);
+                              const bs = value3GKG2PFk;
                               setBillIssuee(bs);
                               console.log(Constants['passac']);
                             } catch (err) {
@@ -459,9 +463,9 @@ const RegFlowOneScreen = props => {
                                     value: finalANo,
                                   });
 
-                                  const valuedWAbWzDr = listData?.billingStatus;
-                                  setBillIssuee(valuedWAbWzDr);
-                                  const bs = valuedWAbWzDr;
+                                  const valueXhG4m4C6 = listData?.billingStatus;
+                                  setBillIssuee(valueXhG4m4C6);
+                                  const bs = valueXhG4m4C6;
                                   setBillIssuee(bs);
                                 } catch (err) {
                                   console.error(err);
@@ -602,6 +606,7 @@ const RegFlowOneScreen = props => {
                 StyleSheet.compose(
                   GlobalStyles.ButtonStyles(theme)['Submit 2'].style,
                   {
+                    backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                     borderRadius: 14,
                     fontSize: 16,
                     marginBottom: 45,

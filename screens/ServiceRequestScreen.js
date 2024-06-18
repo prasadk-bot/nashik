@@ -479,20 +479,20 @@ line two` ) and will not work with special characters inside of quotes ( example
                       mode={'native'}
                       onValueChange={newPickerValue => {
                         try {
-                          const valueMXfQzS22 = newPickerValue;
-                          setSaveid(valueMXfQzS22);
-                          const si = valueMXfQzS22;
+                          const valueOcYpF3I6 = newPickerValue;
+                          setSaveid(valueOcYpF3I6);
+                          const si = valueOcYpF3I6;
                           console.log(si);
                           console.log(Constants['sub_category']);
                           const lll = getLable(Constants['sub_category'], si);
                           const lls = getSts(Constants['sub_category'], si);
 
-                          const valueFjjfS1fm = lll;
-                          setLab(valueFjjfS1fm);
-                          const labb = valueFjjfS1fm;
-                          const valuei9EXMJxZ = lls;
-                          setSts(valuei9EXMJxZ);
-                          const labbs = valuei9EXMJxZ;
+                          const valueu3LZdeei = lll;
+                          setLab(valueu3LZdeei);
+                          const labb = valueu3LZdeei;
+                          const valueAa1AabWI = lls;
+                          setSts(valueAa1AabWI);
+                          const labbs = valueAa1AabWI;
                           console.log(lll);
                           console.log(labbs);
                         } catch (err) {
@@ -3749,6 +3749,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                     }}
                     style={StyleSheet.applyWidth(
                       {
+                        backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                         borderRadius: 14,
                         fontFamily: 'Roboto_400Regular',
                         fontSize: 16,

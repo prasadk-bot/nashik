@@ -30,8 +30,11 @@ const QuickPayScreen = props => {
   const [checkboxRowValue, setCheckboxRowValue] = React.useState('');
   const [consumerName, setConsumerName] = React.useState('');
   const [consumerScNo, setConsumerScNo] = React.useState('');
+  const [createDate, setCreateDate] = React.useState('');
   const [meterNumber, setMeterNumber] = React.useState('');
+  const [meterStatus, setMeterStatus] = React.useState('');
   const [prepaidFlag, setPrepaidFlag] = React.useState('');
+  const [rechargeAmount, setRechargeAmount] = React.useState('');
   const [scnoErrorMsg, setScnoErrorMsg] = React.useState('');
   const [textInputValue, setTextInputValue] = React.useState('');
   const [viewbilldetails, setViewbilldetails] = React.useState({});
@@ -41,11 +44,6 @@ const QuickPayScreen = props => {
       errorMessage = 'Service connection number is required';
     }
     return errorMessage;
-  };
-
-  const buildString = Scno => {
-    console.log(`billing/rest/getBillDataWss/${Scno}`);
-    return `billing/rest/getBillDataWss/${Scno}`;
   };
 
   const buildConsumerString = Scno => {
@@ -58,6 +56,16 @@ line two` ) and will not work with special characters inside of quotes ( example
 
     console.log(`billing/rest/AccountInfo/${Scno}`);
     return `billing/rest/AccountInfo/${Scno}`;
+  };
+
+  const buildString = Scno => {
+    console.log(`billing/rest/getBillDataWss/${Scno}`);
+    return `billing/rest/getBillDataWss/${Scno}`;
+  };
+
+  const prepaidmeterstatus = metetno => {
+    console.log(`/SPM/getCurrentBalance?meterNumberOrAccountNo=${metetno}`);
+    return `/SPM/getCurrentBalance?meterNumberOrAccountNo=${metetno}`;
   };
 
   return (
@@ -303,27 +311,39 @@ line two` ) and will not work with special characters inside of quotes ( example
                 })();
                 buildString(textInputValue);
 
-                const valuehrJaeQ3D =
+                const valueazl6MMx7 =
                   Viewbilldetailsjson &&
                   Viewbilldetailsjson[0].data.BillDataJson[0];
-                setViewbilldetails(valuehrJaeQ3D);
-                const Viewbilldetailslog = valuehrJaeQ3D;
+                setViewbilldetails(valueazl6MMx7);
+                const Viewbilldetailslog = valueazl6MMx7;
                 console.log(Viewbilldetailslog);
                 const prepaiddetailsJson = await (async () => {
                   if (prepaidFlag === 'Y') {
                     return (
-                      await CISAPPApi.prepaidApiPOST(Constants, {
-                        mtrno: meterNo,
+                      await CISAPPApi.prepaidMeterStatuesPOST(Constants, {
+                        action: prepaidmeterstatus(meterNo),
                       })
                     )?.json;
                   }
                 })();
                 console.log(prepaiddetailsJson);
-                const availableBalance = (
+                const availableBalance2 = (
                   prepaiddetailsJson && prepaiddetailsJson[0]
-                )?.data[0]?.avail_balance;
-                console.log(availableBalance);
-                setAvailableBalance(availableBalance);
+                )?.data?.data[0]?.availBalance;
+                console.log(availableBalance2);
+                setAvailableBalance(availableBalance2);
+                const rechargeAmountResult = (
+                  prepaiddetailsJson && prepaiddetailsJson[0]
+                )?.data?.data[0]?.rechargeAmount;
+                setRechargeAmount(rechargeAmountResult);
+                const createDateResult = (
+                  prepaiddetailsJson && prepaiddetailsJson[0]
+                )?.data?.data[0]?.createDate;
+                setCreateDate(createDateResult);
+                const meterStatusResult = (
+                  prepaiddetailsJson && prepaiddetailsJson[0]
+                )?.data?.data[0]?.meterStatus;
+                setMeterStatus(meterStatusResult);
               } catch (err) {
                 console.error(err);
               }
@@ -332,6 +352,7 @@ line two` ) and will not work with special characters inside of quotes ( example
           }}
           style={StyleSheet.applyWidth(
             {
+              backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
               borderRadius: 14,
               fontFamily: 'Roboto_400Regular',
               fontSize: 16,
@@ -350,13 +371,11 @@ line two` ) and will not work with special characters inside of quotes ( example
             {...GlobalStyles.ViewStyles(theme)['card'].props}
             style={StyleSheet.applyWidth(
               StyleSheet.compose(GlobalStyles.ViewStyles(theme)['card'].style, {
-                alignItems: 'center',
                 backgroundColor: 'rgb(255, 255, 255)',
                 borderColor: 'rgb(199, 198, 198)',
                 borderRadius: 8,
                 borderWidth: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                justifyContent: 'space-evenly',
                 marginBottom: 15,
                 marginLeft: 20,
                 marginRight: 20,
@@ -368,54 +387,157 @@ line two` ) and will not work with special characters inside of quotes ( example
               dimensions.width
             )}
           >
-            {/* Name */}
-            <Text
-              accessible={true}
+            <View
               style={StyleSheet.applyWidth(
-                {
-                  color: theme.colors.strong,
-                  fontFamily: 'Roboto_400Regular',
-                  fontSize: 14,
-                  opacity: 1,
-                },
+                { flexDirection: 'row', justifyContent: 'space-around' },
                 dimensions.width
               )}
             >
-              {transalate(Variables, 'Available balance')}
-              {'  ₹'}
-              {availableBalance}
-            </Text>
-            {/* Recharge Now */}
-            <Button
-              iconPosition={'left'}
-              onPress={() => {
-                try {
-                  console.log(textInputValue);
-                  /* hidden 'Navigate' action */
-                  /* hidden 'Open Browser' action */
-                  /* hidden 'Navigate' action */
-                  navigation.navigate('RechargeGuestScreen', {
-                    serviceConNo: consumerScNo,
-                    Name: consumerName,
-                  });
-                } catch (err) {
-                  console.error(err);
-                }
-              }}
+              {/* Current Blance */}
+              <View>
+                <>
+                  {!'Current Balance' ? null : (
+                    <Text
+                      accessible={true}
+                      {...GlobalStyles.TextStyles(theme)['Text'].props}
+                      style={StyleSheet.applyWidth(
+                        StyleSheet.compose(
+                          GlobalStyles.TextStyles(theme)['Text'].style,
+                          { fontFamily: 'Roboto_400Regular' }
+                        ),
+                        dimensions.width
+                      )}
+                    >
+                      {transalate(Variables, 'Current Balance')}
+                    </Text>
+                  )}
+                </>
+                {/* Text 2 */}
+                <Text
+                  accessible={true}
+                  {...GlobalStyles.TextStyles(theme)['Text'].props}
+                  style={StyleSheet.applyWidth(
+                    StyleSheet.compose(
+                      GlobalStyles.TextStyles(theme)['Text'].style,
+                      {
+                        fontFamily: 'Roboto_700Bold',
+                        fontSize: 25,
+                        marginTop: 10,
+                      }
+                    ),
+                    dimensions.width
+                  )}
+                >
+                  {' ₹'}
+                  {availableBalance}
+                </Text>
+              </View>
+              {/* Meter Connected  */}
+              <View>
+                <View
+                  style={StyleSheet.applyWidth(
+                    { flexDirection: 'row', justifyContent: 'space-between' },
+                    dimensions.width
+                  )}
+                >
+                  <Text
+                    accessible={true}
+                    {...GlobalStyles.TextStyles(theme)['Text'].props}
+                    style={StyleSheet.applyWidth(
+                      GlobalStyles.TextStyles(theme)['Text'].style,
+                      dimensions.width
+                    )}
+                  >
+                    {transalate(Variables, 'Meter Connected')}
+                  </Text>
+                  {/* View 2 */}
+                  <View
+                    style={StyleSheet.applyWidth(
+                      { marginLeft: 5 },
+                      dimensions.width
+                    )}
+                  >
+                    <>
+                      {!(meterStatus === 'CONNECTED') ? null : (
+                        <Touchable>
+                          <Icon
+                            color={theme.colors['NFT_Time_Green']}
+                            name={'FontAwesome/check-circle'}
+                            size={20}
+                          />
+                        </Touchable>
+                      )}
+                    </>
+                    {/* Touchable 2 */}
+                    <>
+                      {!(meterStatus !== 'CONNECTED') ? null : (
+                        <Touchable>
+                          <Icon
+                            color={theme.colors['NFT_TIME_Red']}
+                            name={'FontAwesome/minus-circle'}
+                            size={20}
+                          />
+                        </Touchable>
+                      )}
+                    </>
+                  </View>
+                </View>
+                {/* Recharge Now */}
+                <Button
+                  iconPosition={'left'}
+                  onPress={() => {
+                    try {
+                      console.log(textInputValue);
+                      /* hidden 'Navigate' action */
+                      /* hidden 'Open Browser' action */
+                      /* hidden 'Navigate' action */
+                      navigation.navigate('RechargeGuestScreen', {
+                        serviceConNo: consumerScNo,
+                        Name: consumerName,
+                      });
+                    } catch (err) {
+                      console.error(err);
+                    }
+                  }}
+                  style={StyleSheet.applyWidth(
+                    {
+                      backgroundColor: theme.colors['NFT_Time_Green'],
+                      borderRadius: 16,
+                      fontFamily: 'Roboto_400Regular',
+                      fontSize: 14,
+                      height: 36,
+                      marginTop: 10,
+                      textAlign: 'center',
+                    },
+                    dimensions.width
+                  )}
+                  title={`${transalate(Variables, 'Recharge')}`}
+                />
+              </View>
+            </View>
+            {/* Update time View */}
+            <View
               style={StyleSheet.applyWidth(
-                {
-                  backgroundColor: theme.colors.primary,
-                  borderRadius: 14,
-                  fontFamily: 'Roboto_400Regular',
-                  fontSize: 16,
-                  height: 36,
-                  textAlign: 'center',
-                  width: '45%',
-                },
+                { alignItems: 'center', marginTop: 15 },
                 dimensions.width
               )}
-              title={`${transalate(Variables, 'Recharge')}`}
-            />
+            >
+              <Text
+                accessible={true}
+                {...GlobalStyles.TextStyles(theme)['Text'].props}
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(
+                    GlobalStyles.TextStyles(theme)['Text'].style,
+                    { fontFamily: 'Roboto_400Regular' }
+                  ),
+                  dimensions.width
+                )}
+              >
+                {transalate(Variables, 'Last recharge of')}
+                {' ₹'}
+                {rechargeAmount} {transalate(Variables, 'on')} {createDate}
+              </Text>
+            </View>
           </View>
         )}
       </>

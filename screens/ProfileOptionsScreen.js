@@ -239,7 +239,7 @@ const ProfileOptionsScreen = props => {
                   style={StyleSheet.applyWidth(
                     {
                       alignItems: 'center',
-                      backgroundColor: theme.colors['Primary'],
+                      backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                       borderRadius: 100,
                       flexDirection: 'row',
                       paddingLeft: 5,
@@ -315,7 +315,7 @@ const ProfileOptionsScreen = props => {
                   style={StyleSheet.applyWidth(
                     {
                       alignItems: 'center',
-                      backgroundColor: theme.colors['Primary'],
+                      backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                       borderRadius: 100,
                       flexDirection: 'row',
                       paddingLeft: 5,
@@ -373,7 +373,7 @@ const ProfileOptionsScreen = props => {
                   style={StyleSheet.applyWidth(
                     {
                       alignItems: 'center',
-                      backgroundColor: theme.colors['Primary'],
+                      backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                       borderRadius: 100,
                       flexDirection: 'row',
                       paddingLeft: 5,
@@ -434,6 +434,7 @@ const ProfileOptionsScreen = props => {
               options={[
                 { label: 'English', value: 'en' },
                 { label: 'Hindi', value: 'hi' },
+                { label: 'Marathi', value: 'ma' },
               ]}
               placeholder={'Select Language'}
               style={StyleSheet.applyWidth({ marginTop: 10 }, dimensions.width)}
@@ -457,7 +458,12 @@ const ProfileOptionsScreen = props => {
               style={StyleSheet.applyWidth(
                 StyleSheet.compose(
                   GlobalStyles.ButtonStyles(theme)['Submit 2'].style,
-                  { borderRadius: 14, fontSize: 16, marginTop: 20 }
+                  {
+                    backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
+                    borderRadius: 14,
+                    fontSize: 16,
+                    marginTop: 20,
+                  }
                 ),
                 dimensions.width
               )}

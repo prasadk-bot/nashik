@@ -315,7 +315,7 @@ const LoginScreen = props => {
                 }}
                 webShowOutline={true}
                 editable={true}
-                placeholder={transalate(Variables, 'User name').toString()}
+                placeholder={transalate(Variables, 'Account Number').toString()}
                 placeholderTextColor={theme.colors['Medium']}
                 style={StyleSheet.applyWidth(
                   {
@@ -606,6 +606,7 @@ const LoginScreen = props => {
             }}
             style={StyleSheet.applyWidth(
               {
+                backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                 borderRadius: 14,
                 fontFamily: 'Roboto_400Regular',
                 fontSize: 16,
@@ -654,7 +655,7 @@ const LoginScreen = props => {
                   accessible={true}
                   style={StyleSheet.applyWidth(
                     {
-                      color: theme.colors['Custom Color'],
+                      color: theme.colors['NFT_TIME_Dark_Gray'],
                       fontFamily: 'Roboto_500Medium',
                       fontSize: 15,
                       marginLeft: 10,
@@ -692,7 +693,7 @@ const LoginScreen = props => {
                   accessible={true}
                   style={StyleSheet.applyWidth(
                     {
-                      color: theme.colors['Custom Color'],
+                      color: theme.colors['NFT_TIME_Dark_Gray'],
                       fontFamily: 'Roboto_500Medium',
                       fontSize: 15,
                       marginLeft: 10,
@@ -750,7 +751,6 @@ const LoginScreen = props => {
                 accessible={true}
                 style={StyleSheet.applyWidth(
                   {
-                    color: theme.colors['Custom Color'],
                     fontFamily: 'Roboto_500Medium',
                     fontSize: 15,
                     marginLeft: 7,
@@ -763,97 +763,6 @@ const LoginScreen = props => {
               </Text>
             </View>
           </Touchable>
-          {/* Promotions 2 */}
-          <View
-            style={StyleSheet.applyWidth(
-              { alignItems: 'stretch', marginTop: 8, width: '100%' },
-              dimensions.width
-            )}
-          >
-            <CISAPPApi.FetchBANNERSPOST>
-              {({ loading, error, data, refetchBANNERS }) => {
-                const fetchData = data?.json;
-                if (loading) {
-                  return <ActivityIndicator />;
-                }
-
-                if (error || data?.status < 200 || data?.status >= 300) {
-                  return <ActivityIndicator />;
-                }
-
-                return (
-                  <Swiper
-                    data={fetchData && fetchData[0].data}
-                    dotActiveColor={theme.colors.primary}
-                    dotColor={theme.colors.light}
-                    dotsTouchable={true}
-                    keyExtractor={(swiperData, index) =>
-                      swiperData?.id ?? swiperData?.uuid ?? index.toString()
-                    }
-                    listKey={'qdRMpk6Z'}
-                    loop={false}
-                    minDistanceForAction={0.2}
-                    minDistanceToCapture={5}
-                    renderItem={({ item, index }) => {
-                      const swiperData = item;
-                      return (
-                        <>
-                          {!swiperData ? null : (
-                            <SwiperItem
-                              style={StyleSheet.applyWidth(
-                                {
-                                  alignSelf: 'stretch',
-                                  height: 108,
-                                  width: '100%',
-                                },
-                                dimensions.width
-                              )}
-                            >
-                              {/* banner */}
-                              <Image
-                                resizeMode={'cover'}
-                                {...GlobalStyles.ImageStyles(theme)['banner 3']
-                                  .props}
-                                source={{ uri: `${swiperData?.attachment}` }}
-                                style={StyleSheet.applyWidth(
-                                  StyleSheet.compose(
-                                    GlobalStyles.ImageStyles(theme)['banner 3']
-                                      .style,
-                                    {
-                                      borderRadius: 8,
-                                      height: 108,
-                                      width: '100%',
-                                    }
-                                  ),
-                                  dimensions.width
-                                )}
-                              />
-                            </SwiperItem>
-                          )}
-                        </>
-                      );
-                    }}
-                    timeout={0}
-                    vertical={false}
-                    {...GlobalStyles.SwiperStyles(theme)['Swiper'].props}
-                    style={StyleSheet.applyWidth(
-                      StyleSheet.compose(
-                        GlobalStyles.SwiperStyles(theme)['Swiper'].style,
-                        {
-                          alignSelf: 'auto',
-                          backgroundColor: 'rgb(255, 255, 255)',
-                          borderColor: 'rgb(222, 221, 221)',
-                          height: 108,
-                          position: 'relative',
-                        }
-                      ),
-                      dimensions.width
-                    )}
-                  />
-                );
-              }}
-            </CISAPPApi.FetchBANNERSPOST>
-          </View>
         </View>
       </KeyboardAwareScrollView>
       {/* bottom */}
@@ -885,7 +794,7 @@ const LoginScreen = props => {
             dimensions.width
           )}
         >
-          {transalate(Variables, 'Powered by Fluentgrid ')}
+          {transalate(Variables, 'Powered by Fluentgrid')}
         </Text>
       </View>
     </ScreenContainer>

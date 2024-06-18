@@ -79,7 +79,7 @@ const FaqBlock = props => {
                   listData?.id ?? listData?.uuid ?? index.toString()
                 }
                 keyboardShouldPersistTaps={'never'}
-                listKey={'coLcsyS1'}
+                listKey={'7graMI9W'}
                 nestedScrollEnabled={false}
                 numColumns={1}
                 onEndReachedThreshold={0.5}

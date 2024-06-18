@@ -35,6 +35,18 @@ const MiscellaneousPaymentScreen = props => {
   const [selectedTab, setSelectedTab] = React.useState('Dashboard');
   const [textInputValue, setTextInputValue] = React.useState('');
   const [viewbilldetails, setViewbilldetails] = React.useState({});
+  const buildConsumerString = Scno => {
+    // Type the code for the body of your function or hook here.
+    // Functions can be triggered via Button/Touchable actions.
+    // Hooks are run per ReactJS rules.
+
+    /* String line breaks are accomplished with backticks ( example: `line one
+line two` ) and will not work with special characters inside of quotes ( example: "line one line two" ) */
+
+    console.log(`billing/rest/AccountInfo/${Scno}`);
+    return `billing/rest/AccountInfo/${Scno}`;
+  };
+
   const validateScno = scNo => {
     var errorMessage = null;
     if (!scNo.trim()) {
@@ -46,18 +58,6 @@ const MiscellaneousPaymentScreen = props => {
   const buildString = Scno => {
     console.log(`billing/rest/getBillDataWss/${Scno}`);
     return `billing/rest/getBillDataWss/${Scno}`;
-  };
-
-  const buildConsumerString = Scno => {
-    // Type the code for the body of your function or hook here.
-    // Functions can be triggered via Button/Touchable actions.
-    // Hooks are run per ReactJS rules.
-
-    /* String line breaks are accomplished with backticks ( example: `line one
-line two` ) and will not work with special characters inside of quotes ( example: "line one line two" ) */
-
-    console.log(`billing/rest/AccountInfo/${Scno}`);
-    return `billing/rest/AccountInfo/${Scno}`;
   };
 
   return (
@@ -355,11 +355,11 @@ line two` ) and will not work with special characters inside of quotes ( example
                 })();
                 buildString(textInputValue);
 
-                const value5kozXx0h =
+                const valueBpbZU6nR =
                   Viewbilldetailsjson &&
                   Viewbilldetailsjson[0].data.BillDataJson[0];
-                setViewbilldetails(value5kozXx0h);
-                const Viewbilldetailslog = value5kozXx0h;
+                setViewbilldetails(valueBpbZU6nR);
+                const Viewbilldetailslog = valueBpbZU6nR;
                 console.log(Viewbilldetailslog);
                 const prepaiddetailsJson = await (async () => {
                   if (prepaidFlag === 'Y') {
@@ -384,6 +384,7 @@ line two` ) and will not work with special characters inside of quotes ( example
           }}
           style={StyleSheet.applyWidth(
             {
+              backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
               borderRadius: 14,
               fontFamily: 'Roboto_400Regular',
               fontSize: 16,
@@ -617,6 +618,8 @@ line two` ) and will not work with special characters inside of quotes ( example
                     onPress={() => {
                       try {
                         navigation.navigate('MakePaymentGuestScreen', {
+                          Name: viewbilldetails?.Name,
+                          Scno: viewbilldetails?.Scno,
                           Arrear: viewbilldetails?.Arrear,
                           BillAmount: viewbilldetails?.BillAmount,
                           BillMonth: viewbilldetails?.BillMonth,
@@ -630,8 +633,6 @@ line two` ) and will not work with special characters inside of quotes ( example
                           Billid: viewbilldetails?.BillDetailsId,
                           accno: viewbilldetails?.AccNo,
                           ledgerAmt: viewbilldetails?.LEDGERAMT,
-                          Name: viewbilldetails?.Name,
-                          Scno: viewbilldetails?.Scno,
                         });
                       } catch (err) {
                         console.error(err);

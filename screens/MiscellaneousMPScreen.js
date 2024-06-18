@@ -35,14 +35,6 @@ const MiscellaneousMPScreen = props => {
   const [selectedTab, setSelectedTab] = React.useState('Dashboard');
   const [textInputValue, setTextInputValue] = React.useState('');
   const [viewbilldetails, setViewbilldetails] = React.useState({});
-  const validateScno = scNo => {
-    var errorMessage = null;
-    if (!scNo.trim()) {
-      errorMessage = 'Miscellaneous Reference No is required';
-    }
-    return errorMessage;
-  };
-
   const buildString = Scno => {
     console.log(`billing/rest/getBillDataWss/${Scno}`);
     return `billing/rest/getBillDataWss/${Scno}`;
@@ -58,6 +50,14 @@ line two` ) and will not work with special characters inside of quotes ( example
 
     console.log(`billing/rest/AccountInfo/${Scno}`);
     return `billing/rest/AccountInfo/${Scno}`;
+  };
+
+  const validateScno = scNo => {
+    var errorMessage = null;
+    if (!scNo.trim()) {
+      errorMessage = 'Miscellaneous Reference No is required';
+    }
+    return errorMessage;
   };
 
   return (
@@ -271,18 +271,18 @@ line two` ) and will not work with special characters inside of quotes ( example
                   })
                 )?.json;
 
-                const values8UE7BYK =
+                const valueIQivfMSu =
                   Viewbilldetailsjson &&
                   Viewbilldetailsjson[0].data.customMiscDemandVO;
-                setViewbilldetails(values8UE7BYK);
-                const Viewbilldetailslog = values8UE7BYK;
+                setViewbilldetails(valueIQivfMSu);
+                const Viewbilldetailslog = valueIQivfMSu;
                 console.log(Viewbilldetailslog);
 
-                const valueCQuTCx7L =
+                const valuedB83B2oE =
                   Viewbilldetailsjson &&
                   Viewbilldetailsjson[0].data.customMiscDemandVO.chargeList[0];
-                setChargelist(valueCQuTCx7L);
-                const chargelistt = valueCQuTCx7L;
+                setChargelist(valuedB83B2oE);
+                const chargelistt = valuedB83B2oE;
                 console.log(chargelistt);
               } catch (err) {
                 console.error(err);
@@ -292,6 +292,7 @@ line two` ) and will not work with special characters inside of quotes ( example
           }}
           style={StyleSheet.applyWidth(
             {
+              backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
               borderRadius: 14,
               fontFamily: 'Roboto_400Regular',
               fontSize: 16,
@@ -430,18 +431,18 @@ line two` ) and will not work with special characters inside of quotes ( example
                 onPress={() => {
                   try {
                     navigation.navigate('MakePaymentMisPScreen', {
+                      Scno: viewbilldetails?.scno,
+                      Name: viewbilldetails?.name,
+                      officeId: viewbilldetails?.officeId,
                       NetPaybleAmount: viewbilldetails?.totalAmt,
                       Amount: chargelist?.amount,
                       AppRegName: chargelist?.chargeName,
                       Address: viewbilldetails?.address,
                       RequestName: viewbilldetails?.reqName,
+                      SubCatname: viewbilldetails?.subCatName,
                       ParentCatoryName: viewbilldetails?.parentCatName,
                       Office: viewbilldetails?.office,
                       RefRegisteredNo: viewbilldetails?.refRegNo,
-                      Scno: viewbilldetails?.scno,
-                      Name: viewbilldetails?.name,
-                      officeId: viewbilldetails?.officeId,
-                      SubCatname: viewbilldetails?.subCatName,
                     });
                   } catch (err) {
                     console.error(err);

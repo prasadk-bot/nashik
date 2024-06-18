@@ -14,20 +14,14 @@ const TableComponent1Block = props => {
   const Constants = GlobalVariables.useValues();
   const Variables = Constants;
   const [selectedTab2, setSelectedTab2] = React.useState('');
-  const buildBillingString = Scno => {
-    console.log(`billing/rest/getBillDataService/${Scno}`);
-    return `billing/rest/getBillDataService/${Scno}`;
-  };
-
-  const manageAccountFun = ManageAccountDetails => {
-    return ManageAccountDetails.map(team => {
-      return { label: team.new_added_account, value: team.new_added_account };
-    });
-  };
-
   const buildConsumerString = Scno => {
     console.log(`billing/rest/AccountInfo/${Scno}`);
     return `billing/rest/AccountInfo/${Scno}`;
+  };
+
+  const buildBillingString = Scno => {
+    console.log(`billing/rest/getBillDataService/${Scno}`);
+    return `billing/rest/getBillDataService/${Scno}`;
   };
 
   const prepaidBillingString = meterNo => {
@@ -64,6 +58,12 @@ const TableComponent1Block = props => {
     const monthName = monthNames[monthNo - 1];
     console.log(monthName);
     return monthName;
+  };
+
+  const manageAccountFun = ManageAccountDetails => {
+    return ManageAccountDetails.map(team => {
+      return { label: team.new_added_account, value: team.new_added_account };
+    });
   };
 
   return (

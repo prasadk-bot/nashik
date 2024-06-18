@@ -36,6 +36,35 @@ const ConfirmOTPLoginScreen = props => {
   const [seconds, setSeconds] = React.useState(61);
   const [textInputValue, setTextInputValue] = React.useState(0);
   const [codeInputValue, setCodeInputValue] = React.useState(undefined);
+  const otpValidation = otp => {
+    var errorMessage = null;
+    if (!otp.trim()) {
+      errorMessage = 'Otp is required';
+    }
+    return errorMessage;
+  };
+
+  const onOtpKeyPressBack = (Variables, index, text) => {
+    return ({ nativeEvent: { key: value } }) => {
+      if (value === 'Backspace' && otpArray[index] === '') {
+        if (index === 1) {
+          OTPInput1.current.focus();
+        } else if (index === 2) {
+          OTPInput2.current.focus();
+        } else if (index === 3) {
+          console.log('3');
+          OTPInput3.current.focus();
+        }
+
+        if (isAndroid && index > 0) {
+          const otpArraycopy = otpArray.concat();
+          otpArraycopy[index - 1] = '';
+          setotpArray(otpArraycopy);
+        }
+      }
+    };
+  };
+
   const otpVerify = (otpResult, otp) => {
     if (otpResult === otp) {
       // Navigate to the change password screen
@@ -45,33 +74,6 @@ const ConfirmOTPLoginScreen = props => {
     } else {
       console.log('Incorrect OTP. Please try again.');
     }
-  };
-
-  const check_otp = otp => {
-    const ChangePasswordScreen = () => {
-      // Function to handle OTP verification
-      const verifyOTP = () => {
-        if (userOTP === otpValue) {
-          // Navigate to the change password screen
-          console.log('Navigating to change password screen...');
-          // Add your navigation logic here
-        } else {
-          console.log('Incorrect OTP. Please try again.');
-        }
-      };
-    };
-  };
-
-  const startTimer = () => {
-    const intervalId = setInterval(() => {
-      if (seconds) {
-        setSeconds(prev =>
-          prev > 0 ? prev - 1 : (setSeconds(61), clearInterval(intervalId))
-        );
-      }
-    }, 1000);
-
-    return seconds;
   };
 
   const createHelper = (text, index) => {
@@ -123,37 +125,31 @@ const ConfirmOTPLoginScreen = props => {
     };
   };
 
-  const createOTP = () => {
-    return `${otpValue1}${otpValue2}${otpValue3}${otpValue4}`;
-  };
-
-  const otpValidation = otp => {
-    var errorMessage = null;
-    if (!otp.trim()) {
-      errorMessage = 'Otp is required';
-    }
-    return errorMessage;
-  };
-
-  const onOtpKeyPressBack = (Variables, index, text) => {
-    return ({ nativeEvent: { key: value } }) => {
-      if (value === 'Backspace' && otpArray[index] === '') {
-        if (index === 1) {
-          OTPInput1.current.focus();
-        } else if (index === 2) {
-          OTPInput2.current.focus();
-        } else if (index === 3) {
-          console.log('3');
-          OTPInput3.current.focus();
+  const check_otp = otp => {
+    const ChangePasswordScreen = () => {
+      // Function to handle OTP verification
+      const verifyOTP = () => {
+        if (userOTP === otpValue) {
+          // Navigate to the change password screen
+          console.log('Navigating to change password screen...');
+          // Add your navigation logic here
+        } else {
+          console.log('Incorrect OTP. Please try again.');
         }
-
-        if (isAndroid && index > 0) {
-          const otpArraycopy = otpArray.concat();
-          otpArraycopy[index - 1] = '';
-          setotpArray(otpArraycopy);
-        }
-      }
+      };
     };
+  };
+
+  const startTimer = () => {
+    const intervalId = setInterval(() => {
+      if (seconds) {
+        setSeconds(prev =>
+          prev > 0 ? prev - 1 : (setSeconds(61), clearInterval(intervalId))
+        );
+      }
+    }, 1000);
+
+    return seconds;
   };
 
   const processErrorMessage = msg => {
@@ -194,6 +190,10 @@ const ConfirmOTPLoginScreen = props => {
 
     return scheme[msg];
   };
+
+  const createOTP = () => {
+    return `${otpValue1}${otpValue2}${otpValue3}${otpValue4}`;
+  };
   const isFocused = useIsFocused();
   React.useEffect(() => {
     try {
@@ -205,10 +205,10 @@ const ConfirmOTPLoginScreen = props => {
       console.error(err);
     }
   }, [isFocused]);
-  const oTPInput19P58tLfDRef = React.useRef();
-  const oTPInput2cl7FCVxzRef = React.useRef();
-  const oTPInput3QIK21xluRef = React.useRef();
-  const oTPInput4pBsKrFXFRef = React.useRef();
+  const oTPInput1cZiahZdGRef = React.useRef();
+  const oTPInput2CgWS21uCRef = React.useRef();
+  const oTPInput35XNM0SoqRef = React.useRef();
+  const oTPInput41kSVlYRyRef = React.useRef();
 
   return (
     <ScreenContainer scrollable={false} hasSafeArea={true}>
@@ -268,7 +268,7 @@ const ConfirmOTPLoginScreen = props => {
             dimensions.width
           )}
         >
-          {null}
+          {transalate(Variables, 'Confirm OTP')}
         </Text>
       </View>
       {/* OTP Mobile and email */}
@@ -521,6 +521,7 @@ const ConfirmOTPLoginScreen = props => {
           }}
           style={StyleSheet.applyWidth(
             {
+              backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
               borderRadius: 14,
               fontFamily: 'Roboto_400Regular',
               fontSize: 16,

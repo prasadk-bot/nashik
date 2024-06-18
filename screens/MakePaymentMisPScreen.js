@@ -49,17 +49,6 @@ const MakePaymentMisPScreen = props => {
   const [radioButtonGroupValue2, setRadioButtonGroupValue2] =
     React.useState('');
   const [ucode, setUcode] = React.useState('');
-  const validateAmount = amount => {
-    var errorMessage = null;
-    var amountValue = null;
-    amountValue = amount.toString();
-    console.log('amount' + amountValue);
-    if (amountValue.length == 0) {
-      errorMessage = 'Amount is required';
-    }
-    return errorMessage;
-  };
-
   const buildConsumerString = Scno => {
     console.log(`billing/rest/AccountInfo/${Scno}`);
     return `billing/rest/AccountInfo/${Scno}`;
@@ -83,6 +72,17 @@ const MakePaymentMisPScreen = props => {
     const monthName = monthNames[monthNo - 1];
     console.log(monthName);
     return monthName;
+  };
+
+  const validateAmount = amount => {
+    var errorMessage = null;
+    var amountValue = null;
+    amountValue = amount.toString();
+    console.log('amount' + amountValue);
+    if (amountValue.length == 0) {
+      errorMessage = 'Amount is required';
+    }
+    return errorMessage;
   };
 
   const validateEmail = email => {
@@ -1075,7 +1075,7 @@ const MakePaymentMisPScreen = props => {
                             keyExtractor={(flashListData, index) =>
                               flashListData?.id
                             }
-                            listKey={'NqtHFyRX'}
+                            listKey={'ZezgsaQQ'}
                             numColumns={1}
                             onEndReachedThreshold={0.5}
                             renderItem={({ item, index }) => {

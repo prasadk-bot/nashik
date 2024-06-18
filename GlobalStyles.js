@@ -679,6 +679,11 @@ export const PinInputStyles = theme =>
 export const WebViewStyles = theme =>
   StyleSheet.create({ 'Web View': { style: { flex: 1 }, props: {} } });
 
+export const ActivityIndicatorStyles = theme =>
+  StyleSheet.create({
+    'Activity Indicator': { style: { height: 36, width: 36 }, props: {} },
+  });
+
 export const BottomSheetStyles = theme =>
   StyleSheet.create({
     'Bottom Sheet': {

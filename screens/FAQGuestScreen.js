@@ -155,7 +155,7 @@ const FAQGuestScreen = props => {
                     listData?.id ?? listData?.uuid ?? index.toString()
                   }
                   keyboardShouldPersistTaps={'never'}
-                  listKey={'wzE2KuST'}
+                  listKey={'Hys2wgnj'}
                   nestedScrollEnabled={false}
                   numColumns={1}
                   onEndReachedThreshold={0.5}

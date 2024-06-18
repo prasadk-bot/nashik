@@ -3,6 +3,7 @@ import * as GlobalStyles from '../GlobalStyles.js';
 import * as CISAPPApi from '../apis/CISAPPApi.js';
 import * as GlobalVariables from '../config/GlobalVariableContext';
 import * as CustomCode from '../custom-files/CustomCode';
+import transalate from '../global-functions/transalate';
 import Breakpoints from '../utils/Breakpoints';
 import * as StyleSheet from '../utils/StyleSheet';
 import openImagePickerUtil from '../utils/openImagePicker';
@@ -52,28 +53,6 @@ const FeedbackScreen = props => {
       if (!emailRegex.test(email)) {
         errorMessage = 'Invalid email address';
       }
-    }
-    return errorMessage;
-  };
-
-  const manageAccountFun = ManageAccountDetails => {
-    return ManageAccountDetails.map(team => {
-      return { label: team.new_added_account, value: team.new_added_account };
-    });
-  };
-
-  const validateSubject = sub => {
-    var errorMessage = null;
-    if (!sub.trim()) {
-      errorMessage = 'Subject is required';
-    }
-    return errorMessage;
-  };
-
-  const validateScno = scNo => {
-    var errorMessage = null;
-    if (!scNo.trim()) {
-      errorMessage = 'Please enter service connection number';
     }
     return errorMessage;
   };
@@ -128,6 +107,28 @@ line two` ) and will not work with special characters inside of quotes ( example
     };
 
     return scheme[msg];
+  };
+
+  const validateSubject = sub => {
+    var errorMessage = null;
+    if (!sub.trim()) {
+      errorMessage = 'Subject is required';
+    }
+    return errorMessage;
+  };
+
+  const validateScno = scNo => {
+    var errorMessage = null;
+    if (!scNo.trim()) {
+      errorMessage = 'Please enter service connection number';
+    }
+    return errorMessage;
+  };
+
+  const manageAccountFun = ManageAccountDetails => {
+    return ManageAccountDetails.map(team => {
+      return { label: team.new_added_account, value: team.new_added_account };
+    });
   };
   const isFocused = useIsFocused();
   React.useEffect(() => {
@@ -357,7 +358,7 @@ line two` ) and will not work with special characters inside of quotes ( example
               }}
               webShowOutline={true}
               editable={true}
-              placeholder={'Email'}
+              placeholder={transalate(Variables, 'Email').toString()}
               placeholderTextColor={theme.colors['Medium']}
               style={StyleSheet.applyWidth(
                 {
@@ -430,7 +431,7 @@ line two` ) and will not work with special characters inside of quotes ( example
               }}
               webShowOutline={true}
               editable={true}
-              placeholder={'Subject'}
+              placeholder={transalate(Variables, 'Subject').toString()}
               placeholderTextColor={theme.colors['Medium']}
               style={StyleSheet.applyWidth(
                 {
@@ -488,7 +489,10 @@ line two` ) and will not work with special characters inside of quotes ( example
             }}
             textAlignVertical={'top'}
             webShowOutline={true}
-            placeholder={'Please leave your feedback here...'}
+            placeholder={transalate(
+              Variables,
+              'Please leave your feedback here...'
+            )}
             placeholderTextColor={theme.colors['Medium']}
             style={StyleSheet.applyWidth(
               {
@@ -555,6 +559,7 @@ line two` ) and will not work with special characters inside of quotes ( example
           }}
           style={StyleSheet.applyWidth(
             {
+              backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
               borderRadius: 14,
               fontFamily: 'Roboto_400Regular',
               fontSize: 16,
@@ -565,7 +570,7 @@ line two` ) and will not work with special characters inside of quotes ( example
             },
             dimensions.width
           )}
-          title={'Send Feedback'}
+          title={`${transalate(Variables, 'Send Feedback')}`}
         />
       </View>
     </ScreenContainer>

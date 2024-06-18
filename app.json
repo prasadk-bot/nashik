@@ -13,7 +13,7 @@
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/app/icon.png",
-    "backgroundColor": "#FBFCFD",
+    "backgroundColor": "#FFFFFF",
     "splash": {
       "image": "./assets/app/splash.png",
       "resizeMode": "cover",
@@ -80,11 +80,10 @@
     },
     "android": {
       "versionCode": 1,
-      "package": "com.fluentgrid.nashik.mss2",
+      "package": "com.fluentgrid.nbpdcl.mss1",
       "permissions": [],
       "adaptiveIcon": {}
     },
-    "androidStatusBar": {},
     "androidNavigationBar": {},
     "web": {
       "themeColor": "#000000"

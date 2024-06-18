@@ -36,27 +36,8 @@ const ConfirmOTPAddNewServiceConnectionScreen = props => {
   const [seconds, setSeconds] = React.useState(61);
   const [textInputValue, setTextInputValue] = React.useState(0);
   const [codeInputValue, setCodeInputValue] = React.useState(undefined);
-  const check_otp = otp => {
-    const ChangePasswordScreen = () => {
-      // Function to handle OTP verification
-      const verifyOTP = () => {
-        if (userOTP === otpValue) {
-          // Navigate to the change password screen
-          console.log('Navigating to change password screen...');
-          // Add your navigation logic here
-        } else {
-          console.log('Incorrect OTP. Please try again.');
-        }
-      };
-    };
-  };
-
-  const otpValidation = otp => {
-    var errorMessage = null;
-    if (!otp.trim()) {
-      errorMessage = 'Otp is required';
-    }
-    return errorMessage;
+  const createOTP = () => {
+    return `${otpValue1}${otpValue2}${otpValue3}${otpValue4}`;
   };
 
   const processErrorMessage = msg => {
@@ -114,10 +95,6 @@ const ConfirmOTPAddNewServiceConnectionScreen = props => {
     }
   };
 
-  const createOTP = () => {
-    return `${otpValue1}${otpValue2}${otpValue3}${otpValue4}`;
-  };
-
   const startTimer = () => {
     const intervalId = setInterval(() => {
       if (seconds) {
@@ -128,6 +105,29 @@ const ConfirmOTPAddNewServiceConnectionScreen = props => {
     }, 1000);
 
     return seconds;
+  };
+
+  const check_otp = otp => {
+    const ChangePasswordScreen = () => {
+      // Function to handle OTP verification
+      const verifyOTP = () => {
+        if (userOTP === otpValue) {
+          // Navigate to the change password screen
+          console.log('Navigating to change password screen...');
+          // Add your navigation logic here
+        } else {
+          console.log('Incorrect OTP. Please try again.');
+        }
+      };
+    };
+  };
+
+  const otpValidation = otp => {
+    var errorMessage = null;
+    if (!otp.trim()) {
+      errorMessage = 'Otp is required';
+    }
+    return errorMessage;
   };
   const isFocused = useIsFocused();
   React.useEffect(() => {
@@ -140,9 +140,9 @@ const ConfirmOTPAddNewServiceConnectionScreen = props => {
       console.error(err);
     }
   }, [isFocused]);
-  const oTPInputkSqhwtiQRef = React.useRef();
-  const oTPInputDSwYbnblRef = React.useRef();
-  const oTPInputQBUyFyXbRef = React.useRef();
+  const oTPInputlsbp9HZ1Ref = React.useRef();
+  const oTPInputvW4TNwG7Ref = React.useRef();
+  const oTPInputdSbocjfdRef = React.useRef();
 
   return (
     <ScreenContainer scrollable={false} hasSafeArea={true}>
@@ -202,7 +202,7 @@ const ConfirmOTPAddNewServiceConnectionScreen = props => {
             dimensions.width
           )}
         >
-          {null}
+          {transalate(Variables, 'Confirm OTP')}
         </Text>
       </View>
       {/* OTP Mobile and email */}
@@ -442,6 +442,7 @@ const ConfirmOTPAddNewServiceConnectionScreen = props => {
           }}
           style={StyleSheet.applyWidth(
             {
+              backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
               borderRadius: 14,
               fontFamily: 'Roboto_400Regular',
               fontSize: 16,

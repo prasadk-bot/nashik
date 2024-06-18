@@ -19,7 +19,7 @@ const ListBlock = props => {
         listData?.id ?? listData?.uuid ?? index.toString()
       }
       keyboardShouldPersistTaps={'never'}
-      listKey={'vzzVWA9a'}
+      listKey={'faw6ZAU2'}
       nestedScrollEnabled={false}
       numColumns={1}
       onEndReachedThreshold={0.5}

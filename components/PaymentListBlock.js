@@ -20,7 +20,7 @@ const PaymentListBlock = props => {
         listData?.id ?? listData?.uuid ?? index.toString()
       }
       keyboardShouldPersistTaps={'never'}
-      listKey={'alajjIJO'}
+      listKey={'8gu1anvh'}
       nestedScrollEnabled={false}
       numColumns={1}
       onEndReachedThreshold={0.5}

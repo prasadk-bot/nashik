@@ -260,7 +260,12 @@ const DeleteServiceConnectionScreen = props => {
             style={StyleSheet.applyWidth(
               StyleSheet.compose(
                 GlobalStyles.ButtonStyles(theme)['Submit'].style,
-                { borderRadius: 14, fontSize: 16, marginTop: 20 }
+                {
+                  backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
+                  borderRadius: 14,
+                  fontSize: 16,
+                  marginTop: 20,
+                }
               ),
               dimensions.width
             )}

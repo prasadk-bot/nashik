@@ -14,6 +14,7 @@ import {
   Circle,
   CircleImage,
   Icon,
+  LinearProgress,
   Picker,
   ScreenContainer,
   Surface,
@@ -43,15 +44,21 @@ const DashboardScreen = props => {
   const [availableBalance, setAvailableBalance] = React.useState('');
   const [consumerName, setConsumerName] = React.useState('');
   const [consumerScNo, setConsumerScNo] = React.useState('');
+  const [createDate, setCreateDate] = React.useState('');
   const [hiddenHindi, setHiddenHindi] = React.useState(true);
+  const [icon1, setIcon1] = React.useState(false);
+  const [icon2, setIcon2] = React.useState(false);
   const [meterNumber, setMeterNumber] = React.useState('');
+  const [meterStatus, setMeterStatus] = React.useState('');
   const [password1, setPassword1] = React.useState('');
   const [pickerValue, setPickerValue] = React.useState('');
   const [pickerValue2, setPickerValue2] = React.useState('');
   const [pickerValue3, setPickerValue3] = React.useState('');
   const [prepaidFlag, setPrepaidFlag] = React.useState('');
+  const [rechargeAmount, setRechargeAmount] = React.useState('');
   const [showNav, setShowNav] = React.useState(false);
   const [textInputValue, setTextInputValue] = React.useState('');
+  const [upIcon3, setUpIcon3] = React.useState(true);
   const [viewPrepaidDetails, setViewPrepaidDetails] = React.useState({});
   const [viewbilldetails, setViewbilldetails] = React.useState({});
   const [visibleHindi, setVisibleHindi] = React.useState(false);
@@ -83,6 +90,15 @@ line two` ) and will not work with special characters inside of quotes ( example
 
     console.log(`billing/rest/AccountInfo/${Scno}`);
     return `billing/rest/AccountInfo/${Scno}`;
+  };
+
+  const prepaidmeterstatus = metetno => {
+    console.log(`/SPM/getCurrentBalance?meterNumberOrAccountNo=${metetno}`);
+    return `/SPM/getCurrentBalance?meterNumberOrAccountNo=${metetno}`;
+  };
+
+  const valueFix = val => {
+    return val.toFixed(2);
   };
   const isFocused = useIsFocused();
   React.useEffect(() => {
@@ -129,24 +145,37 @@ line two` ) and will not work with special characters inside of quotes ( example
         })();
         buildString(Constants['name']);
 
-        const valueUkvVwReQ =
+        const valueRLLbos15 =
           Billdetailsjson && Billdetailsjson[0].data.BillDataJson[0];
-        setViewbilldetails(valueUkvVwReQ);
-        const Billdetailslog = valueUkvVwReQ;
+        setViewbilldetails(valueRLLbos15);
+        const Billdetailslog = valueRLLbos15;
         const prepaiddetailsJson = await (async () => {
           if (prepaidFlag === 'Y') {
             return (
-              await CISAPPApi.prepaidApiPOST(Constants, { mtrno: meterNo })
+              await CISAPPApi.prepaidMeterStatuesPOST(Constants, {
+                action: prepaidmeterstatus(meterNo),
+              })
             )?.json;
           }
         })();
         console.log(prepaiddetailsJson);
-        const availableBalance = (prepaiddetailsJson && prepaiddetailsJson[0])
-          ?.data[0]?.avail_balance;
+        const availableBalance2 = (prepaiddetailsJson && prepaiddetailsJson[0])
+          ?.data?.data[0]?.availBalance;
+        const avb = valueFix(availableBalance2);
+        setAvailableBalance(avb);
         if (prepaidFlag === 'Y') {
-          console.log(availableBalance);
+          console.log(availableBalance2);
         }
-        setAvailableBalance(availableBalance);
+        const rechargeAmountResult = (
+          prepaiddetailsJson && prepaiddetailsJson[0]
+        )?.data?.data[0]?.rechargeAmount;
+        setRechargeAmount(rechargeAmountResult);
+        const createDateResult = (prepaiddetailsJson && prepaiddetailsJson[0])
+          ?.data?.data[0]?.createDate;
+        setCreateDate(createDateResult);
+        const meterStatusResult = (prepaiddetailsJson && prepaiddetailsJson[0])
+          ?.data?.data[0]?.meterStatus;
+        setMeterStatus(meterStatusResult);
         const TodayDetailsJson = (
           await CISAPPApi.todayDetailsPOST(Constants, { mtrno: meterNo })
         )?.json;
@@ -158,10 +187,10 @@ line two` ) and will not work with special characters inside of quotes ( example
           ?.KWH_IMP;
         setTodayusage(Todayusage);
         const Currentload = (TodayDetailsJson && TodayDetailsJson[0])?.data[0]
-          ?.L1_CURRENT;
+          ?.KVA_IMP;
         setCurrentload(Currentload);
         const Currentread = (TodayDetailsJson && TodayDetailsJson[0])?.data[0]
-          ?.L1_VOLTAGE;
+          ?.MAX_KW;
         setCurrentread(Currentread);
         const ManageAccountDetails = (
           await CISAPPApi.manageAccountsPOST(Constants, {
@@ -176,7 +205,7 @@ line two` ) and will not work with special characters inside of quotes ( example
           ),
         });
         console.log(result);
-        setTextInputValue(props.route?.params?.name ?? '');
+        setTextInputValue(Constants['name']);
       } catch (err) {
         console.error(err);
       }
@@ -415,7 +444,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                           try {
                             /* hidden 'Navigate' action */
                             await WebBrowser.openBrowserAsync(
-                              `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/cportal/#/bltLec/${Constants['name']}`
+                              `https://nccprodcp.quantumtechnologiesltd.com/cportal/#/bltLec/${Constants['name']}`
                             );
                           } catch (err) {
                             console.error(err);
@@ -468,7 +497,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                           try {
                             /* hidden 'Navigate' action */
                             await WebBrowser.openBrowserAsync(
-                              `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/cportal/#/bltLrc/${Constants['name']}`
+                              `https://nccprodcp.quantumtechnologiesltd.com/cportal/#/bltLrc/${Constants['name']}`
                             );
                           } catch (err) {
                             console.error(err);
@@ -872,6 +901,7 @@ line two` ) and will not work with special characters inside of quotes ( example
             options={[
               { label: 'English', value: 'en' },
               { label: 'Hindi', value: 'hi' },
+              { label: 'Marathi', value: 'ma' },
             ]}
             placeholder={''}
             style={StyleSheet.applyWidth(
@@ -921,10 +951,48 @@ line two` ) and will not work with special characters inside of quotes ( example
           dimensions.width
         )}
       >
+        {/* Welcome View */}
+        <View
+          style={StyleSheet.applyWidth(
+            { paddingLeft: 20, paddingRight: 20 },
+            dimensions.width
+          )}
+        >
+          {/* Welcome Text */}
+          <Text
+            accessible={true}
+            {...GlobalStyles.TextStyles(theme)['Text'].props}
+            style={StyleSheet.applyWidth(
+              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'].style, {
+                fontFamily: 'Roboto_400Regular',
+                fontSize: 16,
+              }),
+              dimensions.width
+            )}
+          >
+            {transalate(Variables, 'Welcome')}
+          </Text>
+          {/* Name Text */}
+          <Text
+            accessible={true}
+            {...GlobalStyles.TextStyles(theme)['Text'].props}
+            style={StyleSheet.applyWidth(
+              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'].style, {
+                color: theme.colors['Strong'],
+                fontFamily: 'Roboto_700Bold',
+                fontSize: 20,
+                marginTop: 5,
+              }),
+              dimensions.width
+            )}
+          >
+            {consumerName}
+          </Text>
+        </View>
         {/* Body */}
         <View
           style={StyleSheet.applyWidth(
-            { justifyContent: 'flex-start' },
+            { justifyContent: 'flex-start', marginTop: 10 },
             dimensions.width
           )}
         >
@@ -1016,11 +1084,11 @@ line two` ) and will not work with special characters inside of quotes ( example
                         })();
                         buildString(newPickerValue);
 
-                        const valueJ52m0vso =
+                        const valueGjvi3qdF =
                           Billdetailsjson &&
                           Billdetailsjson[0].data.BillDataJson[0];
-                        setViewbilldetails(valueJ52m0vso);
-                        const Billdetailslog = valueJ52m0vso;
+                        setViewbilldetails(valueGjvi3qdF);
+                        const Billdetailslog = valueGjvi3qdF;
                         const prepaiddetailsJson = await (async () => {
                           if (prepaidFlag === 'Y') {
                             return (
@@ -1052,12 +1120,39 @@ line two` ) and will not work with special characters inside of quotes ( example
                         setTodayusage(Todayusage);
                         const Currentload = (
                           TodayDetailsJson && TodayDetailsJson[0]
-                        )?.data[0]?.L1_CURRENT;
+                        )?.data[0]?.KVA_IMP;
                         setCurrentload(Currentload);
                         const Currentread = (
                           TodayDetailsJson && TodayDetailsJson[0]
-                        )?.data[0]?.L1_VOLTAGE;
+                        )?.data[0]?.MAX_KW;
                         setCurrentread(Currentread);
+                        const prepaiddeatailsJson = await (async () => {
+                          if (prepaidFlag === 'Y') {
+                            return (
+                              await CISAPPApi.prepaidMeterStatuesPOST(
+                                Constants,
+                                { action: prepaidmeterstatus(meterNo) }
+                              )
+                            )?.json;
+                          }
+                        })();
+                        const availableBalance2 = (
+                          prepaiddetailsJson && prepaiddetailsJson[0]
+                        )?.data?.data[0]?.availBalance;
+                        const avb = valueFix(availableBalance2);
+                        setAvailableBalance(avb);
+                        const rechargeAmountResult = (
+                          prepaiddetailsJson && prepaiddetailsJson[0]
+                        )?.data?.data[0]?.rechargeAmount;
+                        setRechargeAmount(rechargeAmountResult);
+                        const createDateResult = (
+                          prepaiddetailsJson && prepaiddetailsJson[0]
+                        )?.data?.data[0]?.createdBy;
+                        setCreateDate(createDateResult);
+                        const meterStatusResult = (
+                          prepaiddetailsJson && prepaiddetailsJson[0]
+                        )?.data?.data[0]?.meterStatus;
+                        setMeterStatus(meterStatusResult);
                       } catch (err) {
                         console.error(err);
                       }
@@ -1090,7 +1185,7 @@ line two` ) and will not work with special characters inside of quotes ( example
               style={StyleSheet.applyWidth(
                 StyleSheet.compose(
                   GlobalStyles.ViewStyles(theme)['postpaid view 2'].style,
-                  { marginBottom: 5, marginTop: 10 }
+                  { marginBottom: 5, marginTop: 15 }
                 ),
                 dimensions.width
               )}
@@ -1219,6 +1314,9 @@ line two` ) and will not work with special characters inside of quotes ( example
                     onPress={() => {
                       try {
                         navigation.navigate('ViewBillScreen', {
+                          billYear: viewbilldetails?.BillYear,
+                          BillIssueDate: viewbilldetails?.BillIssueDate,
+                          netcurrbill: viewbilldetails?.netcurrbill,
                           ledgerAmt: viewbilldetails?.LEDGERAMT,
                           BillDame: viewbilldetails?.BillIssueDate,
                           BillMonth: viewbilldetails?.BillMonth,
@@ -1229,9 +1327,6 @@ line two` ) and will not work with special characters inside of quotes ( example
                           BillAmount: viewbilldetails?.BillAmount,
                           BillDueDate: viewbilldetails?.BillDueDate,
                           BillNo: viewbilldetails?.BillNo,
-                          billYear: viewbilldetails?.BillYear,
-                          BillIssueDate: viewbilldetails?.BillIssueDate,
-                          netcurrbill: viewbilldetails?.netcurrbill,
                         });
                       } catch (err) {
                         console.error(err);
@@ -1258,14 +1353,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                     onPress={() => {
                       try {
                         navigation.navigate('MakePaymentScreen', {
-                          accno: viewbilldetails?.AccNo,
                           BillDame: viewbilldetails?.BillIssueDate,
-                          ledgerAmt: viewbilldetails?.LEDGERAMT,
-                          billYear: viewbilldetails?.BillYear,
-                          Name: viewbilldetails?.Name,
-                          Scno: viewbilldetails?.Scno,
-                          BillMonth: viewbilldetails?.BillMonth,
-                          BillNo: viewbilldetails?.BillNo,
                           BillDueDate: viewbilldetails?.BillDueDate,
                           BillAmount: viewbilldetails?.BillAmount,
                           Arrear: viewbilldetails?.Arrear,
@@ -1273,6 +1361,13 @@ line two` ) and will not work with special characters inside of quotes ( example
                           netcurrbill: viewbilldetails?.netcurrbill,
                           BillIssueDate: viewbilldetails?.BillIssueDate,
                           Billid: viewbilldetails?.BillDetailsId,
+                          accno: viewbilldetails?.AccNo,
+                          BillNo: viewbilldetails?.BillNo,
+                          ledgerAmt: viewbilldetails?.LEDGERAMT,
+                          billYear: viewbilldetails?.BillYear,
+                          Name: viewbilldetails?.Name,
+                          Scno: viewbilldetails?.Scno,
+                          BillMonth: viewbilldetails?.BillMonth,
                         });
                       } catch (err) {
                         console.error(err);
@@ -1296,7 +1391,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                 </View>
               )}
             </>
-            {/* Prepaid */}
+            {/* Prepaid  */}
             <>
               {!(prepaidFlag === 'Y') ? null : (
                 <View
@@ -1305,15 +1400,12 @@ line two` ) and will not work with special characters inside of quotes ( example
                     StyleSheet.compose(
                       GlobalStyles.ViewStyles(theme)['card'].style,
                       {
-                        alignItems: 'center',
-                        backgroundColor: 'rgb(255, 255, 255)',
+                        backgroundColor: theme.colors['White'],
                         borderColor: 'rgb(199, 198, 198)',
                         borderRadius: 8,
                         borderWidth: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginBottom: 15,
-                        marginTop: 5,
+                        justifyContent: 'space-evenly',
+                        marginTop: 10,
                         paddingBottom: 10,
                         paddingLeft: 20,
                         paddingTop: 10,
@@ -1322,330 +1414,588 @@ line two` ) and will not work with special characters inside of quotes ( example
                     dimensions.width
                   )}
                 >
-                  {/* Name */}
-                  <Text
-                    accessible={true}
+                  <View
                     style={StyleSheet.applyWidth(
-                      {
-                        color: theme.colors.strong,
-                        fontFamily: 'Roboto_400Regular',
-                        fontSize: 14,
-                        opacity: 1,
-                      },
+                      { flexDirection: 'row', justifyContent: 'space-around' },
                       dimensions.width
                     )}
                   >
-                    {transalate(Variables, 'Available balance')}
-                    {'  ₹'}
-                    {availableBalance}
-                  </Text>
-                  {/* Recharge Now */}
-                  <Button
-                    iconPosition={'left'}
-                    onPress={() => {
-                      try {
-                        /* hidden 'Open Browser' action */
-                        /* hidden 'Navigate' action */
-                        navigation.navigate('RechargeScreen', {
-                          serviceConNo: (() => {
-                            const e = Constants['consumerScNo'];
-                            console.log(e);
-                            return e;
-                          })(),
-                          Name: consumerName,
-                        });
-                      } catch (err) {
-                        console.error(err);
-                      }
-                    }}
+                    {/* Current Balance */}
+                    <View>
+                      <Text
+                        accessible={true}
+                        {...GlobalStyles.TextStyles(theme)['Text'].props}
+                        style={StyleSheet.applyWidth(
+                          StyleSheet.compose(
+                            GlobalStyles.TextStyles(theme)['Text'].style,
+                            { fontFamily: 'Roboto_400Regular' }
+                          ),
+                          dimensions.width
+                        )}
+                      >
+                        {transalate(Variables, 'Current Balance')}
+                      </Text>
+                      {/* Text 2 */}
+                      <Text
+                        accessible={true}
+                        {...GlobalStyles.TextStyles(theme)['Text'].props}
+                        style={StyleSheet.applyWidth(
+                          StyleSheet.compose(
+                            GlobalStyles.TextStyles(theme)['Text'].style,
+                            {
+                              fontFamily: 'Roboto_700Bold',
+                              fontSize: 25,
+                              marginTop: 10,
+                            }
+                          ),
+                          dimensions.width
+                        )}
+                      >
+                        {' ₹'}
+                        {availableBalance}
+                      </Text>
+                    </View>
+                    {/* Meter Connected  */}
+                    <View>
+                      <View
+                        style={StyleSheet.applyWidth(
+                          {
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          },
+                          dimensions.width
+                        )}
+                      >
+                        <Text
+                          accessible={true}
+                          {...GlobalStyles.TextStyles(theme)['Text'].props}
+                          style={StyleSheet.applyWidth(
+                            StyleSheet.compose(
+                              GlobalStyles.TextStyles(theme)['Text'].style,
+                              { fontFamily: 'Roboto_400Regular' }
+                            ),
+                            dimensions.width
+                          )}
+                        >
+                          {transalate(Variables, 'Meter Connected')}
+                        </Text>
+                        {/* View 2 */}
+                        <View
+                          style={StyleSheet.applyWidth(
+                            { marginLeft: 5 },
+                            dimensions.width
+                          )}
+                        >
+                          <>
+                            {!(meterStatus === 'CONNECTED') ? null : (
+                              <Touchable>
+                                <Icon
+                                  color={theme.colors['NFT_Time_Green']}
+                                  name={'FontAwesome/check-circle'}
+                                  size={20}
+                                />
+                              </Touchable>
+                            )}
+                          </>
+                          {/* Touchable 2 */}
+                          <>
+                            {!(meterStatus !== 'CONNECTED') ? null : (
+                              <Touchable>
+                                <Icon
+                                  color={theme.colors['NFT_TIME_Red']}
+                                  name={'FontAwesome/minus-circle'}
+                                  size={20}
+                                />
+                              </Touchable>
+                            )}
+                          </>
+                        </View>
+                      </View>
+                      <Button
+                        iconPosition={'left'}
+                        onPress={() => {
+                          try {
+                            /* hidden 'Open Browser' action */
+                            navigation.navigate('RechargeScreen', {
+                              serviceConNo: consumerScNo,
+                              Name: consumerName,
+                            });
+                          } catch (err) {
+                            console.error(err);
+                          }
+                        }}
+                        {...GlobalStyles.ButtonStyles(theme)['Submit 2'].props}
+                        style={StyleSheet.applyWidth(
+                          StyleSheet.compose(
+                            GlobalStyles.ButtonStyles(theme)['Submit 2'].style,
+                            {
+                              backgroundColor: theme.colors['NFT_Time_Green'],
+                              borderRadius: 16,
+                              height: 36,
+                              marginTop: 10,
+                            }
+                          ),
+                          dimensions.width
+                        )}
+                        title={`${transalate(Variables, 'Recharge')}`}
+                      />
+                    </View>
+                  </View>
+                  {/* Updated Time View */}
+                  <View
                     style={StyleSheet.applyWidth(
-                      {
-                        backgroundColor: theme.colors.primary,
-                        borderRadius: 14,
-                        fontFamily: 'Roboto_400Regular',
-                        fontSize: 16,
-                        height: 36,
-                        textAlign: 'center',
-                        width: '45%',
-                      },
+                      { alignItems: 'center', marginTop: 15 },
                       dimensions.width
                     )}
-                    title={`${transalate(Variables, 'Recharge')}`}
-                  />
+                  >
+                    <Text
+                      accessible={true}
+                      {...GlobalStyles.TextStyles(theme)['Text'].props}
+                      style={StyleSheet.applyWidth(
+                        StyleSheet.compose(
+                          GlobalStyles.TextStyles(theme)['Text'].style,
+                          { fontFamily: 'Roboto_400Regular' }
+                        ),
+                        dimensions.width
+                      )}
+                    >
+                      {transalate(Variables, 'Last recharge of')}
+                      {' ₹'}
+                      {rechargeAmount} {transalate(Variables, 'on')}{' '}
+                      {createDate}
+                    </Text>
+                  </View>
                 </View>
               )}
             </>
+            {/* Todays details  On change Value */}
             <>
               {!(prepaidFlag === 'Y') ? null : (
                 <View
                   style={StyleSheet.applyWidth(
                     {
-                      flexDirection: 'row',
-                      justifyContent: 'flex-end',
-                      marginTop: 30,
-                      paddingRight: 8,
+                      backgroundColor: theme.colors['01987a'],
+                      borderColor: 'rgb(247, 246, 246)',
+                      borderRadius: 8,
+                      borderStyle: 'dashed',
+                      borderWidth: 1,
+                      justifyContent: 'space-around',
+                      marginTop: 20,
                     },
                     dimensions.width
                   )}
                 >
-                  <Text
-                    accessible={true}
-                    {...GlobalStyles.TextStyles(theme)['Text'].props}
-                    style={StyleSheet.applyWidth(
-                      StyleSheet.compose(
-                        GlobalStyles.TextStyles(theme)['Text'].style,
-                        { fontFamily: 'Roboto_400Regular', fontSize: 13 }
-                      ),
-                      dimensions.width
-                    )}
-                  >
-                    {transalate(Variables, 'Last updated on')}
-                    {': '}
-                    {LateastDate}
-                  </Text>
-                </View>
-              )}
-            </>
-            {/* card */}
-            <>
-              {!(prepaidFlag === 'Y') ? null : (
-                <View
-                  {...GlobalStyles.ViewStyles(theme)['card'].props}
-                  style={StyleSheet.applyWidth(
-                    StyleSheet.compose(
-                      GlobalStyles.ViewStyles(theme)['card'].style,
-                      {
-                        backgroundColor: 'rgb(255, 255, 255)',
-                        borderColor: 'rgb(199, 198, 198)',
-                        borderRadius: 8,
-                        borderWidth: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginBottom: 30,
-                        paddingBottom: 10,
-                        paddingLeft: 20,
-                        paddingTop: 10,
-                      }
-                    ),
-                    dimensions.width
-                  )}
-                >
+                  {/* On change value Card */}
                   <View
                     style={StyleSheet.applyWidth(
-                      { alignSelf: 'auto', justifyContent: 'flex-start' },
+                      {
+                        borderColor: 'rgb(255, 255, 255)',
+                        flexDirection: 'row',
+                        height: 81,
+                        justifyContent: 'space-between',
+                        paddingBottom: 10,
+                        paddingLeft: 20,
+                        paddingRight: 20,
+                        paddingTop: 10,
+                      },
                       dimensions.width
                     )}
                   >
-                    {/* Todays Usage */}
-                    <Text
-                      accessible={true}
+                    {/* Arrow View */}
+                    <View
                       style={StyleSheet.applyWidth(
-                        {
-                          color: theme.colors.strong,
-                          fontFamily: 'Roboto_400Regular',
-                          fontSize: 12,
-                          opacity: 1,
-                        },
+                        { marginTop: 10 },
                         dimensions.width
                       )}
                     >
-                      {transalate(Variables, "Today's Reading")}
-                    </Text>
-                    {/* Amount  */}
+                      {/* Up Touchable-1 */}
+                      <>
+                        {!icon1 ? null : (
+                          <Touchable
+                            onPress={() => {
+                              try {
+                                setIcon1(false);
+                                setIcon2(true);
+                              } catch (err) {
+                                console.error(err);
+                              }
+                            }}
+                          >
+                            <Icon size={24} name={'AntDesign/caretup'} />
+                          </Touchable>
+                        )}
+                      </>
+                      {/* Up Touchable-2 */}
+                      <>
+                        {!icon2 ? null : (
+                          <Touchable
+                            onPress={() => {
+                              try {
+                                setIcon2(false);
+                                setUpIcon3(true);
+                              } catch (err) {
+                                console.error(err);
+                              }
+                            }}
+                          >
+                            <Icon size={24} name={'AntDesign/caretup'} />
+                          </Touchable>
+                        )}
+                      </>
+                      {/* Up Touchable-3 */}
+                      <>
+                        {!upIcon3 ? null : (
+                          <Touchable disabled={upIcon3}>
+                            <Icon size={24} name={'AntDesign/caretup'} />
+                          </Touchable>
+                        )}
+                      </>
+                      {/* Down Touchable-1 */}
+                      <>
+                        {!icon1 ? null : (
+                          <Touchable
+                            onPress={() => {
+                              try {
+                                setIcon1(false);
+                                setIcon2(false);
+                              } catch (err) {
+                                console.error(err);
+                              }
+                            }}
+                            disabled={icon1}
+                          >
+                            <Icon size={24} name={'AntDesign/caretdown'} />
+                          </Touchable>
+                        )}
+                      </>
+                      {/* Down Touchable-2 */}
+                      <>
+                        {!icon2 ? null : (
+                          <Touchable
+                            onPress={() => {
+                              try {
+                                setIcon2(false);
+                                setIcon1(true);
+                              } catch (err) {
+                                console.error(err);
+                              }
+                            }}
+                          >
+                            <Icon size={24} name={'AntDesign/caretdown'} />
+                          </Touchable>
+                        )}
+                      </>
+                      {/* Down Touchable-3 */}
+                      <>
+                        {!upIcon3 ? null : (
+                          <Touchable
+                            onPress={() => {
+                              try {
+                                setUpIcon3(false);
+                                setIcon2(true);
+                              } catch (err) {
+                                console.error(err);
+                              }
+                            }}
+                          >
+                            <Icon size={24} name={'AntDesign/caretdown'} />
+                          </Touchable>
+                        )}
+                      </>
+                    </View>
+                    {/* Text View */}
+                    <View
+                      style={StyleSheet.applyWidth(
+                        { alignItems: 'center', marginTop: 18 },
+                        dimensions.width
+                      )}
+                    >
+                      <>
+                        {!icon1 ? null : (
+                          <Text
+                            accessible={true}
+                            {...GlobalStyles.TextStyles(theme)['Text'].props}
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(
+                                GlobalStyles.TextStyles(theme)['Text'].style,
+                                {
+                                  fontFamily: 'Roboto_400Regular',
+                                  fontSize: 22,
+                                }
+                              ),
+                              dimensions.width
+                            )}
+                          >
+                            {Todayusage}
+                          </Text>
+                        )}
+                      </>
+                      {/* Text 2 */}
+                      <>
+                        {!icon2 ? null : (
+                          <Text
+                            accessible={true}
+                            {...GlobalStyles.TextStyles(theme)['Text'].props}
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(
+                                GlobalStyles.TextStyles(theme)['Text'].style,
+                                {
+                                  fontFamily: 'Roboto_400Regular',
+                                  fontSize: 22,
+                                }
+                              ),
+                              dimensions.width
+                            )}
+                          >
+                            {Currentload}
+                          </Text>
+                        )}
+                      </>
+                      {/* Text 3 */}
+                      <>
+                        {!upIcon3 ? null : (
+                          <Text
+                            accessible={true}
+                            {...GlobalStyles.TextStyles(theme)['Text'].props}
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(
+                                GlobalStyles.TextStyles(theme)['Text'].style,
+                                {
+                                  fontFamily: 'Roboto_400Regular',
+                                  fontSize: 22,
+                                }
+                              ),
+                              dimensions.width
+                            )}
+                          >
+                            {Currentread}
+                          </Text>
+                        )}
+                      </>
+                    </View>
+                    {/* Value text */}
+                    <View
+                      style={StyleSheet.applyWidth(
+                        { marginTop: 18 },
+                        dimensions.width
+                      )}
+                    >
+                      <>
+                        {!icon1 ? null : (
+                          <Text
+                            accessible={true}
+                            {...GlobalStyles.TextStyles(theme)['Text'].props}
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(
+                                GlobalStyles.TextStyles(theme)['Text'].style,
+                                { fontFamily: 'Roboto_400Regular' }
+                              ),
+                              dimensions.width
+                            )}
+                          >
+                            {'KWH'}
+                          </Text>
+                        )}
+                      </>
+                      {/* Text 2 */}
+                      <>
+                        {!icon2 ? null : (
+                          <Text
+                            accessible={true}
+                            {...GlobalStyles.TextStyles(theme)['Text'].props}
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(
+                                GlobalStyles.TextStyles(theme)['Text'].style,
+                                { fontFamily: 'Roboto_400Regular' }
+                              ),
+                              dimensions.width
+                            )}
+                          >
+                            {'KVAH'}
+                          </Text>
+                        )}
+                      </>
+                      {/* Text 3 */}
+                      <>
+                        {!upIcon3 ? null : (
+                          <Text
+                            accessible={true}
+                            {...GlobalStyles.TextStyles(theme)['Text'].props}
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(
+                                GlobalStyles.TextStyles(theme)['Text'].style,
+                                { fontFamily: 'Roboto_400Regular' }
+                              ),
+                              dimensions.width
+                            )}
+                          >
+                            {'MDKW'}
+                          </Text>
+                        )}
+                      </>
+                    </View>
+                  </View>
+                </View>
+              )}
+            </>
+          </View>
+          {/* Consumption View */}
+          <>
+            {!(prepaidFlag === 'Y') ? null : (
+              <View
+                {...GlobalStyles.ViewStyles(theme)['Promotions'].props}
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(
+                    GlobalStyles.ViewStyles(theme)['Promotions'].style,
+                    {
+                      height: 81,
+                      justifyContent: 'center',
+                      marginTop: 20,
+                      paddingLeft: 16,
+                      paddingRight: 16,
+                    }
+                  ),
+                  dimensions.width
+                )}
+              >
+                {/* Last Month Consumption */}
+                <View
+                  style={StyleSheet.applyWidth(
+                    { flexDirection: 'row', justifyContent: 'space-between' },
+                    dimensions.width
+                  )}
+                >
+                  {/* Last Month consumption View */}
+                  <View
+                    style={StyleSheet.applyWidth(
+                      { width: '70%' },
+                      dimensions.width
+                    )}
+                  >
                     <Text
                       accessible={true}
+                      {...GlobalStyles.TextStyles(theme)['Text'].props}
                       style={StyleSheet.applyWidth(
-                        {
-                          alignSelf: 'center',
-                          color: theme.colors.strong,
-                          fontFamily: 'Roboto_700Bold',
-                          fontSize: 14,
-                          lineHeight: 23,
-                          opacity: 1,
-                        },
+                        StyleSheet.compose(
+                          GlobalStyles.TextStyles(theme)['Text'].style,
+                          {
+                            color: theme.colors['Strong'],
+                            fontFamily: 'Roboto_400Regular',
+                          }
+                        ),
+                        dimensions.width
+                      )}
+                    >
+                      {transalate(Variables, 'Last Month Consumption')}
+                      {':'}
+                    </Text>
+                    <LinearProgress
+                      animationDuration={500}
+                      color={theme.colors.primary}
+                      indeterminate={false}
+                      isAnimated={true}
+                      lineCap={'round'}
+                      showTrack={true}
+                      trackColor={theme.colors.divider}
+                      trackLineCap={'round'}
+                      thickness={22}
+                      value={Todayusage}
+                    />
+                  </View>
+
+                  <View
+                    style={StyleSheet.applyWidth(
+                      { justifyContent: 'center' },
+                      dimensions.width
+                    )}
+                  >
+                    <Text
+                      accessible={true}
+                      {...GlobalStyles.TextStyles(theme)['Text'].props}
+                      style={StyleSheet.applyWidth(
+                        GlobalStyles.TextStyles(theme)['Text'].style,
                         dimensions.width
                       )}
                     >
                       {Todayusage}
+                      {' Units'}
                     </Text>
+                  </View>
+                </View>
+                {/* Current Month Consumption */}
+                <View
+                  style={StyleSheet.applyWidth(
+                    {
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginTop: 10,
+                    },
+                    dimensions.width
+                  )}
+                >
+                  {/* Current Month consumption View  */}
+                  <View
+                    style={StyleSheet.applyWidth(
+                      { width: '70%' },
+                      dimensions.width
+                    )}
+                  >
+                    <Text
+                      accessible={true}
+                      {...GlobalStyles.TextStyles(theme)['Text'].props}
+                      style={StyleSheet.applyWidth(
+                        StyleSheet.compose(
+                          GlobalStyles.TextStyles(theme)['Text'].style,
+                          {
+                            color: theme.colors['Strong'],
+                            fontFamily: 'Roboto_400Regular',
+                          }
+                        ),
+                        dimensions.width
+                      )}
+                    >
+                      {transalate(Variables, 'Current Month Consumption')}
+                      {':'}
+                    </Text>
+                    <LinearProgress
+                      animationDuration={500}
+                      color={theme.colors.primary}
+                      indeterminate={false}
+                      isAnimated={true}
+                      lineCap={'round'}
+                      showTrack={true}
+                      trackColor={theme.colors.divider}
+                      trackLineCap={'round'}
+                      thickness={22}
+                      value={Currentload}
+                    />
                   </View>
 
                   <View
                     style={StyleSheet.applyWidth(
-                      { alignSelf: 'auto' },
+                      { justifyContent: 'center' },
                       dimensions.width
                     )}
                   >
-                    {/* Current Reading */}
                     <Text
                       accessible={true}
+                      {...GlobalStyles.TextStyles(theme)['Text'].props}
                       style={StyleSheet.applyWidth(
-                        {
-                          color: theme.colors.strong,
-                          fontFamily: 'Roboto_400Regular',
-                          fontSize: 12,
-                          opacity: 1,
-                        },
-                        dimensions.width
-                      )}
-                    >
-                      {transalate(Variables, 'Current Reading')}
-                    </Text>
-                    {/* KW */}
-                    <Text
-                      accessible={true}
-                      style={StyleSheet.applyWidth(
-                        {
-                          alignSelf: 'center',
-                          color: theme.colors.strong,
-                          fontFamily: 'Roboto_700Bold',
-                          fontSize: 14,
-                          lineHeight: 23,
-                          opacity: 1,
-                        },
+                        StyleSheet.compose(
+                          GlobalStyles.TextStyles(theme)['Text'].style,
+                          { fontFamily: 'Roboto_400Regular' }
+                        ),
                         dimensions.width
                       )}
                     >
                       {Currentload}
-                    </Text>
-                  </View>
-
-                  <View
-                    style={StyleSheet.applyWidth(
-                      { alignSelf: 'auto' },
-                      dimensions.width
-                    )}
-                  >
-                    {/* Voltage Reading */}
-                    <Text
-                      accessible={true}
-                      style={StyleSheet.applyWidth(
-                        {
-                          color: theme.colors.strong,
-                          fontFamily: 'Roboto_400Regular',
-                          fontSize: 12,
-                          opacity: 1,
-                        },
-                        dimensions.width
-                      )}
-                    >
-                      {transalate(Variables, 'Voltage Reading')}
-                    </Text>
-                    {/* KW */}
-                    <Text
-                      accessible={true}
-                      style={StyleSheet.applyWidth(
-                        {
-                          alignSelf: 'center',
-                          color: theme.colors.strong,
-                          fontFamily: 'Roboto_700Bold',
-                          fontSize: 14,
-                          lineHeight: 23,
-                          opacity: 1,
-                        },
-                        dimensions.width
-                      )}
-                    >
-                      {Currentread}
+                      {' Units'}
                     </Text>
                   </View>
                 </View>
-              )}
-            </>
-          </View>
-          {/* Promotions */}
-          <View
-            {...GlobalStyles.ViewStyles(theme)['Promotions'].props}
-            style={StyleSheet.applyWidth(
-              StyleSheet.compose(
-                GlobalStyles.ViewStyles(theme)['Promotions'].style,
-                { marginTop: 20, paddingLeft: 16, paddingRight: 16 }
-              ),
-              dimensions.width
+              </View>
             )}
-          >
-            <CISAPPApi.FetchBANNERSPOST>
-              {({ loading, error, data, refetchBANNERS }) => {
-                const fetchData = data?.json;
-                if (loading) {
-                  return <ActivityIndicator />;
-                }
-
-                if (error || data?.status < 200 || data?.status >= 300) {
-                  return <ActivityIndicator />;
-                }
-
-                return (
-                  <Swiper
-                    data={fetchData && fetchData[0].data}
-                    dotActiveColor={theme.colors.primary}
-                    dotColor={theme.colors.light}
-                    dotsTouchable={true}
-                    keyExtractor={(swiperData, index) =>
-                      swiperData?.id ?? swiperData?.uuid ?? index.toString()
-                    }
-                    listKey={'UYgsQ86a'}
-                    loop={false}
-                    minDistanceForAction={0.2}
-                    minDistanceToCapture={5}
-                    renderItem={({ item, index }) => {
-                      const swiperData = item;
-                      return (
-                        <>
-                          <>
-                            {!swiperData ? null : (
-                              <SwiperItem
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignSelf: 'stretch',
-                                    height: 108,
-                                    width: '100%',
-                                  },
-                                  dimensions.width
-                                )}
-                              >
-                                {/* banner */}
-                                <Image
-                                  resizeMode={'cover'}
-                                  {...GlobalStyles.ImageStyles(theme)['banner']
-                                    .props}
-                                  source={{ uri: `${swiperData?.attachment}` }}
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(
-                                      GlobalStyles.ImageStyles(theme)['banner']
-                                        .style,
-                                      { borderRadius: 8, height: 108 }
-                                    ),
-                                    dimensions.width
-                                  )}
-                                />
-                              </SwiperItem>
-                            )}
-                          </>
-                        </>
-                      );
-                    }}
-                    timeout={0}
-                    vertical={false}
-                    {...GlobalStyles.SwiperStyles(theme)['Swiper'].props}
-                    style={StyleSheet.applyWidth(
-                      StyleSheet.compose(
-                        GlobalStyles.SwiperStyles(theme)['Swiper'].style,
-                        {
-                          alignSelf: 'auto',
-                          backgroundColor: 'rgb(255, 255, 255)',
-                          borderColor: 'rgb(222, 221, 221)',
-                          height: 108,
-                          position: 'relative',
-                        }
-                      ),
-                      dimensions.width
-                    )}
-                  />
-                );
-              }}
-            </CISAPPApi.FetchBANNERSPOST>
-          </View>
+          </>
         </View>
       </View>
       {/* botem tab1 */}
@@ -1761,8 +2111,8 @@ line two` ) and will not work with special characters inside of quotes ( example
             try {
               setTextInputValue(Constants['name']);
               navigation.navigate('BillingScreen', {
-                Name: props.route?.params?.Name ?? '',
                 name: Constants['name'],
+                Name: props.route?.params?.Name ?? '',
               });
             } catch (err) {
               console.error(err);

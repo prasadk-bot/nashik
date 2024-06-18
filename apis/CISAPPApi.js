@@ -775,6 +775,357 @@ export const FetchComplaintSavePOST = ({
   return children({ loading, data, error, refetchComplaintSave: refetch });
 };
 
+export const consumptioPatternHoursPOST = (
+  Constants,
+  { accountno, action, date, mtrno },
+  handlers = {}
+) =>
+  fetch(
+    `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/fgweb/web/json/plugin/com.fluentgrid.cp.api.ExtIntegrationService/service`,
+    {
+      body: JSON.stringify({
+        action: 'consumptionPatternInnerDrilldown',
+        method: 'POST',
+        req: { mtrno: mtrno, accountno: accountno, date: date, action: action },
+        consType: 'PRE',
+        auth: 'NO',
+      }),
+      headers: cleanHeaders({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST',
+    }
+  ).then(res => handleResponse(res, handlers));
+
+export const useConsumptioPatternHoursPOST = (
+  args = {},
+  { refetchInterval, handlers = {} } = {}
+) => {
+  const Constants = GlobalVariables.useValues();
+  const queryClient = useQueryClient();
+  return useQuery(
+    ['cISAPPConsumptioPatternHoursPOST', args],
+    () => consumptioPatternHoursPOST(Constants, args, handlers),
+    {
+      refetchInterval,
+      onSuccess: () =>
+        queryClient.invalidateQueries(['cISAPPConsumptioPatternHoursPOSTS']),
+    }
+  );
+};
+
+export const FetchConsumptioPatternHoursPOST = ({
+  children,
+  onData = () => {},
+  handlers = {},
+  refetchInterval,
+  accountno,
+  action,
+  date,
+  mtrno,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const {
+    isLoading: loading,
+    data,
+    error,
+    refetch,
+  } = useConsumptioPatternHoursPOST(
+    { accountno, action, date, mtrno },
+    { refetchInterval, handlers: { onData, ...handlers } }
+  );
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  return children({
+    loading,
+    data,
+    error,
+    refetchConsumptioPatternHours: refetch,
+  });
+};
+
+export const consumptionPatternDaysPOST = (
+  Constants,
+  { accountno, action, days, mtrno },
+  handlers = {}
+) =>
+  fetch(
+    `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/fgweb/web/json/plugin/com.fluentgrid.cp.api.ExtIntegrationService/service`,
+    {
+      body: JSON.stringify({
+        action: 'consumptionPatternDays',
+        method: 'POST',
+        req: { action: action, mtrno: mtrno, accountno: accountno, days: days },
+        consType: 'PRE',
+        auth: 'NO',
+      }),
+      headers: cleanHeaders({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST',
+    }
+  ).then(res => handleResponse(res, handlers));
+
+export const useConsumptionPatternDaysPOST = (
+  args = {},
+  { refetchInterval, handlers = {} } = {}
+) => {
+  const Constants = GlobalVariables.useValues();
+  const queryClient = useQueryClient();
+  return useQuery(
+    ['cISAPPConsumptionPatternDaysPOST', args],
+    () => consumptionPatternDaysPOST(Constants, args, handlers),
+    {
+      refetchInterval,
+      onSuccess: () =>
+        queryClient.invalidateQueries(['cISAPPConsumptionPatternDaysPOSTS']),
+    }
+  );
+};
+
+export const FetchConsumptionPatternDaysPOST = ({
+  children,
+  onData = () => {},
+  handlers = {},
+  refetchInterval,
+  accountno,
+  action,
+  days,
+  mtrno,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const {
+    isLoading: loading,
+    data,
+    error,
+    refetch,
+  } = useConsumptionPatternDaysPOST(
+    { accountno, action, days, mtrno },
+    { refetchInterval, handlers: { onData, ...handlers } }
+  );
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  return children({
+    loading,
+    data,
+    error,
+    refetchConsumptionPatternDays: refetch,
+  });
+};
+
+export const consumptionPatternMonthsPOST = (
+  Constants,
+  { accountno, days, mtrno, year },
+  handlers = {}
+) =>
+  fetch(
+    `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/fgweb/web/json/plugin/com.fluentgrid.cp.api.ExtIntegrationService/service`,
+    {
+      body: JSON.stringify({
+        action: 'ConsumptionPatternMonths',
+        method: 'POST',
+        req: {
+          mtrno: mtrno,
+          accountno: accountno,
+          days: days,
+          action: 'ConsumptionPatternMonths',
+          year: year,
+        },
+        consType: 'PRE',
+        auth: 'NO',
+      }),
+      headers: cleanHeaders({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST',
+    }
+  ).then(res => handleResponse(res, handlers));
+
+export const useConsumptionPatternMonthsPOST = (
+  args = {},
+  { refetchInterval, handlers = {} } = {}
+) => {
+  const Constants = GlobalVariables.useValues();
+  const queryClient = useQueryClient();
+  return useQuery(
+    ['cISAPPConsumptionPatternMonthsPOST', args],
+    () => consumptionPatternMonthsPOST(Constants, args, handlers),
+    {
+      refetchInterval,
+      onSuccess: () =>
+        queryClient.invalidateQueries(['cISAPPConsumptionPatternMonthsPOSTS']),
+    }
+  );
+};
+
+export const FetchConsumptionPatternMonthsPOST = ({
+  children,
+  onData = () => {},
+  handlers = {},
+  refetchInterval,
+  accountno,
+  days,
+  mtrno,
+  year,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const {
+    isLoading: loading,
+    data,
+    error,
+    refetch,
+  } = useConsumptionPatternMonthsPOST(
+    { accountno, days, mtrno, year },
+    { refetchInterval, handlers: { onData, ...handlers } }
+  );
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  return children({
+    loading,
+    data,
+    error,
+    refetchConsumptionPatternMonths: refetch,
+  });
+};
+
+export const consumptionPatternRangePOST = (
+  Constants,
+  { accountno, action, days, fromdate, mtrno, todate },
+  handlers = {}
+) =>
+  fetch(
+    `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/fgweb/web/json/plugin/com.fluentgrid.cp.api.ExtIntegrationService/service`,
+    {
+      body: JSON.stringify({
+        action: 'consumptionPatternDaysRange',
+        method: 'POST',
+        req: {
+          mtrno: mtrno,
+          accountno: accountno,
+          days: days,
+          action: action,
+          fromdate: fromdate,
+          todate: todate,
+        },
+        consType: 'PRE',
+        auth: 'NO',
+      }),
+      headers: cleanHeaders({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST',
+    }
+  ).then(res => handleResponse(res, handlers));
+
+export const useConsumptionPatternRangePOST = (
+  args = {},
+  { refetchInterval, handlers = {} } = {}
+) => {
+  const Constants = GlobalVariables.useValues();
+  const queryClient = useQueryClient();
+  return useQuery(
+    ['cISAPPConsumptionPatternRangePOST', args],
+    () => consumptionPatternRangePOST(Constants, args, handlers),
+    {
+      refetchInterval,
+      onSuccess: () =>
+        queryClient.invalidateQueries(['cISAPPConsumptionPatternRangePOSTS']),
+    }
+  );
+};
+
+export const FetchConsumptionPatternRangePOST = ({
+  children,
+  onData = () => {},
+  handlers = {},
+  refetchInterval,
+  accountno,
+  action,
+  days,
+  fromdate,
+  mtrno,
+  todate,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const {
+    isLoading: loading,
+    data,
+    error,
+    refetch,
+  } = useConsumptionPatternRangePOST(
+    { accountno, action, days, fromdate, mtrno, todate },
+    { refetchInterval, handlers: { onData, ...handlers } }
+  );
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  return children({
+    loading,
+    data,
+    error,
+    refetchConsumptionPatternRange: refetch,
+  });
+};
+
 export const deleteAccountPOST = (
   Constants,
   { accountNumber, consumerNumber },
@@ -2679,6 +3030,83 @@ export const FetchPowerQualityVoltagePOST = ({
     data,
     error,
     refetchPowerQualityVoltage: refetch,
+  });
+};
+
+export const prepaidMeterStatuesPOST = (Constants, { action }, handlers = {}) =>
+  fetch(
+    `https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/fgweb/web/json/plugin/com.fluentgrid.cp.api.ExtIntegrationService/service`,
+    {
+      body: JSON.stringify({
+        action: action,
+        method: 'GET',
+        auth: 'TOKEN',
+        baseUrlName: '',
+        environmentName: 'SPM_ADANI',
+      }),
+      headers: cleanHeaders({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST',
+    }
+  ).then(res => handleResponse(res, handlers));
+
+export const usePrepaidMeterStatuesPOST = (
+  args = {},
+  { refetchInterval, handlers = {} } = {}
+) => {
+  const Constants = GlobalVariables.useValues();
+  const queryClient = useQueryClient();
+  return useQuery(
+    ['cISAPPPrepaidMeterStatuesPOST', args],
+    () => prepaidMeterStatuesPOST(Constants, args, handlers),
+    {
+      refetchInterval,
+      onSuccess: () =>
+        queryClient.invalidateQueries(['cISAPPPrepaidMeterStatuesPOSTS']),
+    }
+  );
+};
+
+export const FetchPrepaidMeterStatuesPOST = ({
+  children,
+  onData = () => {},
+  handlers = {},
+  refetchInterval,
+  action,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const {
+    isLoading: loading,
+    data,
+    error,
+    refetch,
+  } = usePrepaidMeterStatuesPOST(
+    { action },
+    { refetchInterval, handlers: { onData, ...handlers } }
+  );
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  return children({
+    loading,
+    data,
+    error,
+    refetchPrepaidMeterStatues: refetch,
   });
 };
 

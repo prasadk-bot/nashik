@@ -24,39 +24,11 @@ const MainTabsBlock = props => {
     return str;
   };
 
-  const buildString = Scno => {
-    // Type the code for the body of your function or hook here.
-    // Functions can be triggered via Button/Touchable actions.
-    // Hooks are run per ReactJS rules.
-
-    /* String line breaks are accomplished with backticks ( example: `line one
-line two` ) and will not work with special characters inside of quotes ( example: "line one line two" ) */
-
-    console.log(`billing/rest/getBillDataWss/${Scno}`);
-    return `billing/rest/getBillDataWss/${Scno}`;
-  };
-
-  const converDateTimeToDate = dateTime => {
-    const date = dateTime.split(' ');
-    console.log('date' + date);
-
-    const str = date[0];
-
-    return str;
-  };
-
   const prepaidBillingString = meterNo => {
     console.log(
       `/SPM/getAllSpmMonthlyBillDetailsTByAccountNoOrMeterNumber?accountNoOrMeterNumber=${meterNo}`
     );
     return `/SPM/getAllSpmMonthlyBillDetailsTByAccountNoOrMeterNumber?accountNoOrMeterNumber=${meterNo}`;
-  };
-
-  const dailybillHistoryBuildString = meterNo => {
-    //console.log(`/SPM/getAllSpmRechargeHistoryDetailsByMeterNumberOrAccountNo?meterNumberOrAccountNo=${meterNo}`)
-    return `/SPM/getAllSpmBillDetailsByAccountNoOrMeterNumber?accountNoOrMeterNumber=${meterNo}`;
-
-    //return `/SPM/getAllSpmRechargeHistoryDetailsByMeterNumberOrAccountNo?meterNumberOrAccountNo=${meterNo}`
   };
 
   const buildConsumerString = Scno => {
@@ -107,6 +79,34 @@ line two` ) and will not work with special characters inside of quotes ( example
     const monthName = monthNames[monthNo - 1];
     console.log(monthName);
     return monthName;
+  };
+
+  const buildString = Scno => {
+    // Type the code for the body of your function or hook here.
+    // Functions can be triggered via Button/Touchable actions.
+    // Hooks are run per ReactJS rules.
+
+    /* String line breaks are accomplished with backticks ( example: `line one
+line two` ) and will not work with special characters inside of quotes ( example: "line one line two" ) */
+
+    console.log(`billing/rest/getBillDataWss/${Scno}`);
+    return `billing/rest/getBillDataWss/${Scno}`;
+  };
+
+  const converDateTimeToDate = dateTime => {
+    const date = dateTime.split(' ');
+    console.log('date' + date);
+
+    const str = date[0];
+
+    return str;
+  };
+
+  const dailybillHistoryBuildString = meterNo => {
+    //console.log(`/SPM/getAllSpmRechargeHistoryDetailsByMeterNumberOrAccountNo?meterNumberOrAccountNo=${meterNo}`)
+    return `/SPM/getAllSpmBillDetailsByAccountNoOrMeterNumber?accountNoOrMeterNumber=${meterNo}`;
+
+    //return `/SPM/getAllSpmRechargeHistoryDetailsByMeterNumberOrAccountNo?meterNumberOrAccountNo=${meterNo}`
   };
 
   return (

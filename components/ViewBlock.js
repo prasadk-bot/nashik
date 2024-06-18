@@ -13,6 +13,7 @@ const ViewBlock = props => {
   return (
     <View>
       <Modal
+        supportedOrientations={['portrait', 'landscape']}
         transparent={false}
         animationType={'slide'}
         presentationStyle={'pageSheet'}

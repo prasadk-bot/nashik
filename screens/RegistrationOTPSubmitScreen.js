@@ -37,8 +37,33 @@ const RegistrationOTPSubmitScreen = props => {
   const [seconds, setSeconds] = React.useState(61);
   const [textInputValue, setTextInputValue] = React.useState(0);
   const [codeInputValue, setCodeInputValue] = React.useState(undefined);
-  const createOTP = () => {
-    return `${otpValue1}${otpValue2}${otpValue3}${otpValue4}`;
+  const focusOnwardBackward = (otpValue1, otpValue2, otpValue3, otpValue4) => {
+    var otpValue1 = null;
+    var otpValue2 = null;
+    var otpValue3 = null;
+    var otpValue4 = null;
+    const onOtpChange = index => {
+      return value => {
+        if (isNaN(Number(value))) {
+          // do nothing when a non digit is pressed
+          return;
+        }
+        const otpArrayCopy = otpArray.concat();
+        otpArrayCopy[index] = value;
+        setOtpArray(otpArrayCopy);
+
+        // auto focus to next InputText if value is not blank
+        if (value !== '') {
+          if (index === 0) {
+            otpValue2.current.focus();
+          } else if (index === 1) {
+            otpValue3.current.focus();
+          } else if (index === 2) {
+            otpValue4.current.focus();
+          }
+        }
+      };
+    };
   };
 
   const otpVerify = (otpResult, otp) => {
@@ -50,6 +75,21 @@ const RegistrationOTPSubmitScreen = props => {
     } else {
       console.log('Incorrect OTP. Please try again.');
     }
+  };
+
+  const check_otp = otp => {
+    const ChangePasswordScreen = () => {
+      // Function to handle OTP verification
+      const verifyOTP = () => {
+        if (userOTP === otpValue) {
+          // Navigate to the change password screen
+          console.log('Navigating to change password screen...');
+          // Add your navigation logic here
+        } else {
+          console.log('Incorrect OTP. Please try again.');
+        }
+      };
+    };
   };
 
   const startTimer = () => {
@@ -105,56 +145,16 @@ const RegistrationOTPSubmitScreen = props => {
     };
   };
 
+  const createOTP = () => {
+    return `${otpValue1}${otpValue2}${otpValue3}${otpValue4}`;
+  };
+
   const otpValidation = otp => {
     var errorMessage = null;
     if (!otp.trim()) {
       errorMessage = 'Otp is required';
     }
     return errorMessage;
-  };
-
-  const focusOnwardBackward = (otpValue1, otpValue2, otpValue3, otpValue4) => {
-    var otpValue1 = null;
-    var otpValue2 = null;
-    var otpValue3 = null;
-    var otpValue4 = null;
-    const onOtpChange = index => {
-      return value => {
-        if (isNaN(Number(value))) {
-          // do nothing when a non digit is pressed
-          return;
-        }
-        const otpArrayCopy = otpArray.concat();
-        otpArrayCopy[index] = value;
-        setOtpArray(otpArrayCopy);
-
-        // auto focus to next InputText if value is not blank
-        if (value !== '') {
-          if (index === 0) {
-            otpValue2.current.focus();
-          } else if (index === 1) {
-            otpValue3.current.focus();
-          } else if (index === 2) {
-            otpValue4.current.focus();
-          }
-        }
-      };
-    };
-  };
-
-  const check_otp = otp => {
-    const ChangePasswordScreen = () => {
-      // Function to handle OTP verification
-      const verifyOTP = () => {
-        if (userOTP === otpValue) {
-          // Navigate to the change password screen
-          console.log('Navigating to change password screen...');
-          // Add your navigation logic here
-        } else {
-          console.log('Incorrect OTP. Please try again.');
-        }
-      };
-    };
   };
 
   const processErrorMessage = msg => {
@@ -214,10 +214,10 @@ const RegistrationOTPSubmitScreen = props => {
       console.error(err);
     }
   }, [isFocused]);
-  const oTPInput1rdZTdopXRef = React.useRef();
-  const oTPInput2f5BNq1czRef = React.useRef();
-  const oTPInput3JKGpE7iARef = React.useRef();
-  const oTPInput4CgX5hsmqRef = React.useRef();
+  const oTPInput1aag2D8azRef = React.useRef();
+  const oTPInput2o4OkB0rURef = React.useRef();
+  const oTPInput3BJT2g1VxRef = React.useRef();
+  const oTPInput4iPK0YaXpRef = React.useRef();
 
   return (
     <ScreenContainer scrollable={false} hasSafeArea={true}>
@@ -551,6 +551,7 @@ const RegistrationOTPSubmitScreen = props => {
           }}
           style={StyleSheet.applyWidth(
             {
+              backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
               borderRadius: 14,
               fontFamily: 'Roboto_400Regular',
               fontSize: 16,

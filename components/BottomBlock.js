@@ -124,8 +124,8 @@ const BottomBlock = props => {
         onPress={() => {
           try {
             navigation.navigate('BillingScreen', {
-              Name: null,
               name: Constants['name'],
+              Name: null,
             });
           } catch (err) {
             console.error(err);

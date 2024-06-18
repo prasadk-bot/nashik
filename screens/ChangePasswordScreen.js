@@ -54,6 +54,45 @@ const ChangePasswordScreen = props => {
     return errorMessage;
   };
 
+  const processErrorMessage = msg => {
+    const scheme = {
+      msg1: 'Password Changed Successfully',
+      msg2: 'Problem while Sending OTP SMS',
+      msg3: 'OTP send SuccessFully TO the existing Mobile',
+      msg4: 'Input password not same as in Old Password !',
+      msg5: 'The user is already registered',
+      // "msg6" : "You are not smart meter consumer",
+      msg6: 'SMS service gateway not configured',
+      msg7: 'Invalid OTP',
+      msg8: 'Problem while creating an user',
+      msg9: 'User Creation Done Successfully',
+      msg10: 'Mobile Number Doesnot exist for this consumer!',
+      msg11: 'Problem while generating OTP!',
+      msg12: 'Email ID Doesnot exist for this consumer in registration Table',
+      msg13: 'OTP sent to your Registred Email Address',
+      msg14: 'The OTP has expired!',
+      msg15: 'Problem while updating password!',
+      msg16: 'Existing email not Found',
+      msg17: 'password details not found in the input data!',
+      msg18: 'Old password and New Password must not be same !',
+      msg19: 'Problem while updating password',
+      msg20: 'OTP sent SuccessFully',
+      msg21: 'Phone Number Changed Successfully',
+      msg22: 'Logical Error',
+      msg23: 'Entered consumer number is already registered',
+      msg24: 'Entered consumer number already mapped',
+      msg26: 'Accounts added for the existing consumer limit is exceeded',
+      msg27: 'Should not same login account and entered account',
+      msg28: '* Invalid Consumer Number',
+      msg29: '* Invalid Credentials',
+      msg30: 'Invalid Password',
+      msg31: 'OTP Limit Exceeded, Please Try Again!',
+      msg32: "Account Dosen't Have SmartMeter",
+    };
+
+    return scheme[msg];
+  };
+
   const validateNewPassword = password => {
     var errorMessage = null;
     if (!password.trim()) {
@@ -111,45 +150,6 @@ const ChangePasswordScreen = props => {
       //return "Password is valid.";
     }
     //return "Password is required";
-  };
-
-  const processErrorMessage = msg => {
-    const scheme = {
-      msg1: 'Password Changed Successfully',
-      msg2: 'Problem while Sending OTP SMS',
-      msg3: 'OTP send SuccessFully TO the existing Mobile',
-      msg4: 'Input password not same as in Old Password !',
-      msg5: 'The user is already registered',
-      // "msg6" : "You are not smart meter consumer",
-      msg6: 'SMS service gateway not configured',
-      msg7: 'Invalid OTP',
-      msg8: 'Problem while creating an user',
-      msg9: 'User Creation Done Successfully',
-      msg10: 'Mobile Number Doesnot exist for this consumer!',
-      msg11: 'Problem while generating OTP!',
-      msg12: 'Email ID Doesnot exist for this consumer in registration Table',
-      msg13: 'OTP sent to your Registred Email Address',
-      msg14: 'The OTP has expired!',
-      msg15: 'Problem while updating password!',
-      msg16: 'Existing email not Found',
-      msg17: 'password details not found in the input data!',
-      msg18: 'Old password and New Password must not be same !',
-      msg19: 'Problem while updating password',
-      msg20: 'OTP sent SuccessFully',
-      msg21: 'Phone Number Changed Successfully',
-      msg22: 'Logical Error',
-      msg23: 'Entered consumer number is already registered',
-      msg24: 'Entered consumer number already mapped',
-      msg26: 'Accounts added for the existing consumer limit is exceeded',
-      msg27: 'Should not same login account and entered account',
-      msg28: '* Invalid Consumer Number',
-      msg29: '* Invalid Credentials',
-      msg30: 'Invalid Password',
-      msg31: 'OTP Limit Exceeded, Please Try Again!',
-      msg32: "Account Dosen't Have SmartMeter",
-    };
-
-    return scheme[msg];
   };
 
   return (
@@ -624,6 +624,7 @@ const ChangePasswordScreen = props => {
           }}
           style={StyleSheet.applyWidth(
             {
+              backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
               borderRadius: 14,
               fontFamily: 'Roboto_400Regular',
               fontSize: 16,

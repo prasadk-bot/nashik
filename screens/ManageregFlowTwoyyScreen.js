@@ -39,6 +39,14 @@ const ManageregFlowTwoyyScreen = props => {
   const [scnoErrorMsg, setScnoErrorMsg] = React.useState('');
   const [showNav, setShowNav] = React.useState(false);
   const [visibleHindi, setVisibleHindi] = React.useState(false);
+  const validateScno = scNo => {
+    var errorMessage = null;
+    if (!scNo.trim()) {
+      errorMessage = 'Account / consumer number is required';
+    }
+    return errorMessage;
+  };
+
   const processErrorMessage = msg => {
     const scheme = {
       msg1: 'Password Changed Successfully',
@@ -82,14 +90,6 @@ const ManageregFlowTwoyyScreen = props => {
     };
 
     return scheme[msg];
-  };
-
-  const validateScno = scNo => {
-    var errorMessage = null;
-    if (!scNo.trim()) {
-      errorMessage = 'Account / consumer number is required';
-    }
-    return errorMessage;
   };
 
   return (
@@ -306,7 +306,11 @@ const ManageregFlowTwoyyScreen = props => {
             style={StyleSheet.applyWidth(
               StyleSheet.compose(
                 GlobalStyles.ButtonStyles(theme)['Submit'].style,
-                { borderRadius: 14, fontSize: 16 }
+                {
+                  backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
+                  borderRadius: 14,
+                  fontSize: 16,
+                }
               ),
               dimensions.width
             )}
@@ -386,7 +390,7 @@ const ManageregFlowTwoyyScreen = props => {
                   inverted={false}
                   keyExtractor={(listData, index) => listData}
                   keyboardShouldPersistTaps={'never'}
-                  listKey={'zWypIkaJ'}
+                  listKey={'Gfzb4vga'}
                   nestedScrollEnabled={false}
                   numColumns={1}
                   onEndReachedThreshold={0.5}
@@ -557,6 +561,7 @@ const ManageregFlowTwoyyScreen = props => {
                 StyleSheet.compose(
                   GlobalStyles.ButtonStyles(theme)['Submit 2'].style,
                   {
+                    backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                     borderRadius: 14,
                     fontSize: 16,
                     marginBottom: 45,

@@ -158,7 +158,7 @@ const ContactUsScreen = props => {
                 dimensions.width
               )}
             >
-              {'1800-212-3435, 1800-233-3435'}
+              {'1912,19120,1800-212-3435,\n1800-233-3435'}
             </Text>
           </View>
         </Touchable>
@@ -378,7 +378,7 @@ const ContactUsScreen = props => {
             </Text>
           </View>
         </Touchable>
-        {/* Youtube */}
+        {/* YouTube */}
         <Touchable
           onPress={() => {
             const handler = async () => {
@@ -414,7 +414,7 @@ const ContactUsScreen = props => {
           >
             <Image
               resizeMode={'cover'}
-              source={Images.HelpTwtr}
+              source={Images.Yt}
               style={StyleSheet.applyWidth(
                 { height: 24, width: 24 },
                 dimensions.width

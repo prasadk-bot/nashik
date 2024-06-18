@@ -532,6 +532,7 @@ line two` ) and will not work with special characters inside of quotes ( example
                     }}
                     style={StyleSheet.applyWidth(
                       {
+                        backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                         borderRadius: 14,
                         fontFamily: 'Roboto_400Regular',
                         fontSize: 16,

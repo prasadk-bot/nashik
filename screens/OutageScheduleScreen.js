@@ -452,7 +452,7 @@ const OutageScheduleScreen = props => {
                                 index.toString()
                               }
                               keyboardShouldPersistTaps={'never'}
-                              listKey={'msG0JJyA'}
+                              listKey={'UI3pUoFY'}
                               nestedScrollEnabled={false}
                               numColumns={1}
                               onEndReachedThreshold={0.5}

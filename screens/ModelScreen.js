@@ -51,6 +51,7 @@ const ModelScreen = props => {
       </View>
 
       <Modal
+        supportedOrientations={['portrait', 'landscape']}
         animationType={'slide'}
         presentationStyle={'pageSheet'}
         transparent={false}
@@ -106,7 +107,6 @@ const ModelScreen = props => {
                     fontFamily: 'Roboto_400Regular',
                     marginTop: 20,
                     paddingLeft: 20,
-                    paddingRight: 20,
                   }
                 ),
                 dimensions.width
@@ -189,6 +189,8 @@ const ModelScreen = props => {
           </View>
         </View>
       </Modal>
+      {/* View 2 */}
+      <View />
     </ScreenContainer>
   );
 };

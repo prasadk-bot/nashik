@@ -121,7 +121,7 @@ export default function RootAppNavigator() {
         ...DefaultTheme,
         colors: {
           ...DefaultTheme.colors,
-          background: '#FBFCFD',
+          background: '#FFFFFF',
         },
       }}
       linking={LinkingConfiguration}
@@ -139,38 +139,10 @@ export default function RootAppNavigator() {
         })}
       >
         <Stack.Screen
-          name="PaymentsScreen"
-          component={PaymentsScreen}
+          name="AddTicketProcessGuestScreen"
+          component={AddTicketProcessGuestScreen}
           options={({ navigation }) => ({
-            title: 'Payments',
-          })}
-        />
-        <Stack.Screen
-          name="UsageScreen"
-          component={UsageScreen}
-          options={({ navigation }) => ({
-            title: 'Usage',
-          })}
-        />
-        <Stack.Screen
-          name="BillingScreen"
-          component={BillingScreen}
-          options={({ navigation }) => ({
-            title: 'Billing',
-          })}
-        />
-        <Stack.Screen
-          name="DashboardScreen"
-          component={DashboardScreen}
-          options={({ navigation }) => ({
-            title: 'Dashboard',
-          })}
-        />
-        <Stack.Screen
-          name="QuickPayScreen"
-          component={QuickPayScreen}
-          options={({ navigation }) => ({
-            title: 'Quick Pay',
+            title: 'Add Ticket Process Guest',
           })}
         />
         <Stack.Screen
@@ -181,10 +153,45 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="ModelScreen"
-          component={ModelScreen}
+          name="QuickPayScreen"
+          component={QuickPayScreen}
           options={({ navigation }) => ({
-            title: 'Model',
+            title: 'Quick Pay',
+          })}
+        />
+        <Stack.Screen
+          name="PaymentsScreen"
+          component={PaymentsScreen}
+          options={({ navigation }) => ({
+            title: 'Payments',
+          })}
+        />
+        <Stack.Screen
+          name="BillingScreen"
+          component={BillingScreen}
+          options={({ navigation }) => ({
+            title: 'Billing',
+          })}
+        />
+        <Stack.Screen
+          name="UsageScreen"
+          component={UsageScreen}
+          options={({ navigation }) => ({
+            title: 'Usage',
+          })}
+        />
+        <Stack.Screen
+          name="DashboardScreen"
+          component={DashboardScreen}
+          options={({ navigation }) => ({
+            title: 'Dashboard',
+          })}
+        />
+        <Stack.Screen
+          name="UpdatePhoneandEmailScreen"
+          component={UpdatePhoneandEmailScreen}
+          options={({ navigation }) => ({
+            title: 'Update Phone and Email',
           })}
         />
         <Stack.Screen
@@ -195,31 +202,80 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="CheckTicketStatusScreen"
-          component={CheckTicketStatusScreen}
+          name="ContactUsGuestScreen"
+          component={ContactUsGuestScreen}
           options={({ navigation }) => ({
-            title: 'Check Ticket Status',
+            title: 'Contact Us Guest',
           })}
         />
         <Stack.Screen
-          name="NSCRegistrationGuestScreen"
-          component={NSCRegistrationGuestScreen}
+          name="ContactUsScreen"
+          component={ContactUsScreen}
           options={({ navigation }) => ({
-            title: 'NSC Registration Guest',
+            title: 'Contact Us',
           })}
         />
         <Stack.Screen
-          name="LoginScreen"
-          component={LoginScreen}
+          name="FeedbackScreen"
+          component={FeedbackScreen}
           options={({ navigation }) => ({
-            title: 'Login',
+            title: 'Feedback',
           })}
         />
         <Stack.Screen
-          name="ServiceRequestScreen"
-          component={ServiceRequestScreen}
+          name="RaiseTicketScreen"
+          component={RaiseTicketScreen}
           options={({ navigation }) => ({
-            title: 'Service request',
+            title: 'Raise Ticket',
+          })}
+        />
+        <Stack.Screen
+          name="MiscellaneousPaymentScreen"
+          component={MiscellaneousPaymentScreen}
+          options={({ navigation }) => ({
+            title: 'Miscellaneous  Payment',
+          })}
+        />
+        <Stack.Screen
+          name="RegisterScreen"
+          component={RegisterScreen}
+          options={({ navigation }) => ({
+            title: 'Register',
+          })}
+        />
+        <Stack.Screen
+          name="ForgotpasswordScreen"
+          component={ForgotpasswordScreen}
+          options={({ navigation }) => ({
+            title: 'Forgot password',
+          })}
+        />
+        <Stack.Screen
+          name="ConfirmOTPPhonenumberupdateScreen"
+          component={ConfirmOTPPhonenumberupdateScreen}
+          options={({ navigation }) => ({
+            title: 'Confirm OTP Phone number update',
+          })}
+        />
+        <Stack.Screen
+          name="ManageregFlowTwoScreen"
+          component={ManageregFlowTwoScreen}
+          options={({ navigation }) => ({
+            title: 'ManageregFlowTwo',
+          })}
+        />
+        <Stack.Screen
+          name="RechargeScreen"
+          component={RechargeScreen}
+          options={({ navigation }) => ({
+            title: 'Recharge',
+          })}
+        />
+        <Stack.Screen
+          name="MakePaymentMisPScreen"
+          component={MakePaymentMisPScreen}
+          options={({ navigation }) => ({
+            title: 'Make Payment MisP',
           })}
         />
         <Stack.Screen
@@ -230,20 +286,6 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="ConfirmOTPEmailUpdateScreen"
-          component={ConfirmOTPEmailUpdateScreen}
-          options={({ navigation }) => ({
-            title: 'Confirm OTP Email Update',
-          })}
-        />
-        <Stack.Screen
-          name="LoginOTPScreen"
-          component={LoginOTPScreen}
-          options={({ navigation }) => ({
-            title: 'Login OTP',
-          })}
-        />
-        <Stack.Screen
           name="UpdateNewPasswordScreen"
           component={UpdateNewPasswordScreen}
           options={({ navigation }) => ({
@@ -251,10 +293,10 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="RaiseTicketGuestScreen"
-          component={RaiseTicketGuestScreen}
+          name="ServiceConnectionDetailsScreen"
+          component={ServiceConnectionDetailsScreen}
           options={({ navigation }) => ({
-            title: 'Raise Ticket Guest',
+            title: 'Service Connection Details',
           })}
         />
         <Stack.Screen
@@ -272,24 +314,73 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="ConfirmOTPPhonenumberupdateScreen"
-          component={ConfirmOTPPhonenumberupdateScreen}
+          name="LoginScreen"
+          component={LoginScreen}
           options={({ navigation }) => ({
-            title: 'Confirm OTP Phone number update',
+            title: 'Login',
           })}
         />
         <Stack.Screen
-          name="RegisterScreen"
-          component={RegisterScreen}
+          name="CheckTicketStatusScreen"
+          component={CheckTicketStatusScreen}
           options={({ navigation }) => ({
-            title: 'Register',
+            title: 'Check Ticket Status',
           })}
         />
         <Stack.Screen
-          name="AdvancePayemntScreen"
-          component={AdvancePayemntScreen}
+          name="RaiseTicketGuestScreen"
+          component={RaiseTicketGuestScreen}
           options={({ navigation }) => ({
-            title: 'Advance Payemnt',
+            title: 'Raise Ticket Guest',
+          })}
+        />
+        <Stack.Screen
+          name="FeedbackGuestScreen"
+          component={FeedbackGuestScreen}
+          options={({ navigation }) => ({
+            title: 'Feedback Guest',
+          })}
+        />
+        <Stack.Screen
+          name="ChangePasswordScreen"
+          component={ChangePasswordScreen}
+          options={({ navigation }) => ({
+            title: 'Change Password',
+          })}
+        />
+        <Stack.Screen
+          name="RegFlowOneScreen"
+          component={RegFlowOneScreen}
+          options={({ navigation }) => ({
+            title: 'RegFlowOne',
+          })}
+        />
+        <Stack.Screen
+          name="CheckTicketStatusforGuestScreen"
+          component={CheckTicketStatusforGuestScreen}
+          options={({ navigation }) => ({
+            title: 'Check Ticket Status for Guest',
+          })}
+        />
+        <Stack.Screen
+          name="DeleteServiceConnectionScreen"
+          component={DeleteServiceConnectionScreen}
+          options={({ navigation }) => ({
+            title: 'Delete Service Connection',
+          })}
+        />
+        <Stack.Screen
+          name="RegistrationOTPSubmitScreen"
+          component={RegistrationOTPSubmitScreen}
+          options={({ navigation }) => ({
+            title: 'Registration OTP Submit',
+          })}
+        />
+        <Stack.Screen
+          name="ServiceRequestScreen"
+          component={ServiceRequestScreen}
+          options={({ navigation }) => ({
+            title: 'Service request',
           })}
         />
         <Stack.Screen
@@ -300,10 +391,38 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="ManageregFlowTwoScreen"
-          component={ManageregFlowTwoScreen}
+          name="ConfirmOTPAddNewServiceConnectionScreen"
+          component={ConfirmOTPAddNewServiceConnectionScreen}
           options={({ navigation }) => ({
-            title: 'ManageregFlowTwo',
+            title: 'Confirm OTP  Add New Service Connection',
+          })}
+        />
+        <Stack.Screen
+          name="LoginOTPScreen"
+          component={LoginOTPScreen}
+          options={({ navigation }) => ({
+            title: 'Login OTP',
+          })}
+        />
+        <Stack.Screen
+          name="LoadQualityScreen"
+          component={LoadQualityScreen}
+          options={({ navigation }) => ({
+            title: 'Load & Quality',
+          })}
+        />
+        <Stack.Screen
+          name="MakePaymentScreen"
+          component={MakePaymentScreen}
+          options={({ navigation }) => ({
+            title: 'Make Payment',
+          })}
+        />
+        <Stack.Screen
+          name="UpdateEmailScreen"
+          component={UpdateEmailScreen}
+          options={({ navigation }) => ({
+            title: 'Update Email',
           })}
         />
         <Stack.Screen
@@ -321,136 +440,10 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="ForgotpasswordScreen"
-          component={ForgotpasswordScreen}
+          name="ConfirmOTPEmailUpdateScreen"
+          component={ConfirmOTPEmailUpdateScreen}
           options={({ navigation }) => ({
-            title: 'Forgot password',
-          })}
-        />
-        <Stack.Screen
-          name="MakePaymentScreen"
-          component={MakePaymentScreen}
-          options={({ navigation }) => ({
-            title: 'Make Payment',
-          })}
-        />
-        <Stack.Screen
-          name="RegistrationOTPSubmitScreen"
-          component={RegistrationOTPSubmitScreen}
-          options={({ navigation }) => ({
-            title: 'Registration OTP Submit',
-          })}
-        />
-        <Stack.Screen
-          name="RegFlowOneScreen"
-          component={RegFlowOneScreen}
-          options={({ navigation }) => ({
-            title: 'RegFlowOne',
-          })}
-        />
-        <Stack.Screen
-          name="MakePaymentMisPScreen"
-          component={MakePaymentMisPScreen}
-          options={({ navigation }) => ({
-            title: 'Make Payment MisP',
-          })}
-        />
-        <Stack.Screen
-          name="ConfirmOTPAddNewServiceConnectionScreen"
-          component={ConfirmOTPAddNewServiceConnectionScreen}
-          options={({ navigation }) => ({
-            title: 'Confirm OTP  Add New Service Connection',
-          })}
-        />
-        <Stack.Screen
-          name="UpdateEmailScreen"
-          component={UpdateEmailScreen}
-          options={({ navigation }) => ({
-            title: 'Update Email',
-          })}
-        />
-        <Stack.Screen
-          name="ChangePasswordScreen"
-          component={ChangePasswordScreen}
-          options={({ navigation }) => ({
-            title: 'Change Password',
-          })}
-        />
-        <Stack.Screen
-          name="RaiseTicketScreen"
-          component={RaiseTicketScreen}
-          options={({ navigation }) => ({
-            title: 'Raise Ticket',
-          })}
-        />
-        <Stack.Screen
-          name="FeedbackGuestScreen"
-          component={FeedbackGuestScreen}
-          options={({ navigation }) => ({
-            title: 'Feedback Guest',
-          })}
-        />
-        <Stack.Screen
-          name="FeedbackScreen"
-          component={FeedbackScreen}
-          options={({ navigation }) => ({
-            title: 'Feedback',
-          })}
-        />
-        <Stack.Screen
-          name="AddTicketProcessGuestScreen"
-          component={AddTicketProcessGuestScreen}
-          options={({ navigation }) => ({
-            title: 'Add Ticket Process Guest',
-          })}
-        />
-        <Stack.Screen
-          name="RechargeScreen"
-          component={RechargeScreen}
-          options={({ navigation }) => ({
-            title: 'Recharge',
-          })}
-        />
-        <Stack.Screen
-          name="ServiceConnectionDetailsScreen"
-          component={ServiceConnectionDetailsScreen}
-          options={({ navigation }) => ({
-            title: 'Service Connection Details',
-          })}
-        />
-        <Stack.Screen
-          name="MiscellaneousMPScreen"
-          component={MiscellaneousMPScreen}
-          options={({ navigation }) => ({
-            title: 'Miscellaneous  MP',
-          })}
-        />
-        <Stack.Screen
-          name="UpdatePhoneandEmailScreen"
-          component={UpdatePhoneandEmailScreen}
-          options={({ navigation }) => ({
-            title: 'Update Phone and Email',
-          })}
-        />
-        <Stack.Screen
-          name="CheckTicketStatusforGuestScreen"
-          component={CheckTicketStatusforGuestScreen}
-          options={({ navigation }) => ({
-            title: 'Check Ticket Status for Guest',
-          })}
-        />
-        <Stack.Screen
-          name="MiscellaneousPaymentScreen"
-          component={MiscellaneousPaymentScreen}
-          options={({ navigation }) => ({
-            title: 'Miscellaneous  Payment',
-          })}
-        />
-        <Stack.Screen
-          name="DeleteServiceConnectionScreen"
-          component={DeleteServiceConnectionScreen}
-          options={({ navigation }) => ({
-            title: 'Delete Service Connection',
+            title: 'Confirm OTP Email Update',
           })}
         />
         <Stack.Screen
@@ -461,31 +454,17 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="PresentReadingScreen"
-          component={PresentReadingScreen}
+          name="ManageAccountScreen"
+          component={ManageAccountScreen}
           options={({ navigation }) => ({
-            title: 'Present Reading',
+            title: 'Manage Account',
           })}
         />
         <Stack.Screen
-          name="ViewBillScreen"
-          component={ViewBillScreen}
+          name="AdvancePayemntScreen"
+          component={AdvancePayemntScreen}
           options={({ navigation }) => ({
-            title: 'View Bill ',
-          })}
-        />
-        <Stack.Screen
-          name="LoadQualityScreen"
-          component={LoadQualityScreen}
-          options={({ navigation }) => ({
-            title: 'Load & Quality',
-          })}
-        />
-        <Stack.Screen
-          name="CardsScreen"
-          component={CardsScreen}
-          options={({ navigation }) => ({
-            title: 'Cards',
+            title: 'Advance Payemnt',
           })}
         />
         <Stack.Screen
@@ -493,6 +472,13 @@ export default function RootAppNavigator() {
           component={ViewBillGuestScreen}
           options={({ navigation }) => ({
             title: 'View Bill Guest',
+          })}
+        />
+        <Stack.Screen
+          name="OutageScheduleScreen"
+          component={OutageScheduleScreen}
+          options={({ navigation }) => ({
+            title: 'Outage Schedule',
           })}
         />
         <Stack.Screen
@@ -517,41 +503,6 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="OutageScheduleScreen"
-          component={OutageScheduleScreen}
-          options={({ navigation }) => ({
-            title: 'Outage Schedule',
-          })}
-        />
-        <Stack.Screen
-          name="ManageAccountScreen"
-          component={ManageAccountScreen}
-          options={({ navigation }) => ({
-            title: 'Manage Account',
-          })}
-        />
-        <Stack.Screen
-          name="ContactUsGuestScreen"
-          component={ContactUsGuestScreen}
-          options={({ navigation }) => ({
-            title: 'Contact Us Guest',
-          })}
-        />
-        <Stack.Screen
-          name="ContactUsScreen"
-          component={ContactUsScreen}
-          options={({ navigation }) => ({
-            title: 'Contact Us',
-          })}
-        />
-        <Stack.Screen
-          name="PrivacyPolicyScreen"
-          component={PrivacyPolicyScreen}
-          options={({ navigation }) => ({
-            title: 'Privacy Policy',
-          })}
-        />
-        <Stack.Screen
           name="PrivacyPolicyGuestScreen"
           component={PrivacyPolicyGuestScreen}
           options={({ navigation }) => ({
@@ -566,10 +517,24 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="EnergyTipsScreen"
-          component={EnergyTipsScreen}
+          name="FAQScreen"
+          component={FAQScreen}
           options={({ navigation }) => ({
-            title: 'Energy Tips',
+            title: 'FAQ',
+          })}
+        />
+        <Stack.Screen
+          name="PrivacyPolicyScreen"
+          component={PrivacyPolicyScreen}
+          options={({ navigation }) => ({
+            title: 'Privacy Policy',
+          })}
+        />
+        <Stack.Screen
+          name="NSCRegistrationGuestScreen"
+          component={NSCRegistrationGuestScreen}
+          options={({ navigation }) => ({
+            title: 'NSC Registration Guest',
           })}
         />
         <Stack.Screen
@@ -580,59 +545,59 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="FAQScreen"
-          component={FAQScreen}
+          name="ModelScreen"
+          component={ModelScreen}
           options={({ navigation }) => ({
-            title: 'FAQ',
+            title: 'Model',
           })}
         />
         <Stack.Screen
-          name="QAScreen"
-          component={QAScreen}
+          name="EnergyTipsScreen"
+          component={EnergyTipsScreen}
           options={({ navigation }) => ({
-            title: 'QA',
+            title: 'Energy Tips',
           })}
         />
         <Stack.Screen
-          name="ChangePasswordSuccessGuestScreen"
-          component={ChangePasswordSuccessGuestScreen}
+          name="MiscellaneousMPScreen"
+          component={MiscellaneousMPScreen}
           options={({ navigation }) => ({
-            title: 'Change Password Success Guest',
+            title: 'Miscellaneous  MP',
           })}
         />
         <Stack.Screen
-          name="RemarksSuccessScreen"
-          component={RemarksSuccessScreen}
+          name="PresentReadingScreen"
+          component={PresentReadingScreen}
           options={({ navigation }) => ({
-            title: 'Remarks Success',
+            title: 'Present Reading',
           })}
         />
         <Stack.Screen
-          name="RemarksGuestSuccessScreen"
-          component={RemarksGuestSuccessScreen}
+          name="ViewBillScreen"
+          component={ViewBillScreen}
           options={({ navigation }) => ({
-            title: 'Remarks Guest Success',
+            title: 'View Bill ',
           })}
         />
         <Stack.Screen
-          name="RegisterSuccessScreen"
-          component={RegisterSuccessScreen}
+          name="CardsScreen"
+          component={CardsScreen}
           options={({ navigation }) => ({
-            title: 'Register Success',
+            title: 'Cards',
           })}
         />
         <Stack.Screen
-          name="ChangePasswordSuccessScreen"
-          component={ChangePasswordSuccessScreen}
+          name="PhoneNumberSuccessScreen"
+          component={PhoneNumberSuccessScreen}
           options={({ navigation }) => ({
-            title: 'Change Password Success',
+            title: 'Phone number Success ',
           })}
         />
         <Stack.Screen
-          name="RechargeConfirmationScreen"
-          component={RechargeConfirmationScreen}
+          name="EmailChnagedSuccessScreen"
+          component={EmailChnagedSuccessScreen}
           options={({ navigation }) => ({
-            title: 'Recharge Confirmation ',
+            title: 'Email chnaged  Success ',
           })}
         />
         <Stack.Screen
@@ -657,24 +622,17 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
+          name="RechargeConfirmationScreen"
+          component={RechargeConfirmationScreen}
+          options={({ navigation }) => ({
+            title: 'Recharge Confirmation ',
+          })}
+        />
+        <Stack.Screen
           name="RechargeConfirmationGuestScreen"
           component={RechargeConfirmationGuestScreen}
           options={({ navigation }) => ({
             title: 'Recharge Confirmation  Guest',
-          })}
-        />
-        <Stack.Screen
-          name="FeedbackSuccessScreen"
-          component={FeedbackSuccessScreen}
-          options={({ navigation }) => ({
-            title: 'Feedback Success',
-          })}
-        />
-        <Stack.Screen
-          name="FeedbackGuestSuccessScreen"
-          component={FeedbackGuestSuccessScreen}
-          options={({ navigation }) => ({
-            title: 'Feedback Guest Success',
           })}
         />
         <Stack.Screen
@@ -685,10 +643,10 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="ReceiptScreen"
-          component={ReceiptScreen}
+          name="FeedbackSuccessScreen"
+          component={FeedbackSuccessScreen}
           options={({ navigation }) => ({
-            title: 'Receipt',
+            title: 'Feedback Success',
           })}
         />
         <Stack.Screen
@@ -699,24 +657,66 @@ export default function RootAppNavigator() {
           })}
         />
         <Stack.Screen
-          name="EmailChnagedSuccessScreen"
-          component={EmailChnagedSuccessScreen}
-          options={({ navigation }) => ({
-            title: 'Email chnaged  Success ',
-          })}
-        />
-        <Stack.Screen
-          name="PhoneNumberSuccessScreen"
-          component={PhoneNumberSuccessScreen}
-          options={({ navigation }) => ({
-            title: 'Phone number Success ',
-          })}
-        />
-        <Stack.Screen
           name="RaiseTicketSuccessScreen"
           component={RaiseTicketSuccessScreen}
           options={({ navigation }) => ({
             title: 'Raise Ticket Success',
+          })}
+        />
+        <Stack.Screen
+          name="FeedbackGuestSuccessScreen"
+          component={FeedbackGuestSuccessScreen}
+          options={({ navigation }) => ({
+            title: 'Feedback Guest Success',
+          })}
+        />
+        <Stack.Screen
+          name="ReceiptScreen"
+          component={ReceiptScreen}
+          options={({ navigation }) => ({
+            title: 'Receipt',
+          })}
+        />
+        <Stack.Screen
+          name="QAScreen"
+          component={QAScreen}
+          options={({ navigation }) => ({
+            title: 'QA',
+          })}
+        />
+        <Stack.Screen
+          name="RemarksSuccessScreen"
+          component={RemarksSuccessScreen}
+          options={({ navigation }) => ({
+            title: 'Remarks Success',
+          })}
+        />
+        <Stack.Screen
+          name="ChangePasswordSuccessScreen"
+          component={ChangePasswordSuccessScreen}
+          options={({ navigation }) => ({
+            title: 'Change Password Success',
+          })}
+        />
+        <Stack.Screen
+          name="RemarksGuestSuccessScreen"
+          component={RemarksGuestSuccessScreen}
+          options={({ navigation }) => ({
+            title: 'Remarks Guest Success',
+          })}
+        />
+        <Stack.Screen
+          name="RegisterSuccessScreen"
+          component={RegisterSuccessScreen}
+          options={({ navigation }) => ({
+            title: 'Register Success',
+          })}
+        />
+        <Stack.Screen
+          name="ChangePasswordSuccessGuestScreen"
+          component={ChangePasswordSuccessGuestScreen}
+          options={({ navigation }) => ({
+            title: 'Change Password Success Guest',
           })}
         />
       </Stack.Navigator>

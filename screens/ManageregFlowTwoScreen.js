@@ -320,7 +320,11 @@ const ManageregFlowTwoScreen = props => {
             style={StyleSheet.applyWidth(
               StyleSheet.compose(
                 GlobalStyles.ButtonStyles(theme)['Submit'].style,
-                { borderRadius: 14, fontSize: 16 }
+                {
+                  backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
+                  borderRadius: 14,
+                  fontSize: 16,
+                }
               ),
               dimensions.width
             )}
@@ -400,7 +404,7 @@ const ManageregFlowTwoScreen = props => {
                   inverted={false}
                   keyExtractor={(listData, index) => listData}
                   keyboardShouldPersistTaps={'never'}
-                  listKey={'H9QZbLbT'}
+                  listKey={'wafrWpuk'}
                   nestedScrollEnabled={false}
                   numColumns={1}
                   onEndReachedThreshold={0.5}
@@ -420,9 +424,9 @@ const ManageregFlowTwoScreen = props => {
                                 value: finalANo,
                               });
 
-                              const valueRGvrWnSY = listData?.billingStatus;
-                              setBillIssuee(valueRGvrWnSY);
-                              const bs = valueRGvrWnSY;
+                              const value7m6I3ikF = listData?.billingStatus;
+                              setBillIssuee(value7m6I3ikF);
+                              const bs = value7m6I3ikF;
                               setBillIssuee(bs);
                               console.log(Constants['passac']);
                             } catch (err) {
@@ -459,9 +463,9 @@ const ManageregFlowTwoScreen = props => {
                                     value: finalANo,
                                   });
 
-                                  const valueMihKtpJS = listData?.billingStatus;
-                                  setBillIssuee(valueMihKtpJS);
-                                  const bs = valueMihKtpJS;
+                                  const value9wda7tBS = listData?.billingStatus;
+                                  setBillIssuee(value9wda7tBS);
+                                  const bs = value9wda7tBS;
                                   setBillIssuee(bs);
                                 } catch (err) {
                                   console.error(err);

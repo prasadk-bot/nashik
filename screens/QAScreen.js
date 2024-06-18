@@ -30,11 +30,6 @@ const QAScreen = props => {
   const [scnoErrorMsg, setScnoErrorMsg] = React.useState('');
   const [textInputValue, setTextInputValue] = React.useState('');
   const [viewbilldetails, setViewbilldetails] = React.useState({});
-  const buildString = Scno => {
-    console.log(`billing/rest/getBillDataWss/${Scno}`);
-    return `billing/rest/getBillDataWss/${Scno}`;
-  };
-
   const validateScno = scNo => {
     var errorMessage = null;
     if (!scNo.trim()) {
@@ -53,6 +48,11 @@ line two` ) and will not work with special characters inside of quotes ( example
 
     console.log(`billing/rest/AccountInfo/${Scno}`);
     return `billing/rest/AccountInfo/${Scno}`;
+  };
+
+  const buildString = Scno => {
+    console.log(`billing/rest/getBillDataWss/${Scno}`);
+    return `billing/rest/getBillDataWss/${Scno}`;
   };
 
   return (

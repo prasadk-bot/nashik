@@ -155,7 +155,7 @@ const EnergyTipsScreen = props => {
                     listData?.id ?? listData?.uuid ?? index.toString()
                   }
                   keyboardShouldPersistTaps={'never'}
-                  listKey={'cH8KjxFU'}
+                  listKey={'xX6ftJzI'}
                   nestedScrollEnabled={false}
                   numColumns={1}
                   onEndReachedThreshold={0.5}

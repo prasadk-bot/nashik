@@ -42,6 +42,27 @@ const FeedbackGuestScreen = props => {
   const [textAreaValue, setTextAreaValue] = React.useState('');
   const [textInputValue, setTextInputValue] = React.useState('');
   const [timerResult, setTimerResult] = React.useState('');
+  const validateScno = scNo => {
+    var errorMessage = null;
+    if (!scNo.trim()) {
+      errorMessage = 'Service connection number is required';
+    }
+    return errorMessage;
+  };
+
+  const validateEmail = email => {
+    var errorMessage = null;
+    if (!email.trim()) {
+      errorMessage = 'Email is required';
+    } else {
+      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+      if (!emailRegex.test(email)) {
+        errorMessage = 'Invalid email address';
+      }
+    }
+    return errorMessage;
+  };
+
   const DisplayFun = display => {
     /*const myTimeout = setTimeout(messageFun,10000);
 
@@ -77,35 +98,6 @@ console.log("i came here");
     }, 1000);
 
     return seconds;
-  };
-
-  const validateSubject = sub => {
-    var errorMessage = null;
-    if (!sub.trim()) {
-      errorMessage = 'Subject is required';
-    }
-    return errorMessage;
-  };
-
-  const validateScno = scNo => {
-    var errorMessage = null;
-    if (!scNo.trim()) {
-      errorMessage = 'Service connection number is required';
-    }
-    return errorMessage;
-  };
-
-  const validateEmail = email => {
-    var errorMessage = null;
-    if (!email.trim()) {
-      errorMessage = 'Email is required';
-    } else {
-      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-      if (!emailRegex.test(email)) {
-        errorMessage = 'Invalid email address';
-      }
-    }
-    return errorMessage;
   };
 
   const processErrorMessage = msg => {
@@ -146,6 +138,14 @@ console.log("i came here");
     };
 
     return scheme[msg];
+  };
+
+  const validateSubject = sub => {
+    var errorMessage = null;
+    if (!sub.trim()) {
+      errorMessage = 'Subject is required';
+    }
+    return errorMessage;
   };
 
   return (
@@ -554,6 +554,7 @@ console.log("i came here");
           }}
           style={StyleSheet.applyWidth(
             {
+              backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
               borderRadius: 14,
               fontFamily: 'Roboto_400Regular',
               fontSize: 16,

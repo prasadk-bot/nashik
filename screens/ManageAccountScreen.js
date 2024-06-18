@@ -35,9 +35,9 @@ const ManageAccountScreen = props => {
         )?.json;
         console.log(madetails);
 
-        const valueE0cnP9CG = madetails && madetails[0].data[0].data;
-        setManagead(valueE0cnP9CG);
-        const result = valueE0cnP9CG;
+        const valueKfWMG01c = madetails && madetails[0].data[0].data;
+        setManagead(valueKfWMG01c);
+        const result = valueKfWMG01c;
         console.log(result);
         const serviceConNo = (madetails && madetails[0].data[0].data)
           ?.new_added_account;
@@ -151,7 +151,7 @@ const ManageAccountScreen = props => {
               style={StyleSheet.applyWidth(
                 {
                   alignItems: 'center',
-                  backgroundColor: theme.colors['Primary'],
+                  backgroundColor: theme.colors['NFT_TIME_Dark_Gray'],
                   borderRadius: 100,
                   flexDirection: 'row',
                   paddingLeft: 10,
@@ -234,7 +234,7 @@ const ManageAccountScreen = props => {
             listData?.id ?? listData?.uuid ?? index.toString()
           }
           keyboardShouldPersistTaps={'never'}
-          listKey={'O7FXVbDv'}
+          listKey={'RBA5rffu'}
           nestedScrollEnabled={false}
           numColumns={1}
           onEndReachedThreshold={0.5}
@@ -290,9 +290,9 @@ const ManageAccountScreen = props => {
                       <Touchable
                         onPress={() => {
                           try {
-                            const valuedj8gZvP4 = listData?.new_added_account;
-                            setServiceConNo(valuedj8gZvP4);
-                            const serviceconnectionNo = valuedj8gZvP4;
+                            const valueCt1sIqHL = listData?.new_added_account;
+                            setServiceConNo(valueCt1sIqHL);
+                            const serviceconnectionNo = valueCt1sIqHL;
                             navigation.navigate(
                               'DeleteServiceConnectionScreen',
                               { serviceConnectionNo: serviceconnectionNo }
@@ -349,7 +349,7 @@ const ManageAccountScreen = props => {
                         dimensions.width
                       )}
                     >
-                      {transalate(Variables, 'Account number')}
+                      {transalate(Variables, 'Account Number')}
                       {': '}
                       {listData?.new_added_account}
                     </Text>

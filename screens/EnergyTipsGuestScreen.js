@@ -155,7 +155,7 @@ const EnergyTipsGuestScreen = props => {
                     listData?.id ?? listData?.uuid ?? index.toString()
                   }
                   keyboardShouldPersistTaps={'never'}
-                  listKey={'sTqLTAcL'}
+                  listKey={'kxubx4IT'}
                   nestedScrollEnabled={false}
                   numColumns={1}
                   onEndReachedThreshold={0.5}

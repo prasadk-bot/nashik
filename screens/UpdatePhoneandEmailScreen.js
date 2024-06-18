@@ -30,6 +30,7 @@ const UpdatePhoneandEmailScreen = props => {
   const Constants = GlobalVariables.useValues();
   const Variables = Constants;
   const setGlobalVariableValue = GlobalVariables.useSetValue();
+  const [Meterno, setMeterno] = React.useState('');
   const [ShowNav, setShowNav] = React.useState(false);
   const [consumerAddress, setConsumerAddress] = React.useState('');
   const [consumerDetails, setConsumerDetails] = React.useState({});
@@ -64,14 +65,14 @@ const UpdatePhoneandEmailScreen = props => {
         console.log(consumerDetailsJson);
         buildConsumerString(Constants['name']);
 
-        const value46XJZeGk = (consumerDetailsJson && consumerDetailsJson[0])
+        const valueTRPw7d9b = (consumerDetailsJson && consumerDetailsJson[0])
           ?.data?.name;
-        setConsumerName(value46XJZeGk);
-        const nameData = value46XJZeGk;
-        const valueMOqW6Qne = (consumerDetailsJson && consumerDetailsJson[0])
+        setConsumerName(valueTRPw7d9b);
+        const nameData = valueTRPw7d9b;
+        const valueUW6fV82N = (consumerDetailsJson && consumerDetailsJson[0])
           ?.data?.address1;
-        setConsumerAddress(valueMOqW6Qne);
-        const consumerAddressData = valueMOqW6Qne;
+        setConsumerAddress(valueUW6fV82N);
+        const consumerAddressData = valueUW6fV82N;
         const mobileNoData = setGlobalVariableValue({
           key: 'phonenumbercon',
           value: (consumerDetailsJson && consumerDetailsJson[0])?.data?.mobile,
@@ -81,10 +82,10 @@ const UpdatePhoneandEmailScreen = props => {
           value: (consumerDetailsJson && consumerDetailsJson[0])?.data?.emailId,
         });
 
-        const valueagzhoqaD = (consumerDetailsJson && consumerDetailsJson[0])
+        const valueQTXo1H6l = (consumerDetailsJson && consumerDetailsJson[0])
           ?.data?.prepaidFlag;
-        setPrepaidFlag(valueagzhoqaD);
-        const prepaidFlagData = valueagzhoqaD;
+        setPrepaidFlag(valueQTXo1H6l);
+        const prepaidFlagData = valueQTXo1H6l;
         const loadType = setGlobalVariableValue({
           key: 'loadType',
           value: (consumerDetailsJson && consumerDetailsJson[0])?.data
@@ -105,6 +106,11 @@ const UpdatePhoneandEmailScreen = props => {
           value: (consumerDetailsJson && consumerDetailsJson[0])?.data
             ?.category,
         });
+
+        const value350vJ48j = (consumerDetailsJson && consumerDetailsJson[0])
+          ?.data?.meterNumber;
+        setMeterno(value350vJ48j);
+        const meterno = value350vJ48j;
         setServiceConNo(
           (consumerDetailsJson && consumerDetailsJson[0])?.data?.scno
         );
@@ -258,16 +264,16 @@ const UpdatePhoneandEmailScreen = props => {
                       )?.json;
                       console.log(consumerDetailsJson);
 
-                      const valueTswCPWMM = (
+                      const valueDCSxZEz2 = (
                         consumerDetailsJson && consumerDetailsJson[0]
                       )?.data?.name;
-                      setConsumerName(valueTswCPWMM);
-                      const nameData = valueTswCPWMM;
-                      const valuetF6Eq6lx = (
+                      setConsumerName(valueDCSxZEz2);
+                      const nameData = valueDCSxZEz2;
+                      const valueqEqafWgE = (
                         consumerDetailsJson && consumerDetailsJson[0]
                       )?.data?.address1;
-                      setConsumerAddress(valuetF6Eq6lx);
-                      const consumerAddressData = valuetF6Eq6lx;
+                      setConsumerAddress(valueqEqafWgE);
+                      const consumerAddressData = valueqEqafWgE;
                       const mobileNoData = setGlobalVariableValue({
                         key: 'phonenumbercon',
                         value: (consumerDetailsJson && consumerDetailsJson[0])
@@ -279,11 +285,11 @@ const UpdatePhoneandEmailScreen = props => {
                           ?.data?.emailId,
                       });
 
-                      const valueARV3r2Xo = (
+                      const valuezrAUcZKf = (
                         consumerDetailsJson && consumerDetailsJson[0]
                       )?.data?.prepaidFlag;
-                      setPrepaidFlag(valueARV3r2Xo);
-                      const prepaidFlagData = valueARV3r2Xo;
+                      setPrepaidFlag(valuezrAUcZKf);
+                      const prepaidFlagData = valuezrAUcZKf;
                       const loadType = setGlobalVariableValue({
                         key: 'loadType',
                         value: (consumerDetailsJson && consumerDetailsJson[0])
@@ -547,6 +553,36 @@ const UpdatePhoneandEmailScreen = props => {
                 {Constants['category']}
               </Text>
             </View>
+            {/* Meter no */}
+            <View
+              style={StyleSheet.applyWidth(
+                {
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingLeft: 20,
+                },
+                dimensions.width
+              )}
+            >
+              {/* Name */}
+              <Text
+                accessible={true}
+                style={StyleSheet.applyWidth(
+                  {
+                    alignSelf: 'auto',
+                    color: theme.colors.strong,
+                    fontFamily: 'Roboto_400Regular',
+                    fontSize: 14,
+                    paddingTop: 8,
+                  },
+                  dimensions.width
+                )}
+              >
+                {transalate(Variables, 'Meter Number')}
+                {': '}
+                {Meterno}
+              </Text>
+            </View>
             {/* Account type */}
             <View
               style={StyleSheet.applyWidth(
@@ -584,7 +620,10 @@ const UpdatePhoneandEmailScreen = props => {
                         ),
                         dimensions.width
                       )}
-                      title={'Account type : Postpaid'}
+                      title={`${transalate(
+                        Variables,
+                        'Account type'
+                      )} : Postpaid`}
                     />
                   )}
                 </>
@@ -615,7 +654,10 @@ const UpdatePhoneandEmailScreen = props => {
                         ),
                         dimensions.width
                       )}
-                      title={'Account type: Prepaid'}
+                      title={`${transalate(
+                        Variables,
+                        'Account type'
+                      )}: Prepaid`}
                     />
                   )}
                 </>

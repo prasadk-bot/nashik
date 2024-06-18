@@ -122,7 +122,7 @@ const NSCRegistrationGuestScreen = props => {
             const handler = async () => {
               try {
                 await WebBrowser.openBrowserAsync(
-                  "https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/cportal/#/ltReg',showInRecents : true"
+                  "https://nccuatcp.quantumtechnologiesltd.com/cportal/#/ltReg',showInRecents : true"
                 );
               } catch (err) {
                 console.error(err);
@@ -177,7 +177,7 @@ const NSCRegistrationGuestScreen = props => {
             const handler = async () => {
               try {
                 await WebBrowser.openBrowserAsync(
-                  'https://nccmsedcl08-cpfghesuat.quantumtechnologiesltd.com/cportal/#/registrationStatus'
+                  'https://nccuatcp.quantumtechnologiesltd.com/cportal/#/registrationStatus'
                 );
               } catch (err) {
                 console.error(err);

@@ -158,7 +158,7 @@ const ContactUsGuestScreen = props => {
                 dimensions.width
               )}
             >
-              {'1800-212-3435, 1800-233-3435'}
+              {'1912,19120,1800-212-3435,\n1800-233-3435'}
             </Text>
           </View>
         </Touchable>
@@ -204,7 +204,7 @@ const ContactUsGuestScreen = props => {
                 dimensions.width
               )}
             >
-              {'customercare@mahadiscom.inm'}
+              {'customercare@mahadiscom.in'}
             </Text>
           </View>
         </Touchable>
@@ -378,7 +378,7 @@ const ContactUsGuestScreen = props => {
             </Text>
           </View>
         </Touchable>
-        {/* Youtube */}
+        {/* YouTube */}
         <Touchable
           onPress={() => {
             const handler = async () => {
